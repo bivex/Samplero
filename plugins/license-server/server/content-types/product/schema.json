@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Products for sale (VST plugins and sample packs)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["sample_pack", "plugin"],
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "price_cents": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["USD", "EUR", "GBP"],
+      "default": "USD"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "cover_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

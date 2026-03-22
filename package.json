@@ -1,0 +1,50 @@
+{
+  "name": "strapi-license-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "License Server for VST Plugins",
+  "license": "MIT",
+  "author": {
+    "name": "Samplero"
+  },
+  "scripts": {
+    "postinstall": "node scripts/sync-customer-vendor-assets.js",
+    "build": "strapi build",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi-community/plugin-redis": "^2.0.0",
+    "@strapi/plugin-cloud": "5.38.0",
+    "@strapi/plugin-users-permissions": "5.38.0",
+    "@strapi/provider-upload-aws-s3": "^5.38.0",
+    "@strapi/strapi": "5.38.0",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "12.6.2",
+    "pg": "^8.20.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "strapi-plugin-license-server": "file:./plugins/license-server",
+    "strapi-plugin-meilisearch": "^0.15.0",
+    "strapi-plugin-rate-limit": "^0.4.0",
+    "styled-components": "^6.3.11",
+    "toastify-js": "^1.12.0"
+  },
+  "overrides": {
+    "tar": ">=7.5.10",
+    "glob": ">=10.5.0",
+    "ajv": ">=8.18.0",
+    "koa": ">=2.16.4",
+    "lodash": ">=4.17.23",
+    "markdown-it": ">=14.1.1",
+    "minimatch": ">=10.2.4",
+    "tmp": ">=0.2.4",
+    "esbuild": ">=0.25.0"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  }
+}

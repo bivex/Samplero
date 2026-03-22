@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "client_certificates",
+  "info": {
+    "singularName": "client-certificate",
+    "pluralName": "client-certificates",
+    "displayName": "Client Certificate",
+    "description": "mTLS client certificates for license authentication"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "license": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.license"
+    },
+    "certificate_serial": {
+      "type": "string",
+      "unique": true
+    },
+    "fingerprint_sha256": {
+      "type": "string",
+      "unique": true
+    },
+    "subject_cn": {
+      "type": "string"
+    },
+    "machine_id": {
+      "type": "string"
+    },
+    "not_before": {
+      "type": "datetime"
+    },
+    "not_after": {
+      "type": "datetime"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "revoked", "expired"],
+      "default": "active"
+    },
+    "revoked_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "revocation_reason": {
+      "type": "text",
+      "nullable": true
+    },
+    "certificate_pem": {
+      "type": "text",
+      "nullable": true
+    },
+    "ca_certificate_pem": {
+      "type": "text",
+      "nullable": true
+    }
+  }
+}

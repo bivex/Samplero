@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "activations",
+  "info": {
+    "singularName": "activation",
+    "pluralName": "activations",
+    "displayName": "Activation",
+    "description": "Device activation record"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "license_id": {
+      "type": "integer"
+    },
+    "device_fingerprint": {
+      "type": "string",
+      "unique": false,
+      "configurable": false
+    },
+    "client_public_key": {
+      "type": "text"
+    },
+    "certificate_serial": {
+      "type": "string",
+      "unique": true
+    },
+    "plugin_version": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "enumeration",
+      "enum": ["win", "mac", "linux"]
+    },
+    "last_checkin": {
+      "type": "datetime"
+    },
+    "revoked_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "requires_mtls": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_trust_level": {
+      "type": "integer"
+    }
+  }
+}

@@ -1,0 +1,148 @@
+##############################################################
+# Dependencies
+##############################################################
+node_modules/
+.pnp/
+.pnp.js
+
+##############################################################
+# Lock files — keep one canonical lockfile per sub-project
+# Uncomment any line below if you DO want to keep that lockfile
+##############################################################
+package-lock.json
+yarn.lock
+bun.lock
+# src/yarn.lock            # already matched by top-level
+src/yarn.lock
+plugins/*/package-lock.json
+apps/*/package-lock.json
+apps/*/bun.lock
+
+##############################################################
+# Build artefacts
+##############################################################
+dist/
+build/
+.next/
+out/
+.cache/
+coverage/
+
+##############################################################
+# Environment — keep .env.example files, never real secrets
+##############################################################
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+# docker/.env is a real env file too
+docker/.env
+
+##############################################################
+# Private keys, certificates, and PKI secrets
+##############################################################
+# Private keys — never commit
+*.key
+*.pem
+# PKCS12 / PFX bundles
+*.p12
+*.pfx
+# CA serial files
+*.srl
+# CSR scratch files (keep only test fixtures if truly needed)
+*.csr
+
+# Full cert directories with private material
+certs/private/
+certs/root/
+certs/intermediate/
+certs/server/
+certs/client/
+certs/step-ca/secrets/
+certs/step-ca/db/
+
+# Keep public CA cert so nginx trust chain can reference it
+!certs/ca.crt
+!certs/step-ca/certs/
+
+# PKI runtime state (generated locally, never shared)
+.docker-pki/
+.docker-pki-backups/
+
+##############################################################
+# Runtime / test scratch directories
+##############################################################
+.tmp/
+.strapi/
+.meilisearch-data/
+
+##############################################################
+# Database files
+##############################################################
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+##############################################################
+# Logs
+##############################################################
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+##############################################################
+# Strapi-specific
+##############################################################
+.uploads/
+.strapi-updater.json
+# Public dir is mostly generated; keep customer portal and favicon
+public/
+!public/customer/
+!public/customer/**
+!public/favicon.ico
+!public/favicon.png
+
+##############################################################
+# Local analysis / Understand IDE exports
+##############################################################
+*.und/
+license-server.und/
+all.cfg
+deps.csv
+fanout.csv
+full_deps.csv
+
+##############################################################
+# Personal / confidential notes — never publish
+##############################################################
+"admin creds.md"
+admin\ creds.md
+"potential clients.md"
+potential\ clients.md
+"В голове.md"
+"Техническое Задание*.md"
+
+##############################################################
+# OS & editor noise
+##############################################################
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.orig
+
+##############################################################
+# Cargo (customer-tauri)
+##############################################################
+apps/customer-tauri/src-tauri/.cargo-home-temp/
+apps/customer-tauri/src-tauri/target/
+license-server.csv
+В голове.md
+Техническое Задание: Кастомный плагин лицензирования (strapi-plugin-license-server).md

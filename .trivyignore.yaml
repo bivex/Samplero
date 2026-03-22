@@ -1,0 +1,13 @@
+secrets:
+  - id: private-key
+    paths:
+      - "certs/client/client.key"
+    statement: "Development client certificate key intentionally stored for local mTLS/demo workflows."
+  - id: private-key
+    paths:
+      - "certs/private/ca.key"
+    statement: "Development CA private key intentionally stored for local PKI/bootstrap workflows."
+  - id: private-key
+    paths:
+      - "certs/server/nginx.key"
+    statement: "Development nginx TLS private key intentionally stored for local HTTPS/mTLS workflows."

@@ -1,0 +1,3488 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Main",
+					"defaultDiagram": true
+				}
+			]
+		},
+		{
+			"_type": "WFWireframe",
+			"_id": "AAAAAAGcwRh7Qb21a+E=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Wireframe1",
+			"ownedElements": [
+				{
+					"_type": "WFWireframeDiagram",
+					"_id": "AAAAAAGcwRh7Qb22s9A=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "License Server Admin UI Mockups",
+					"ownedViews": [
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRiRrL28BFw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 40,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRiRw73CtWI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 620,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRiRzb3I8uM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 1200,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRiR2L3OFiE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 40,
+							"top": 880,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRiR6L3U8z8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 620,
+							"top": 880,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRjgjr3ao2s=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjgjr3YW3w="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjgjr3bHtI=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjgjr3ao2s="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 78,
+									"width": 186,
+									"height": 13,
+									"text": "License Server Admin",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 78,
+							"width": 186,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjgjr3bHtI="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjgn73j7ko=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjgn73h8jU="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 130,
+							"width": 108,
+							"height": 610
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRjgqb3p1cw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjgqb3n29c="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjgqb3qLlc=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjgqb3p1cw="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 80,
+									"top": 170,
+									"width": 66,
+									"height": 13,
+									"underline": true,
+									"text": "Dashboard",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 80,
+							"top": 170,
+							"width": 66,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjgqb3qLlc="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRjgs73ymDs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjgs73wuIo="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjgs73zAIQ=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjgs73ymDs="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 80,
+									"top": 206,
+									"width": 60,
+									"height": 13,
+									"underline": true,
+									"text": "Licenses",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 80,
+							"top": 206,
+							"width": 60,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjgs73zAIQ="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRjhNb37DwY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhNb35yF8="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjhNb38ic8=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjhNb37DwY="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 80,
+									"top": 242,
+									"width": 76,
+									"height": 13,
+									"underline": true,
+									"text": "Activations",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 80,
+							"top": 242,
+							"width": 76,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjhNb38ic8="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRjhPr4E36E=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhPr4CWic="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjhPr4FFfY=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjhPr4E36E="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 80,
+									"top": 278,
+									"width": 64,
+									"height": 13,
+									"underline": true,
+									"text": "Products",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 80,
+							"top": 278,
+							"width": 64,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjhPr4FFfY="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRjhRr4NBbs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhRr4LmRw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjhRr4OUv4=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjhRr4NBbs="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 80,
+									"top": 314,
+									"width": 56,
+									"height": 13,
+									"underline": true,
+									"text": "Orders",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 80,
+							"top": 314,
+							"width": 56,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjhRr4OUv4="
+							}
+						},
+						{
+							"_type": "WFAvatarView",
+							"_id": "AAAAAAGcwRjhTr4WMl8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhTr4Uyco="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 484,
+							"top": 76,
+							"width": 38,
+							"height": 38
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRjhV74cg+A=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhV74amBk="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRjhV74dxew=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRjhV74cg+A="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 206,
+									"top": 132,
+									"width": 160,
+									"height": 13,
+									"text": "Dashboard Overview",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 206,
+							"top": 132,
+							"width": 160,
+							"height": 28,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRjhV74dxew="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjhY74l99g=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhY74jLAA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 206,
+							"top": 184,
+							"width": 100,
+							"height": 70
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjhbr4rQSs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhbr4przA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 320,
+							"top": 184,
+							"width": 100,
+							"height": 70
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjhdr4xpQM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhdr4v2cA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 434,
+							"top": 184,
+							"width": 92,
+							"height": 70
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjhgb43lsc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhgb41IKA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 206,
+							"top": 286,
+							"width": 320,
+							"height": 204
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRjhib49m1E=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRjhib47+OQ="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 206,
+							"top": 520,
+							"width": 320,
+							"height": 170
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRkWrL5DWts=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkWq75Bw18="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkWrL5E3Bw=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkWrL5DWts="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 78,
+									"width": 94,
+									"height": 13,
+									"text": "Licenses",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 78,
+							"width": 94,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkWrL5E3Bw="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwRkW4L5MTXs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkW4L5KIOQ="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkW4L5NAIs=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkW4L5MTXs="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 654,
+									"top": 134,
+									"width": 174,
+									"height": 13,
+									"text": "Search license / email",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 128,
+							"width": 190,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkW4L5NAIs="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRkXQr5VXF4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkXQr5TCtw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkXQr5Wmtg=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkXQr5VXF4="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 860,
+									"top": 134,
+									"width": 84,
+									"height": 13,
+									"text": "Status: all",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 852,
+							"top": 128,
+							"width": 100,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkXQr5Wmtg="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRkXVL5ewDI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkXVL5crWA="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkXVL5f+yQ=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkXVL5ewDI="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1038,
+									"top": 138,
+									"width": 76,
+									"height": 13,
+									"text": "New license",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1038,
+							"top": 128,
+							"width": 76,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkXVL5f+yQ="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRkXXr5nxvU=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkXXr5ldz8="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 182,
+							"width": 468,
+							"height": 256
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRkXbL5t/No=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkXbL5r/40="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 470,
+							"width": 468,
+							"height": 206
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRkXdr5zUtY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkXdr5xsFA="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkXd750xC0=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkXdr5zUtY="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1226,
+									"top": 78,
+									"width": 104,
+									"height": 13,
+									"text": "Activations",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 78,
+							"width": 104,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkXd750xC0="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwRkYAb58MIE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkYAb564NI="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkYAb59Zlw=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkYAb58MIE="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1234,
+									"top": 134,
+									"width": 164,
+									"height": 13,
+									"text": "Search device / serial",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 128,
+							"width": 180,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkYAb59Zlw="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRkYCb6FqTQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkYCb6Do/0="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkYCb6G4s4=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkYCb6FqTQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1430,
+									"top": 134,
+									"width": 82.4853515625,
+									"height": 13,
+									"text": "Status: active",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1422,
+							"top": 128,
+							"width": 98.4853515625,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkYCb6G4s4="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRkYE76OgKQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkYE76MDuw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRkYE76P4hs=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRkYE76OgKQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1540,
+									"top": 134,
+									"width": 86,
+									"height": 13,
+									"text": "Trust: all",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1532,
+							"top": 128,
+							"width": 102,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRkYE76P4hs="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRkYHb6X2fA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkYHb6VKMw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 182,
+							"width": 460,
+							"height": 256
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRkYLr6dxXc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRkYLr6bmgM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 470,
+							"width": 460,
+							"height": 206
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRlRkb6jHTg=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlRkb6hTbs="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlRkr6ktJI=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlRkb6jHTg="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 66,
+									"top": 918,
+									"width": 94,
+									"height": 13,
+									"text": "Products",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 66,
+							"top": 918,
+							"width": 94,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlRkr6ktJI="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRlRpL6soVw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlRpL6qyJE="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlRpL6tzeA=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlRpL6soVw="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 74,
+									"top": 974,
+									"width": 164,
+									"height": 13,
+									"text": "Type: plugin / sample_pack",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 66,
+							"top": 968,
+							"width": 180,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlRpL6tzeA="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRlRvr61idQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlRvr6zgeY="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlRvr62TZA=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlRvr61idQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 442,
+									"top": 978,
+									"width": 94,
+									"height": 13,
+									"text": "Create product",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 442,
+							"top": 968,
+							"width": 94,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlRvr62TZA="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlR476+PGg=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlR4768HxY="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 66,
+							"top": 1024,
+							"width": 202,
+							"height": 434
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlR8L7Ef08=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlR8L7Cl1w="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 290,
+							"top": 1024,
+							"width": 246,
+							"height": 218
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlR/r7KE4U=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlR/r7IanM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 290,
+							"top": 1272,
+							"width": 246,
+							"height": 186
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRlSDL7Q1ew=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSDL7O6ro="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlSDL7RdUE=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlSDL7Q1ew="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 918,
+									"width": 134,
+									"height": 13,
+									"text": "Orders / review",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 918,
+							"width": 134,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlSDL7RdUE="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRlSIr7ZK88=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSIr7XetQ="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlSIr7aleg=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlSIr7ZK88="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 654,
+									"top": 974,
+									"width": 98,
+									"height": 13,
+									"text": "Status: pending",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 968,
+							"width": 114,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlSIr7aleg="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwRlSLb7idzY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSLb7gIpc="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlSLb7j7o8=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlSLb7idzY="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 786,
+									"top": 974,
+									"width": 140,
+									"height": 13,
+									"text": "Search order / email",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 778,
+							"top": 968,
+							"width": 156,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlSLb7j7o8="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRlSQL7rESE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSQL7pSGA="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRlSQL7s8UI=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRlSQL7rESE="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1022,
+									"top": 978,
+									"width": 92,
+									"height": 13,
+									"text": "Export CSV",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1022,
+							"top": 968,
+							"width": 92,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRlSQL7s8UI="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlSTr70i8Q=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSTr7yMvM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 1024,
+							"width": 204,
+							"height": 434
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlSYL76cOs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlSYL74AWc="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 872,
+							"top": 1024,
+							"width": 242,
+							"height": 218
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRlS2b8A6D4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRh7Qb22s9A="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRlS2b7+Ois="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 872,
+							"top": 1272,
+							"width": 242,
+							"height": 186
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRiRrL262/0=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "Dashboard",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRjgjr3YW3w=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "License Server Admin"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjgn73h8jU=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Navigation"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRjgqb3n29c=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Dashboard"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRjgs73wuIo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Licenses"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRjhNb35yF8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Activations"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRjhPr4CWic=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Products"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRjhRr4LmRw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Orders"
+						},
+						{
+							"_type": "WFAvatar",
+							"_id": "AAAAAAGcwRjhTr4Uyco=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Admin"
+						},
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRjhV74amBk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Dashboard Overview"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjhY74jLAA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Total Licenses\n1,284"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjhbr4przA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Active Devices\n842"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjhdr4v2cA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Pending Orders\n17"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjhgb41IKA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Recent activity / alerts\n• 4 grace expirations today\n• 2 failed payment webhooks\n• 1 release pending publish"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRjhib47+OQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRrL262/0="
+							},
+							"name": "Quick actions\nOpen pending orders\nInspect stale activations\nReview signer health"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRiRw73AYfw=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "Licenses",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRkWq75Bw18=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "Licenses"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwRkW4L5KIOQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "Search license / email"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRkXQr5TCtw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "Status: all"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRkXVL5crWA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "New license"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRkXXr5ldz8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "License table\nUID | Customer | Product | Status | Activations | Expires\nL-ULT-001 | alice@ | Samplero | active | 2/3 | 2026-12-31\nL-PRO-014 | bob@ | Plugin Pro | revoked | 0/2 | —"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRkXbL5r/40=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRw73AYfw="
+							},
+							"name": "Selected license\nOwner, product, order ref\nActions: revoke / reactivate / inspect activations"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRiRzb3G6Gw=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "Activations",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRkXdr5xsFA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Activations"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwRkYAb564NI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Search device / serial"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRkYCb6Do/0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Status: active"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRkYE76MDuw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Trust: all"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRkYHb6VKMw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Activation table\nID | User | Product | Device | Trust | Last check-in\n1042 | alice@ | Samplero | MacMini-01 | MTLS_SIGNED | 2m ago\n1043 | bob@ | Plugin Pro | SIGNED | 5h ago"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRkYLr6bmgM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiRzb3G6Gw="
+							},
+							"name": "Activation detail\nCertificate serial\nClient fingerprint\nOffline state / grace\nActions: revoke certificate / inspect logs"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRiR2L3Mejw=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "Products",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRlRkb6hTbs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Products"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRlRpL6qyJE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Type: plugin / sample_pack"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRlRvr6zgeY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Create product"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlR4768HxY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Product catalog\nSamplero VST | plugin | published\nPlugin Pro | plugin | draft\nStarter Drums | sample_pack | published"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlR8L7Cl1w=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Product editor\nName, slug, type, price\nLicense policy\nPlatform variants / archive assets"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlR/r7IanM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR2L3Mejw="
+							},
+							"name": "Release readiness\nVersion matrix\nDownload asset validation\nPublish / unpublish"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRiR6L3S2So=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRh7Qb21a+E="
+					},
+					"name": "Orders",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRlSDL7O6ro=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Orders / review"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRlSIr7XetQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Status: pending"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwRlSLb7gIpc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Search order / email"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRlSQL7pSGA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Export CSV"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlSTr7yMvM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Orders queue\n#5012 | alice@ | paid | plugin\n#5013 | bob@ | pending | sample_pack\n#5014 | carol@ | refund_requested | plugin"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlSYL74AWc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Order detail\nCustomer\nProducts / downloads\nLicense issued?\nPayment webhook log"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRlS2b7+Ois=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRiR6L3S2So="
+							},
+							"name": "Admin actions\nMark paid\nRe-send fulfillment\nRefund / revoke\nAudit trail"
+						}
+					]
+				}
+			]
+		},
+		{
+			"_type": "WFWireframe",
+			"_id": "AAAAAAGcwRwQiL8E6Z4=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Wireframe2",
+			"ownedElements": [
+				{
+					"_type": "WFWireframeDiagram",
+					"_id": "AAAAAAGcwRwQiL8FVww=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "License Server Customer UI Mockups",
+					"ownedViews": [
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRwtMr8LUAo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 40,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRwtQL8R1ik=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 620,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRwtT78XvHQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 1200,
+							"top": 40,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRwtc78dhAc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 40,
+							"top": 880,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFWebFrameView",
+							"_id": "AAAAAAGcwRwtgb8jEbM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"left": 620,
+							"top": 880,
+							"width": 520,
+							"height": 780
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRyQb78pYws=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyQbr8nop0="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyQb78qYgk=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyQb78pYws="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 78,
+									"width": 90,
+									"height": 13,
+									"text": "Samplero",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 78,
+							"width": 90,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyQb78qYgk="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRyQg78yLk8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyQg78wkqI="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyQg78z6g0=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyQg78yLk8="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 252,
+									"top": 80,
+									"width": 64,
+									"height": 13,
+									"underline": true,
+									"text": "Products",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 252,
+							"top": 80,
+							"width": 64,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyQg78z6g0="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwRyQj787Tx0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyQj785Q58="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyQj788c9g=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyQj787Tx0="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 332,
+									"top": 80,
+									"width": 72,
+									"height": 13,
+									"underline": true,
+									"text": "Downloads",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 332,
+							"top": 80,
+							"width": 72,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyQj788c9g="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRyRG79E0NI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRG79Cg7M="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyRG79F3ag=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyRG79E0NI="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 456,
+									"top": 85,
+									"width": 70,
+									"height": 13,
+									"text": "Sign in",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 456,
+							"top": 74,
+							"width": 70,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyRG79F3ag="
+							}
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRyRNb9NzQQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRNb9LGxs="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyRNb9O5vM=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyRNb9NzQQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 146,
+									"width": 220,
+									"height": 13,
+									"text": "Samplero VST Bundle",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 146,
+							"width": 220,
+							"height": 34,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyRNb9O5vM="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRyRQL9WGIM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRP79UkGk="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 194,
+							"width": 240,
+							"height": 72
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRyRSb9c4AU=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRSb9auAo="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyRSb9d8RQ=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyRSb9c4AU="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 297,
+									"width": 104,
+									"height": 13,
+									"text": "Buy now — $99",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 286,
+							"width": 104,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyRSb9d8RQ="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRyRU79lgkY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRU79jIiw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRyRU79mFvI=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRyRU79lgkY="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 184,
+									"top": 297,
+									"width": 92,
+									"height": 13,
+									"text": "Watch demo",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 184,
+							"top": 286,
+							"width": 92,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRyRU79mFvI="
+							}
+						},
+						{
+							"_type": "WFImageView",
+							"_id": "AAAAAAGcwRyRXb9u9hs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRXb9ssrw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 332,
+							"top": 146,
+							"width": 194,
+							"height": 172
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRyRbb90sts=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRbb9ySlA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 354,
+							"width": 240,
+							"height": 152
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRyRdb96Fss=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRdb94fS0="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 332,
+							"top": 354,
+							"width": 194,
+							"height": 152
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRyRfL+Aa4M=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRyRfL9+Qmw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 540,
+							"width": 462,
+							"height": 140
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRzBDb+Ge+8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBDb+Epf0="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBDb+HlYw=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBDb+Ge+8="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 78,
+									"width": 96,
+									"height": 13,
+									"text": "Checkout",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 78,
+							"width": 96,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBDb+HlYw="
+							}
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRzBKb+Ptvs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBKb+Nvqo="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBKb+Qlfw=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBKb+Ptvs="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 118,
+									"width": 236,
+									"height": 13,
+									"text": "Cart  →  Payment  →  Delivery",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 118,
+							"width": 236,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBKb+Qlfw="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwRzBQL+Y8Gg=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBQL+WUBQ="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBQL+ZlFs=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBQL+Y8Gg="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 654,
+									"top": 176,
+									"width": 202,
+									"height": 13,
+									"text": "Email address",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 170,
+							"width": 218,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBQL+ZlFs="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwRzBUr+hYiQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBUr+fTM8="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBUr+i7cA=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBUr+hYiQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 654,
+									"top": 220,
+									"width": 202,
+									"height": 13,
+									"text": "Full name",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 214,
+							"width": 218,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBUr+i7cA="
+							}
+						},
+						{
+							"_type": "WFDropdownView",
+							"_id": "AAAAAAGcwRzBZL+qPf0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBZL+oVMM="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBZL+r6Tc=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBZL+qPf0="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 654,
+									"top": 264,
+									"width": 202,
+									"height": 13,
+									"text": "Country / VAT",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 258,
+							"width": 218,
+							"height": 32,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBZL+r6Tc="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzBcL+zF6M=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBcL+xBI0="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 330,
+							"width": 218,
+							"height": 170
+						},
+						{
+							"_type": "WFCheckboxView",
+							"_id": "AAAAAAGcwRzBfL+5frY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBfL+37Nc="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBfL+6d6g=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBfL+5frY="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 664,
+									"top": 531,
+									"width": 162,
+									"height": 13,
+									"text": "Email me product updates",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 524,
+							"width": 180,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBfL+6d6g="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRzBjr/C51U=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzBjr/AqcQ="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzBjr/DOxE=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzBjr/C51U="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 588,
+									"width": 124,
+									"height": 13,
+									"text": "Pay now — $99",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 576,
+							"width": 124,
+							"height": 34,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzBjr/DOxE="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzB/r/LUZc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzB/r/Jp5s="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 900,
+							"top": 170,
+							"width": 214,
+							"height": 160
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzCCr/R1yk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzCCr/Pcb4="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 900,
+							"top": 358,
+							"width": 214,
+							"height": 142
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzCE7/X2N0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzCE7/VVJM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 900,
+							"top": 528,
+							"width": 214,
+							"height": 122
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwRzoxL/d6hk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzoxL/bOvM="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzoxL/edbs=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzoxL/d6hk="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1226,
+									"top": 78,
+									"width": 282,
+									"height": 13,
+									"text": "Thank you — your order is ready",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 78,
+							"width": 282,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzoxL/edbs="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzo2L/meZQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzo2L/k8e0="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 138,
+							"width": 284,
+							"height": 80
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzo6b/s83w=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzo6b/qfHE="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 244,
+							"width": 284,
+							"height": 88
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRzo9r/yuWQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzo9r/wurY="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzo9r/zSIs=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzo9r/yuWQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1226,
+									"top": 374,
+									"width": 152,
+									"height": 13,
+									"text": "Download macOS build",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 362,
+							"width": 152,
+							"height": 34,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzo9r/zSIs="
+							}
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwRzpGb/7U6k=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzpGb/5LEI="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwRzpGb/8CWE=",
+									"_parent": {
+										"$ref": "AAAAAAGcwRzpGb/7U6k="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1392,
+									"top": 374,
+									"width": 118,
+									"height": 13,
+									"text": "Open my cabinet",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1392,
+							"top": 362,
+							"width": 118,
+							"height": 34,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwRzpGb/8CWE="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzpm8AE+dM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzpm8ACag4="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 430,
+							"width": 284,
+							"height": 130
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwRzppsAK5Hc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwRzppsAItGM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 590,
+							"width": 284,
+							"height": 120
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwR0oh8AQTkw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0oh8AOzuY="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0oiMARj/Y=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0oh8AQTkw="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 918,
+									"width": 124,
+									"height": 13,
+									"text": "My Downloads",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 918,
+							"width": 124,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0oiMARj/Y="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwR0oocAZ7Hc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0oocAXc/Q="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0oocAaffw=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0oocAZ7Hc="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 64,
+									"top": 958,
+									"width": 72,
+									"height": 13,
+									"underline": true,
+									"text": "Downloads",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 958,
+							"width": 72,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0oocAaffw="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwR0o9cAiyG0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0o9cAgEI4="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0o9cAjdXg=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0o9cAiyG0="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 154,
+									"top": 958,
+									"width": 60,
+									"height": 13,
+									"underline": true,
+									"text": "Licenses",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 154,
+							"top": 958,
+							"width": 60,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0o9cAjdXg="
+							}
+						},
+						{
+							"_type": "WFLinkView",
+							"_id": "AAAAAAGcwR0pccArHU4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pccApKds="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0pccAsE9Y=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0pccArHU4="
+									},
+									"fontColor": "#2b71ff",
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 232,
+									"top": 958,
+									"width": 56,
+									"height": 13,
+									"underline": true,
+									"text": "Orders",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"fontColor": "#2b71ff",
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 232,
+							"top": 958,
+							"width": 56,
+							"height": 24,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0pccAsE9Y="
+							}
+						},
+						{
+							"_type": "WFInputView",
+							"_id": "AAAAAAGcwR0pfMA01oM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pfMAyJdk="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0pfMA1Lgg=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0pfMA01oM="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 72,
+									"top": 1016,
+									"width": 208,
+									"height": 13,
+									"text": "Search downloads / product",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 1010,
+							"width": 224,
+							"height": 30,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0pfMA1Lgg="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0pk8A9zLE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pk8A7N6s="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 1070,
+							"width": 224,
+							"height": 388
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0pscBD4lg=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pscBBlqA="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 314,
+							"top": 1010,
+							"width": 222,
+							"height": 148
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0pvsBJSsU=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pvsBHJuo="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 314,
+							"top": 1186,
+							"width": 222,
+							"height": 140
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0py8BPFeM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0pysBNnY8="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 314,
+							"top": 1354,
+							"width": 222,
+							"height": 104
+						},
+						{
+							"_type": "WFTextView",
+							"_id": "AAAAAAGcwR0p1cBVS6Q=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0p1cBTQ/s="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR0p1cBWZsg=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR0p1cBVS6Q="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 646,
+									"top": 918,
+									"width": 124,
+									"height": 13,
+									"text": "Orders & Help",
+									"horizontalAlignment": 0,
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 918,
+							"width": 124,
+							"height": 26,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR0p1cBWZsg="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0p5cBeYdM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0p5cBcTvM="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 646,
+							"top": 980,
+							"width": 216,
+							"height": 478
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0p8sBkO7w=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0p8sBiyFk="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 888,
+							"top": 980,
+							"width": 226,
+							"height": 208
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR0p/cBqdtc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR0p/cBonr0="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 888,
+							"top": 1340,
+							"width": 226,
+							"height": 118
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR7R3MB25P8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR7R3MB05Ow="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 64,
+							"top": 706,
+							"width": 222,
+							"height": 74
+						},
+						{
+							"_type": "WFButtonView",
+							"_id": "AAAAAAGcwR7R+sB8YPQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR7R+sB6rjQ="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGcwR7R+sB9iqU=",
+									"_parent": {
+										"$ref": "AAAAAAGcwR7R+sB8YPQ="
+									},
+									"font": "Arial;13;0",
+									"parentStyle": true,
+									"left": 1226,
+									"top": 751,
+									"width": 184,
+									"height": 13,
+									"text": "Download sample pack ZIP",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 1226,
+							"top": 724,
+							"width": 184,
+							"height": 64,
+							"nameLabel": {
+								"$ref": "AAAAAAGcwR7R+sB9iqU="
+							}
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR7SDsCFxiw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR7SDsCD0Mw="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 302,
+							"top": 706,
+							"width": 224,
+							"height": 74
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwR7SGMCLLAM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwR7SGMCJUFo="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 314,
+							"top": 1478,
+							"width": 222,
+							"height": 86
+						},
+						{
+							"_type": "WFPanelView",
+							"_id": "AAAAAAGcwSBAC8CZ+m0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwQiL8FVww="
+							},
+							"model": {
+								"$ref": "AAAAAAGcwSBAC8CXZyg="
+							},
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"containerChangeable": true,
+							"left": 888,
+							"top": 1216,
+							"width": 226,
+							"height": 104
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRwtMr8JPRs=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "Storefront / Product",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRyQbr8nop0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Samplero"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRyQg78wkqI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Products"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwRyQj785Q58=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Downloads"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRyRG79Cg7M=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Sign in"
+						},
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRyRNb9LGxs=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Samplero VST Bundle"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRyRP79UkGk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Clean mastering tools for macOS + Windows\nOne license key • 3 activations • instant delivery"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRyRSb9auAo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Buy now — $99"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRyRU79jIiw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Watch demo"
+						},
+						{
+							"_type": "WFImage",
+							"_id": "AAAAAAGcwRyRXb9ssrw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Plugin hero preview"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRyRbb9ySlA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Why users buy\n• AI-ready license flow\n• Apple Silicon + Windows\n• Free updates in major line"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRyRdb94fS0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Included downloads\nmacOS Universal build\nWindows VST3 build\nStarter Drums sample pack ZIP\nUser guide + presets"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRyRfL9+Qmw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Trust / guarantee\n30-day refund\nInstant email delivery\nSecure license cabinet"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR7R3MB05Ow=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Sample packs\nStarter Drums Pack\nOne-click ZIP download\nNo license key required"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR7SDsCD0Mw=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtMr8JPRs="
+							},
+							"name": "Sample pack rules\nArchive-only delivery\nVisible in Downloads hub\nNot shown as license item"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRwtQL8PBW8=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "Checkout",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRzBDb+Epf0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Checkout"
+						},
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRzBKb+Nvqo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Cart  →  Payment  →  Delivery"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwRzBQL+WUBQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Email address"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwRzBUr+fTM8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Full name"
+						},
+						{
+							"_type": "WFDropdown",
+							"_id": "AAAAAAGcwRzBZL+oVMM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Country / VAT"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzBcL+xBI0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Payment form\nCard number\nExpiry / CVC\nBilling confirmation"
+						},
+						{
+							"_type": "WFCheckbox",
+							"_id": "AAAAAAGcwRzBfL+37Nc=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Email me product updates"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRzBjr/AqcQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Pay now — $99"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzB/r/Jp5s=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Order summary\nSamplero VST Bundle\n1× plugin license\n1× Starter Drums sample pack\nInstant delivery\nTotal: $99"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzCCr/Pcb4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "What happens next\n• payment.succeeded\n• license key generated for plugin\n• sample pack ZIP unlocked\n• email receipt sent"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzCE7/VVJM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtQL8PBW8="
+							},
+							"name": "Secure checkout\nPCI provider\nTax receipt\nRefund policy"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRwtT78VEM8=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "Post-purchase Delivery",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwRzoxL/bOvM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Thank you — your order is ready"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzo2L/k8e0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Order reference\nSAM-2026-005012\nReceipt emailed to alice@example.com"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzo6b/qfHE=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Your license key\nULTRA-PLUG-7Q9A-KM32\n3 activations available"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRzo9r/wurY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Download macOS build"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwRzpGb/5LEI=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Open my cabinet"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzpm8ACag4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Available downloads\nmacOS Universal build\nWindows VST3 build\nStarter Drums sample pack ZIP\nUser guide / presets"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwRzppsAItGM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Post-purchase steps\n1. Install plugin\n2. Open app\n3. Paste license key\n4. Activate this device"
+						},
+						{
+							"_type": "WFButton",
+							"_id": "AAAAAAGcwR7R+sB6rjQ=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtT78VEM8="
+							},
+							"name": "Download sample pack ZIP"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRwtc78bipE=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "My Downloads & Licenses",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwR0oh8AOzuY=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "My Downloads"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwR0oocAXc/Q=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Downloads"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwR0o9cAgEI4=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Licenses"
+						},
+						{
+							"_type": "WFLink",
+							"_id": "AAAAAAGcwR0pccApKds=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Orders"
+						},
+						{
+							"_type": "WFInput",
+							"_id": "AAAAAAGcwR0pfMAyJdk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Search downloads / product"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0pk8A7N6s=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Download cards\nSamplero VST — macOS build\nStarter Drums — sample pack ZIP\nPrimary download badge\nLatest version / archive size"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0pscBBlqA=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Selected license\nLicense key masked\nActivation limit 3\nStatus: active"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0pvsBHJuo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Devices / activations\nMacMini-01 — active\nStudio-PC — active\nLaptop — available slot"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0pysBNnY8=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Self-service actions\nCopy license key\nOpen activation guide\nContact support"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR7SGMCJUFo=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtc78bipE="
+							},
+							"name": "Sample pack note\nZIP downloads do not consume license slots\nArchive available from cabinet anytime"
+						}
+					]
+				},
+				{
+					"_type": "WFWebFrame",
+					"_id": "AAAAAAGcwRwtgb8hLPY=",
+					"_parent": {
+						"$ref": "AAAAAAGcwRwQiL8E6Z4="
+					},
+					"name": "Orders / Help",
+					"ownedElements": [
+						{
+							"_type": "WFText",
+							"_id": "AAAAAAGcwR0p1cBTQ/s=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"name": "Orders & Help"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0p5cBcTvM=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"name": "Order history\nSAM-2026-005012 — paid\nSAM-2026-004998 — paid\nSAM-2026-004871 — refunded"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0p8sBiyFk=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"name": "Order detail\nReceipt\nPlugin license included\nSample pack archive attached\nPrimary CTA + email status + download ZIP"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwR0p/cBonr0=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"name": "Need help?\nInstall guide\nActivation troubleshooting\nRefund / billing FAQ"
+						},
+						{
+							"_type": "WFPanel",
+							"_id": "AAAAAAGcwSBAC8CXZyg=",
+							"_parent": {
+								"$ref": "AAAAAAGcwRwtgb8hLPY="
+							},
+							"name": "Sample pack archive\nStarter Drums ZIP attached\nDownload instantly\nNo license key required"
+						}
+					]
+				}
+			]
+		}
+	],
+	"documentVersion": 1
+}

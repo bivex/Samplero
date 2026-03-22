@@ -1,0 +1,20 @@
+{
+  "info": {
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "licenses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::license-server.license",
+      "mappedBy": "user"
+    }
+  }
+}

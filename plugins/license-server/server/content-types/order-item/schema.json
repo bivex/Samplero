@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_items",
+  "info": {
+    "singularName": "order-item",
+    "pluralName": "order-items",
+    "displayName": "Order Item",
+    "description": "Individual items in an order"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.order",
+      "required": true
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.product",
+      "required": true
+    },
+    "price_at_purchase": {
+      "type": "integer",
+      "required": true,
+      "description": "Price in cents at time of purchase"
+    },
+    "quantity": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
+    },
+    "license": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::license-server.license",
+      "nullable": true
+    }
+  }
+}

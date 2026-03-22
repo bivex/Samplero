@@ -1,0 +1,97 @@
+{
+  "kind": "collectionType",
+  "collectionName": "first_activation_claims",
+  "info": {
+    "singularName": "first-activation-claim",
+    "pluralName": "first-activation-claims",
+    "displayName": "First Activation Claim",
+    "description": "Pending first-activation approval flow for anti-hijack protection"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "license": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.license",
+      "required": true
+    },
+    "owner_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "approved_by": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending_confirmation", "approved", "rejected", "expired"],
+      "default": "pending_confirmation"
+    },
+    "device_fingerprint": {
+      "type": "string",
+      "required": true
+    },
+    "key_hash": {
+      "type": "string",
+      "nullable": true
+    },
+    "csr_fingerprint": {
+      "type": "string",
+      "nullable": true
+    },
+    "plugin_version": {
+      "type": "string",
+      "nullable": true
+    },
+    "platform": {
+      "type": "enumeration",
+      "enum": ["win", "mac", "linux"],
+      "nullable": true
+    },
+    "csr": {
+      "type": "text",
+      "nullable": true
+    },
+    "machine_id": {
+      "type": "string",
+      "nullable": true
+    },
+    "request_ip": {
+      "type": "string",
+      "nullable": true
+    },
+    "risk_score": {
+      "type": "integer",
+      "default": 0
+    },
+    "risk_reasons": {
+      "type": "json"
+    },
+    "attempt_count": {
+      "type": "integer",
+      "default": 1
+    },
+    "expires_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "approved_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "rejected_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "rejection_reason": {
+      "type": "text",
+      "nullable": true
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "licenses",
+  "info": {
+    "singularName": "license",
+    "pluralName": "licenses",
+    "displayName": "License",
+    "description": "License entity for VST plugins and samples"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "uid": {
+      "type": "string",
+      "unique": true,
+      "configurable": false
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.product",
+      "required": true
+    },
+    "order_item": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::license-server.order-item",
+      "nullable": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "revoked", "expired"],
+      "default": "active"
+    },
+    "activation_limit": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 10
+    },
+    "issued_at": {
+      "type": "datetime"
+    },
+    "expires_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "revoked_at": {
+      "type": "datetime",
+      "nullable": true
+    },
+    "revocation_reason": {
+      "type": "text",
+      "nullable": true
+    }
+  }
+}

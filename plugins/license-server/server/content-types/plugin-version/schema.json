@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "plugin_versions",
+  "info": {
+    "singularName": "plugin-version",
+    "pluralName": "plugin-versions",
+    "displayName": "Plugin Version",
+    "description": "Version/download information for plugins and downloadable assets"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::license-server.product",
+      "required": true
+    },
+    "version": {
+      "type": "string",
+      "required": true,
+      "regex": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "platform": {
+      "type": "enumeration",
+      "enum": ["win", "mac", "linux", "all"],
+      "required": true
+    },
+    "build_hash": {
+      "type": "string",
+      "description": "Git commit hash or build identifier"
+    },
+    "min_license_protocol_version": {
+      "type": "integer",
+      "default": 1,
+      "description": "Minimum protocol version required"
+    },
+    "file_size_bytes": {
+      "type": "integer"
+    },
+    "download_url": {
+      "type": "string",
+      "nullable": true,
+      "description": "Presigned S3 URL"
+    },
+    "changelog": {
+      "type": "richtext"
+    },
+    "is_latest": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

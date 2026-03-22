@@ -1,0 +1,137 @@
+services:
+  strapi:
+    container_name: strapi-license-server
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: strapi-license-server:latest
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT:-postgres}
+      DATABASE_HOST: strapiDB
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-license_server}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-strapi}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-strapi}
+      REDIS_URL: ${REDIS_URL:-redis://strapi-redis:6379}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      LICENSE_SIGNER_MODE: ${LICENSE_SIGNER_MODE:-remote}
+      LICENSE_SIGNER_URL: ${LICENSE_SIGNER_URL:-http://cert-signer:8081}
+      LICENSE_SIGNER_AUTH_TOKEN: ${LICENSE_SIGNER_AUTH_TOKEN:-change-me-signer-token}
+      LICENSE_SIGNER_SHARED_SECRET: ${LICENSE_SIGNER_SHARED_SECRET:-change-me-signer-shared-secret}
+      LICENSE_SIGNER_TLS_CA_PATH: ${LICENSE_SIGNER_TLS_CA_PATH:-}
+      LICENSE_SIGNER_TLS_CERT_PATH: ${LICENSE_SIGNER_TLS_CERT_PATH:-}
+      LICENSE_SIGNER_TLS_KEY_PATH: ${LICENSE_SIGNER_TLS_KEY_PATH:-}
+      LICENSE_SIGNER_FRESHNESS_MAX_SKEW_SECONDS: ${LICENSE_SIGNER_FRESHNESS_MAX_SKEW_SECONDS:-60}
+      LICENSE_SIGNER_TIMEOUT_MS: ${LICENSE_SIGNER_TIMEOUT_MS:-5000}
+      LICENSE_SERVER_SECRET: ${LICENSE_SERVER_SECRET}
+      LICENSE_WEBHOOK_SECRET: ${LICENSE_WEBHOOK_SECRET:-change-me-webhook-secret}
+      LICENSE_WEBHOOK_ALLOWED_IPS: ${LICENSE_WEBHOOK_ALLOWED_IPS:-}
+      LICENSE_MTLS_ENDPOINT: ${LICENSE_MTLS_ENDPOINT:-https://api}
+      LICENSE_PROXY_SHARED_SECRET: ${LICENSE_PROXY_SHARED_SECRET:-change-me-proxy-shared-secret}
+      LICENSE_REQUIRE_MTLS: ${LICENSE_REQUIRE_MTLS:-true}
+      LICENSE_FRESHNESS_MAX_SKEW_SECONDS: ${LICENSE_FRESHNESS_MAX_SKEW_SECONDS:-300}
+      LICENSE_WEBHOOK_FRESHNESS_MAX_SKEW_SECONDS: ${LICENSE_WEBHOOK_FRESHNESS_MAX_SKEW_SECONDS:-300}
+      LICENSE_REQUIRE_FRESHNESS_STORE: ${LICENSE_REQUIRE_FRESHNESS_STORE:-true}
+      HOST: 0.0.0.0
+      PORT: 1337
+    volumes:
+      - ../src:/opt/app/src
+      - ../config:/opt/app/config
+      - ../plugins:/opt/app/plugins
+      - ../public:/opt/app/public
+      - ../index.js:/opt/app/index.js
+      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/pki-trust:ro
+      - ../.docker-pki/${PKI_USER:-default}/services:/etc/pki-services:ro
+    ports:
+      - "127.0.0.1:1337:1337"
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
+      - strapi-redis
+      - cert-signer
+
+  cert-signer:
+    container_name: cert-signer
+    build:
+      context: ../services/cert-signer
+      dockerfile: Dockerfile
+    image: cert-signer:latest
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      CERT_SIGNER_LISTEN_ADDR: :8081
+      CERT_SIGNER_AUTH_TOKEN: ${LICENSE_SIGNER_AUTH_TOKEN:-change-me-signer-token}
+      CERT_SIGNER_AUTH_SHARED_SECRET: ${LICENSE_SIGNER_SHARED_SECRET:-change-me-signer-shared-secret}
+      CERT_SIGNER_AUTH_MAX_SKEW: ${CERT_SIGNER_AUTH_MAX_SKEW:-60s}
+      CERT_SIGNER_TLS_CERT_PATH: ${CERT_SIGNER_TLS_CERT_PATH:-}
+      CERT_SIGNER_TLS_KEY_PATH: ${CERT_SIGNER_TLS_KEY_PATH:-}
+      CERT_SIGNER_TLS_CLIENT_CA_PATH: ${CERT_SIGNER_TLS_CLIENT_CA_PATH:-}
+      CERT_SIGNER_CA_CERT_PATH: /etc/cert-signer/intermediate/intermediate-ca.crt
+      CERT_SIGNER_CA_CHAIN_PATH: /etc/cert-signer/intermediate/ca-chain.crt
+      CERT_SIGNER_CA_KEY_PATH: /etc/cert-signer/intermediate/private/intermediate-ca.key
+      CERT_SIGNER_VALIDITY_DAYS: ${LICENSE_CERT_DAYS:-365}
+    volumes:
+      - ../.docker-pki/${PKI_USER:-default}/intermediate:/etc/cert-signer/intermediate:ro
+      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/pki-trust:ro
+      - ../.docker-pki/${PKI_USER:-default}/services:/etc/pki-services:ro
+    networks:
+      - strapi
+
+  strapiDB:
+    container_name: strapi-license-server-db
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: ../.env
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-strapi}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-strapi}
+      POSTGRES_DB: ${DATABASE_NAME:-license_server}
+    volumes:
+      - strapi-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - strapi
+
+  strapi-redis:
+    container_name: strapi-license-server-redis
+    restart: unless-stopped
+    image: redis:7-alpine
+    volumes:
+      - strapi-redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - strapi
+
+  nginx:
+    container_name: strapi-license-server-nginx
+    restart: unless-stopped
+    image: nginx:1.27-alpine
+    environment:
+      LICENSE_PROXY_SHARED_SECRET: ${LICENSE_PROXY_SHARED_SECRET:-change-me-proxy-shared-secret}
+    volumes:
+      - ./nginx/strapi-docker.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ../certs/server:/etc/nginx/certs:ro
+      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/nginx/trust:ro
+    ports:
+      - "8443:8443"
+    networks:
+      - strapi
+    depends_on:
+      - strapi
+
+volumes:
+  strapi-data:
+  strapi-redis-data:
+
+networks:
+  strapi:
+    name: strapi-license-server
+    driver: bridge

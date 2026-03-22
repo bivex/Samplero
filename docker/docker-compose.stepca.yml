@@ -1,0 +1,28 @@
+services:
+  step-ca:
+    image: smallstep/step-ca:latest
+    container_name: step-ca
+    restart: unless-stopped
+    volumes:
+      - ../.docker-pki/${PKI_USER:-default}/step-ca:/home/step
+    ports:
+      - "9000:9000"
+    networks:
+      - strapi
+
+  cert-signer:
+    build:
+      context: ../services/cert-signer
+      dockerfile: Dockerfile.stepca
+    environment:
+      CERT_SIGNER_BACKEND: stepca
+      CERT_SIGNER_CA_CHAIN_PATH: /home/step/certs/ca-chain.crt
+      CERT_SIGNER_STEP_CA_URL: https://step-ca:9000
+      CERT_SIGNER_STEP_CA_ROOT_PATH: /home/step/certs/root_ca.crt
+      CERT_SIGNER_STEP_CA_PROVISIONER: ${STEP_CA_PROVISIONER:-samplero-ra}
+      CERT_SIGNER_STEP_CA_PASSWORD_FILE: /home/step/secrets/password
+    volumes:
+      - ../.docker-pki/${PKI_USER:-default}/step-ca:/home/step:ro
+    depends_on:
+      - step-ca
+

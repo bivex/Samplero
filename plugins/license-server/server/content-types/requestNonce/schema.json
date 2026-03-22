@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "license_request_nonces",
+  "info": {
+    "singularName": "request-nonce",
+    "pluralName": "request-nonces",
+    "displayName": "Request Nonce",
+    "description": "Freshness / anti-replay nonce store for protected license requests"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "scope": {
+      "type": "string",
+      "required": true
+    },
+    "nonce": {
+      "type": "string",
+      "required": true
+    },
+    "expires_at": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}

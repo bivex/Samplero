@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+.yarn
+.pnp
+.pnp.js
+
+# Build
+dist
+build
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage
+.nyc_output
+
+# Documentation
+*.md
+!README.md
+
+# License files (should be mounted, not copied)
+*.key
+*.pem
+*.crt
+*.p12
+
+# Database
+*.sql
+*.sqlite
+*.db
+
+# Logs
+logs
+*.log
