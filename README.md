@@ -42,6 +42,16 @@ A production-grade license server for VST plugins and sample packs, built on **S
 |---|---|
 | ![My Samplero — desktop](customer-premium-copy-desktop.png) | ![My Samplero — mobile](customer-premium-copy-mobile.png) |
 
+### Admin Panel — License Server Plugin
+
+| Dashboard | Licenses |
+|---|---|
+| ![Admin dashboard](admin-dashboard.png) | ![Admin licenses](admin-licenses.png) |
+
+| Activations | Products |
+|---|---|
+| ![Admin activations](admin-activations.png) | ![Admin products](admin-products.png) |
+
 ---
 
 ## Architecture
