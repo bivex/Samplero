@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2026 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2026-03-22 02:33
+ * Last Updated: 2026-03-22 02:33
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 import React from "react";
 import { Link, Navigate, NavLink, Route, Routes, useSearchParams } from "react-router-dom";
 import { useFetchClient, useNotification } from "@strapi/strapi/admin";
