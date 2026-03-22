@@ -1637,15 +1637,58 @@ const ActivationsPage = () => {
   return (
     <PageShell title="Activations" subtitle="Inspect device activations and their current state." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No activations found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}><thead><tr><th style={cellStyle}>ID</th><th style={cellStyle}>User</th><th style={cellStyle}>Product</th><th style={cellStyle}>Device</th><th style={cellStyle}>Last check-in</th><th style={cellStyle}>Actions</th></tr></thead><tbody>{state.items.map((activation) => {
-          const isSelected = selectedActivationId === activation.id;
-          return (
-            <React.Fragment key={activation.id}>
-              <tr><td style={cellStyle}>{activation.id}</td><td style={cellStyle}>{activation.license?.user?.email || "-"}</td><td style={cellStyle}>{activation.license?.product?.name || "-"}</td><td style={cellStyle}><code>{activation.device_fingerprint || "-"}</code></td><td style={cellStyle}>{activation.last_checkin ? new Date(activation.last_checkin).toLocaleString() : "Never"}</td><td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => toggleDetails(activation.id)}>{isSelected ? "Hide" : "View"}</button>{activation.revoked_at ? <span>Revoked</span> : <button style={dangerButtonStyle} onClick={() => revoke(activation)}>Revoke</button>}</div></td></tr>
-              {isSelected ? <InlineDetailsRow colSpan={6} title={`Activation details • #${activation.id}`}><div style={detailGridStyle}><DetailItem label="Device" value={activation.device_fingerprint ? <code>{activation.device_fingerprint}</code> : "-"} /><DetailItem label="Certificate" value={activation.certificate_serial || "-"} /><DetailItem label="License" value={activation.license?.uid || "-"} /><DetailItem label="Owner" value={activation.license?.user?.email || "-"} /><DetailItem label="Product" value={activation.license?.product?.name || "-"} /><DetailItem label="Last check-in" value={formatDateTime(activation.last_checkin)} /><DetailItem label="Activated" value={formatDateTime(activation.activated_at || activation.createdAt)} /><DetailItem label="Revoked" value={formatDateTime(activation.revoked_at)} /></div></InlineDetailsRow> : null}
-            </React.Fragment>
-          );
-        })}</tbody></table>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>ID</th>
+              <th style={thStyle}>User</th>
+              <th style={thStyle}>Product</th>
+              <th style={thStyle}>Device</th>
+              <th style={thStyle}>Last check-in</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.items.map((activation, idx) => {
+              const isSelected = selectedActivationId === activation.id;
+              return (
+                <React.Fragment key={activation.id}>
+                  <tr style={rowStyle(idx)}>
+                    <td style={cellStyle}>{activation.id}</td>
+                    <td style={cellStyle}>{activation.license?.user?.email || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}>{activation.license?.product?.name || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}><code style={{ fontSize: 12, opacity: 0.9 }}>{activation.device_fingerprint || "—"}</code></td>
+                    <td style={cellStyle}>{activation.last_checkin ? formatDateTime(activation.last_checkin) : <span style={{ color: themeColors.textSubtle }}>Never</span>}</td>
+                    <td style={cellStyle}>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                        <button style={buttonStyle} onClick={() => toggleDetails(activation.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {activation.revoked_at ? (
+                          <StatusBadge value="revoked" />
+                        ) : (
+                          <button style={dangerButtonStyle} onClick={() => revoke(activation)}>Revoke</button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  {isSelected ? (
+                    <InlineDetailsRow colSpan={6} title={`Activation details • #${activation.id}`}>
+                      <div style={detailGridStyle}>
+                        <DetailItem label="Device" value={activation.device_fingerprint ? <code>{activation.device_fingerprint}</code> : "-"} />
+                        <DetailItem label="Certificate" value={activation.certificate_serial || "-"} />
+                        <DetailItem label="License" value={activation.license?.uid || "-"} />
+                        <DetailItem label="Owner" value={activation.license?.user?.email || "-"} />
+                        <DetailItem label="Product" value={activation.license?.product?.name || "-"} />
+                        <DetailItem label="Last check-in" value={formatDateTime(activation.last_checkin)} />
+                        <DetailItem label="Activated" value={formatDateTime(activation.activated_at || activation.createdAt)} />
+                        <DetailItem label="Revoked" value={formatDateTime(activation.revoked_at)} />
+                      </div>
+                    </InlineDetailsRow>
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
@@ -1897,19 +1940,111 @@ const ProductsPage = () => {
         </div>
       </div>
       <DataState loading={state.loading} error={state.error} empty="No products found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}><thead><tr><th style={cellStyle}>Name</th><th style={cellStyle}>Type</th><th style={cellStyle}>Price</th><th style={cellStyle}>Status</th><th style={cellStyle}>Actions</th></tr></thead><tbody>{state.items.map((product) => {
-          const isSelected = selectedProductId === product.id;
-          const versionState = versionLists[product.id] || { loading: false, error: "", items: [] };
-          const currentVersionForm = versionForm.productId === product.id ? versionForm.values : EMPTY_VERSION_FORM;
-          const isEditingVersion = versionForm.productId === product.id && versionForm.versionId !== null;
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Type</th>
+              <th style={thStyle}>Price</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.items.map((product, idx) => {
+              const isSelected = selectedProductId === product.id;
+              const versionState = versionLists[product.id] || { loading: false, error: "", items: [] };
+              const currentVersionForm = versionForm.productId === product.id ? versionForm.values : EMPTY_VERSION_FORM;
+              const isEditingVersion = versionForm.productId === product.id && versionForm.versionId !== null;
 
-          return (
-            <React.Fragment key={product.id}>
-              <tr><td style={cellStyle}>{product.name}</td><td style={cellStyle}>{product.type || "-"}</td><td style={cellStyle}>{typeof product.price_cents === "number" ? `$${(product.price_cents / 100).toFixed(2)} ${product.currency || "USD"}` : "Free"}</td><td style={cellStyle}>{product.is_active ? "Active" : "Inactive"}</td><td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => toggleDetails(product.id)}>{isSelected ? "Hide" : "View"}</button><button style={buttonStyle} onClick={() => editProduct(product)}>Edit</button><button style={dangerButtonStyle} onClick={() => removeProduct(product)}>Delete</button></div></td></tr>
-              {isSelected ? <InlineDetailsRow colSpan={5} title={`Product details • ${product.name}`}><div style={detailGridStyle}><DetailItem label="Name" value={product.name} /><DetailItem label="Slug" value={product.slug || "-"} /><DetailItem label="Type" value={product.type || "-"} /><DetailItem label="Price" value={formatMoney(product.price_cents, product.currency)} /><DetailItem label="Status" value={product.is_active ? "Active" : "Inactive"} /><DetailItem label="Created" value={formatDateTime(product.createdAt)} /></div><div style={{ ...formSectionStyle, background: themeColors.surfaceRaised }}><div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}><div><strong>{isEditingVersion ? `Edit version #${versionForm.versionId}` : "Add version"}</strong><div style={mutedTextStyle}>Maintain downloadable builds and mark the latest release per platform.</div></div><button style={buttonStyle} onClick={() => startNewVersion(product.id)}>New version</button></div><div style={formGridStyle}><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Version</span><input style={inputStyle} value={currentVersionForm.version} onChange={handleVersionFieldChange("version")} placeholder="1.2.0" /></label><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Platform</span><select style={selectStyle} value={currentVersionForm.platform} onChange={handleVersionFieldChange("platform")}>{VERSION_PLATFORM_OPTIONS.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}</select></label><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Build hash</span><input style={inputStyle} value={currentVersionForm.build_hash} onChange={handleVersionFieldChange("build_hash")} placeholder="git-sha or CI build id" /></label><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Min protocol</span><input style={inputStyle} value={currentVersionForm.min_license_protocol_version} onChange={handleVersionFieldChange("min_license_protocol_version")} placeholder="1" /></label><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>File size (bytes)</span><input style={inputStyle} value={currentVersionForm.file_size_bytes} onChange={handleVersionFieldChange("file_size_bytes")} placeholder="104857600" /></label><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Download URL</span><input style={inputStyle} value={currentVersionForm.download_url} onChange={handleVersionFieldChange("download_url")} placeholder="https://..." /></label></div><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Changelog</span><textarea style={textareaStyle} value={currentVersionForm.changelog} onChange={handleVersionFieldChange("changelog")} placeholder="What changed in this release?" /></label><label style={checkboxLabelStyle}><input type="checkbox" checked={currentVersionForm.is_latest} onChange={handleVersionFieldChange("is_latest")} />Mark as latest for this platform</label><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => saveVersion(product.id)}>{isEditingVersion ? "Save version" : "Create version"}</button><button style={buttonStyle} onClick={() => startNewVersion(product.id)}>Reset version form</button></div></div><div style={{ display: "grid", gap: 8 }}><div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}><strong>Versions</strong><button style={buttonStyle} onClick={() => loadVersions(product.id)}>Reload versions</button></div>{versionState.loading ? <span style={mutedTextStyle}>Loading versions…</span> : null}{versionState.error ? <span style={{ ...mutedTextStyle, color: themeColors.danger }}>{versionState.error}</span> : null}{!versionState.loading && !versionState.error && !versionState.items?.length ? <span style={mutedTextStyle}>No versions added yet.</span> : null}{versionState.items?.map((version) => <div key={version.id} style={{ ...cardStyle, padding: 12, display: "grid", gap: 8 }}><div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}><strong>{version.version} • {version.platform}</strong><span style={mutedTextStyle}>{version.is_latest ? "Latest" : "Historical"}</span></div><div style={detailGridStyle}><DetailItem label="Build hash" value={version.build_hash || "-"} /><DetailItem label="Min protocol" value={version.min_license_protocol_version ?? "-"} /><DetailItem label="File size" value={version.file_size_bytes ?? "-"} /><DetailItem label="Created" value={formatDateTime(version.createdAt)} /></div><div style={mutedTextStyle}>{version.download_url || "No download URL configured."}</div>{version.changelog ? <div style={mutedTextStyle}>{version.changelog}</div> : null}<div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => editVersion(product.id, version)}>Edit</button><button style={dangerButtonStyle} onClick={() => removeVersion(product.id, version)}>Delete</button></div></div>)}</div></InlineDetailsRow> : null}
-            </React.Fragment>
-          );
-        })}</tbody></table>
+              return (
+                <React.Fragment key={product.id}>
+                  <tr style={rowStyle(idx)}>
+                    <td style={{ ...cellStyle, fontWeight: 600 }}>{product.name}</td>
+                    <td style={cellStyle}>{product.type || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={{ ...cellStyle, fontFamily: "monospace" }}>
+                      {typeof product.price_cents === "number" ? `$${(product.price_cents / 100).toFixed(2)} ${product.currency || "USD"}` : "Free"}
+                    </td>
+                    <td style={cellStyle}><StatusBadge value={product.is_active ? "active" : "inactive"} /></td>
+                    <td style={cellStyle}>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                        <button style={buttonStyle} onClick={() => toggleDetails(product.id)}>{isSelected ? "Hide" : "Versions"}</button>
+                        <button style={buttonStyle} onClick={() => editProduct(product)}>Edit</button>
+                        <button style={dangerButtonStyle} onClick={() => removeProduct(product)}>Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  {isSelected ? (
+                    <InlineDetailsRow colSpan={5} title={`Product overview • ${product.name}`}>
+                      <div style={detailGridStyle}>
+                        <DetailItem label="Slug" value={product.slug || "-"} />
+                        <DetailItem label="Type" value={product.type || "-"} />
+                        <DetailItem label="Status" value={<StatusBadge value={product.is_active ? "active" : "inactive"} />} />
+                        <DetailItem label="Created" value={formatDateTime(product.createdAt)} />
+                      </div>
+                      <div style={{ ...formSectionStyle, background: themeColors.surfaceRaised, marginTop: 16 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+                          <div>
+                            <strong style={{ fontSize: 13, color: themeColors.text }}>{isEditingVersion ? `Edit version #${versionForm.versionId}` : "Add release version"}</strong>
+                            <div style={mutedTextStyle}>Maintain downloadable builds and mark the latest release per platform.</div>
+                          </div>
+                          <button style={buttonStyle} onClick={() => startNewVersion(product.id)}>New version</button>
+                        </div>
+                        <div style={formGridStyle}>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Version string</span><input style={inputStyle} value={currentVersionForm.version} onChange={handleVersionFieldChange("version")} placeholder="1.2.0" /></label>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Platform filter</span><select style={selectStyle} value={currentVersionForm.platform} onChange={handleVersionFieldChange("platform")}>{VERSION_PLATFORM_OPTIONS.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}</select></label>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Build hash / CI ID</span><input style={inputStyle} value={currentVersionForm.build_hash} onChange={handleVersionFieldChange("build_hash")} placeholder="git-sha or CI build id" /></label>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Min client protocol</span><input style={inputStyle} value={currentVersionForm.min_license_protocol_version} onChange={handleVersionFieldChange("min_license_protocol_version")} placeholder="1" /></label>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Payload size (bytes)</span><input style={inputStyle} value={currentVersionForm.file_size_bytes} onChange={handleVersionFieldChange("file_size_bytes")} placeholder="104857600" /></label>
+                          <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Delivery URL</span><input style={inputStyle} value={currentVersionForm.download_url} onChange={handleVersionFieldChange("download_url")} placeholder="https://..." /></label>
+                        </div>
+                        <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Changelog</span><textarea style={{ ...textareaStyle, minHeight: 64 }} value={currentVersionForm.changelog} onChange={handleVersionFieldChange("changelog")} placeholder="What changed in this release?" /></label>
+                        <label style={checkboxLabelStyle}><input type="checkbox" checked={currentVersionForm.is_latest} onChange={handleVersionFieldChange("is_latest")} /><span style={{ color: themeColors.text }}>Mark as the active latest release for this platform</span></label>
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", paddingTop: 8 }}>
+                          <button style={primaryButtonStyle} onClick={() => saveVersion(product.id)}>{isEditingVersion ? "Save version" : "Create version"}</button>
+                          <button style={buttonStyle} onClick={() => startNewVersion(product.id)}>Clear form</button>
+                        </div>
+                      </div>
+                      <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+                          <strong style={{ fontSize: 13, color: themeColors.text }}>Published versions</strong>
+                          <button style={{ ...buttonStyle, padding: "4px 8px" }} onClick={() => loadVersions(product.id)}>↻ Reload</button>
+                        </div>
+                        {versionState.loading ? <div style={mutedTextStyle}>Syncing releases…</div> : null}
+                        {versionState.error ? <div style={{ ...mutedTextStyle, color: themeColors.danger }}>{versionState.error}</div> : null}
+                        {!versionState.loading && !versionState.error && !versionState.items?.length ? <div style={mutedTextStyle}>No version history for this product.</div> : null}
+                        <div style={{ display: "grid", gap: 8 }}>
+                          {versionState.items?.map((version) => (
+                            <div key={version.id} style={{ ...cardStyle, background: themeColors.surface, padding: 16, display: "grid", gap: 12 }}>
+                              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+                                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                                  <strong style={{ fontSize: 14 }}>{version.version}</strong>
+                                  <span style={{ color: themeColors.textMuted, fontSize: 13 }}>• {version.platform}</span>
+                                </div>
+                                <StatusBadge value={version.is_latest ? "latest" : "historical"} />
+                              </div>
+                              <div style={{ ...detailGridStyle, background: themeColors.surfaceRaised, padding: 12, borderRadius: 8 }}>
+                                <DetailItem label="Build hash" value={version.build_hash || "-"} />
+                                <DetailItem label="Min protocol" value={version.min_license_protocol_version ?? "-"} />
+                                <DetailItem label="File size" value={version.file_size_bytes ?? "-"} />
+                              </div>
+                              <div style={mutedTextStyle}>{version.download_url || "No delivery URL configured."}</div>
+                              {version.changelog ? <div style={{ ...mutedTextStyle, fontStyle: "italic" }}>{version.changelog}</div> : null}
+                              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+                                <button style={{ ...buttonStyle, padding: "4px 10px" }} onClick={() => editVersion(product.id, version)}>Edit</button>
+                                <button style={{ ...dangerButtonStyle, padding: "4px 10px" }} onClick={() => removeVersion(product.id, version)}>Delete</button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </InlineDetailsRow>
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
       </DataState>
     </PageShell>
   );
@@ -2011,16 +2146,39 @@ const CouponsPage = () => {
       </div>
       <DataState loading={state.loading} error={state.error} empty="No coupons found." isEmpty={state.items.length === 0}>
         <table style={tableStyle}>
-          <thead><tr><th style={cellStyle}>Code</th><th style={cellStyle}>Status</th><th style={cellStyle}>Redemptions</th><th style={cellStyle}>Window</th><th style={cellStyle}>Actions</th></tr></thead>
-          <tbody>{state.items.map((coupon) => (
-            <tr key={coupon.id}>
-              <td style={cellStyle}><strong>{coupon.code}</strong><div style={mutedTextStyle}>{coupon.notes || "Full-discount coupon"}</div></td>
-              <td style={cellStyle}>{coupon.status_label || "-"}</td>
-              <td style={cellStyle}>{coupon.redemption_count || 0}{coupon.max_redemptions ? ` / ${coupon.max_redemptions}` : " / unlimited"}</td>
-              <td style={cellStyle}><div>{coupon.starts_at ? formatDateTime(coupon.starts_at) : "Starts immediately"}</div><div style={mutedTextStyle}>{coupon.expires_at ? `Expires ${formatDateTime(coupon.expires_at)}` : "No expiry"}</div></td>
-              <td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => editCoupon(coupon)}>Edit</button><button style={coupon.is_active ? dangerButtonStyle : buttonStyle} onClick={() => toggleCouponActive(coupon)}>{coupon.is_active ? "Deactivate" : "Activate"}</button></div></td>
+          <thead>
+            <tr>
+              <th style={thStyle}>Code</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Redemptions</th>
+              <th style={thStyle}>Window</th>
+              <th style={thStyle}>Actions</th>
             </tr>
-          ))}</tbody>
+          </thead>
+          <tbody>
+            {state.items.map((coupon, idx) => (
+              <tr key={coupon.id} style={rowStyle(idx)}>
+                <td style={cellStyle}>
+                  <strong style={{ fontSize: 13 }}>{coupon.code}</strong>
+                  <div style={{ ...mutedTextStyle, fontSize: 12, marginTop: 2 }}>{coupon.notes || "Full-discount coupon"}</div>
+                </td>
+                <td style={cellStyle}><StatusBadge value={coupon.status_label || "unknown"} /></td>
+                <td style={cellStyle}>{coupon.redemption_count || 0}{coupon.max_redemptions ? ` / ${coupon.max_redemptions}` : " / unlimited"}</td>
+                <td style={cellStyle}>
+                  <div>{coupon.starts_at ? formatDateTime(coupon.starts_at) : "Starts immediately"}</div>
+                  <div style={mutedTextStyle}>{coupon.expires_at ? `Expires ${formatDateTime(coupon.expires_at)}` : "No expiry"}</div>
+                </td>
+                <td style={cellStyle}>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                    <button style={buttonStyle} onClick={() => editCoupon(coupon)}>Edit</button>
+                    <button style={coupon.is_active ? dangerButtonStyle : buttonStyle} onClick={() => toggleCouponActive(coupon)}>
+                      {coupon.is_active ? "Deactivate" : "Activate"}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </DataState>
     </PageShell>
@@ -2170,15 +2328,66 @@ const OrdersPage = () => {
   return (
     <PageShell title="Orders" subtitle="Review checkout status and manually finalize or refund purchases." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No orders found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}><thead><tr><th style={cellStyle}>Reference</th><th style={cellStyle}>Customer</th><th style={cellStyle}>Status</th><th style={cellStyle}>Amount</th><th style={cellStyle}>Items</th><th style={cellStyle}>Created</th><th style={cellStyle}>Actions</th></tr></thead><tbody>{state.items.map((order) => {
-          const isSelected = selectedOrderId === order.id;
-          return (
-            <React.Fragment key={order.id}>
-              <tr><td style={cellStyle}><code>{order.order_reference || `LS-${String(order.id).padStart(6, "0")}`}</code></td><td style={cellStyle}>{order.user?.email || order.user?.username || "-"}</td><td style={cellStyle}>{order.status || "-"}</td><td style={cellStyle}>{formatMoney(order.total_amount_cents, order.currency)}</td><td style={cellStyle}>{order.receipt?.total_items || order.items?.length || 0}</td><td style={cellStyle}>{order.createdAt ? new Date(order.createdAt).toLocaleString() : "-"}</td><td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => toggleDetails(order.id)}>{isSelected ? "Hide" : "View"}</button>{order.status === "pending" ? <button style={buttonStyle} onClick={() => markPaid(order)}>Mark paid</button> : null}{order.status === "paid" ? <button style={dangerButtonStyle} onClick={() => refund(order)}>Refund</button> : null}{!["pending", "paid"].includes(order.status) ? "-" : null}</div></td></tr>
-              {isSelected ? <InlineDetailsRow colSpan={7} title={`Order details • ${order.order_reference || `order #${order.id}`}`}><div style={detailGridStyle}><DetailItem label="Customer" value={order.user?.email || order.user?.username || "-"} /><DetailItem label="Amount" value={formatMoney(order.total_amount_cents, order.currency)} /><DetailItem label="Status" value={order.status || "-"} /><DetailItem label="Payment ID" value={order.payment_id || "-"} /><DetailItem label="Created" value={formatDateTime(order.createdAt)} /><DetailItem label="Refund reason" value={order.refund_reason || "-"} /></div><div style={{ display: "grid", gap: 6 }}><span style={mutedTextStyle}>Ordered items</span>{order.items?.length ? order.items.map((item, index) => <div key={`${order.id}-${item.id || index}`} style={mutedTextStyle}>{item.product?.name || `Item #${index + 1}`} {item.license?.uid ? `• ${item.license.uid}` : ""}</div>) : <span style={mutedTextStyle}>No item details available.</span>}</div></InlineDetailsRow> : null}
-            </React.Fragment>
-          );
-        })}</tbody></table>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Reference</th>
+              <th style={thStyle}>Customer</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Amount</th>
+              <th style={thStyle}>Items</th>
+              <th style={thStyle}>Created</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.items.map((order, idx) => {
+              const isSelected = selectedOrderId === order.id;
+              return (
+                <React.Fragment key={order.id}>
+                  <tr style={rowStyle(idx)}>
+                    <td style={cellStyle}><code style={{ fontSize: 12, opacity: 0.9 }}>{order.order_reference || `LS-${String(order.id).padStart(6, "0")}`}</code></td>
+                    <td style={cellStyle}>{order.user?.email || order.user?.username || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}><StatusBadge value={order.status || "unknown"} /></td>
+                    <td style={{ ...cellStyle, fontFamily: "monospace" }}>{formatMoney(order.total_amount_cents, order.currency)}</td>
+                    <td style={cellStyle}>{order.receipt?.total_items || order.items?.length || 0}</td>
+                    <td style={cellStyle}>{order.createdAt ? formatDateTime(order.createdAt) : "-"}</td>
+                    <td style={cellStyle}>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                        <button style={buttonStyle} onClick={() => toggleDetails(order.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {order.status === "pending" ? <button style={primaryButtonStyle} onClick={() => markPaid(order)}>Mark paid</button> : null}
+                        {order.status === "paid" ? <button style={dangerButtonStyle} onClick={() => refund(order)}>Refund</button> : null}
+                        {!["pending", "paid"].includes(order.status) ? <span style={{ color: themeColors.textSubtle }}>—</span> : null}
+                      </div>
+                    </td>
+                  </tr>
+                  {isSelected ? (
+                    <InlineDetailsRow colSpan={7} title={`Order details • ${order.order_reference || `order #${order.id}`}`}>
+                      <div style={detailGridStyle}>
+                        <DetailItem label="Customer" value={order.user?.email || order.user?.username || "-"} />
+                        <DetailItem label="Amount" value={formatMoney(order.total_amount_cents, order.currency)} />
+                        <DetailItem label="Status" value={<StatusBadge value={order.status || "unknown"} />} />
+                        <DetailItem label="Payment ID" value={order.payment_id ? <code>{order.payment_id}</code> : "-"} />
+                        <DetailItem label="Created" value={formatDateTime(order.createdAt)} />
+                        {order.refund_reason ? <DetailItem label="Refund reason" value={order.refund_reason} /> : null}
+                      </div>
+                      <div style={{ display: "grid", gap: 6 }}>
+                        <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>Ordered items</span>
+                        {order.items?.length ? order.items.map((item, index) => (
+                          <div key={`${order.id}-${item.id || index}`} style={{ ...mutedTextStyle, display: "flex", gap: 6, alignItems: "center" }}>
+                            <span style={{ width: 14, height: 14, background: themeColors.primarySoft, color: themeColors.primary, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", fontSize: 9 }}>{index + 1}</span>
+                            <strong>{item.product?.name || `Product #${item.product_id}`}</strong>
+                            {item.license?.uid ? <span>• <code style={{ fontSize: 11 }}>{item.license.uid}</code></span> : null}
+                          </div>
+                        )) : <span style={mutedTextStyle}>No item details available.</span>}
+                      </div>
+                    </InlineDetailsRow>
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
@@ -2329,15 +2538,92 @@ const ClaimsPage = () => {
   return (
     <PageShell title="Activation Claims" subtitle="Review first-activation confirmation requests and moderate risky devices." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No activation claims found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}><thead><tr><th style={cellStyle}>Claim</th><th style={cellStyle}>License</th><th style={cellStyle}>Owner</th><th style={cellStyle}>Device</th><th style={cellStyle}>Risk</th><th style={cellStyle}>Expires</th><th style={cellStyle}>Actions</th></tr></thead><tbody>{state.items.map((claim) => {
-          const isSelected = selectedClaimId === claim.id;
-          return (
-            <React.Fragment key={claim.id}>
-              <tr><td style={cellStyle}><strong>#{claim.id}</strong><div style={mutedTextStyle}>{claim.status}</div></td><td style={cellStyle}><div><code>{claim.license?.uid || `license #${claim.license_id}`}</code></div><div style={mutedTextStyle}>{claim.license?.product?.name || "-"}</div></td><td style={cellStyle}>{claim.owner_user?.email || claim.license?.user?.email || `user #${claim.owner_user_id}` || "-"}</td><td style={cellStyle}><div>{claim.device_fingerprint || "-"}</div><div style={mutedTextStyle}>{[claim.platform, claim.plugin_version].filter(Boolean).join(" • ") || claim.machine_id || "-"}</div></td><td style={cellStyle}><div>{claim.risk_score ?? 0}</div><div style={mutedTextStyle}>{claim.risk_reasons?.join(", ") || "-"}</div></td><td style={cellStyle}>{claim.expires_at ? new Date(claim.expires_at).toLocaleString() : "-"}</td><td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => toggleDetails(claim.id)}>{isSelected ? "Hide" : "View"}</button>{claim.status === "pending_confirmation" ? <button style={buttonStyle} onClick={() => approve(claim)}>Approve</button> : null}{claim.status === "pending_confirmation" ? <button style={dangerButtonStyle} onClick={() => reject(claim)}>Reject</button> : null}{claim.status !== "pending_confirmation" ? "-" : null}</div></td></tr>
-              {isSelected ? <InlineDetailsRow colSpan={7} title={`Claim details • #${claim.id}`}><div style={detailGridStyle}><DetailItem label="Owner" value={claim.owner_user?.email || claim.license?.user?.email || "-"} /><DetailItem label="License" value={claim.license?.uid || `license #${claim.license_id}`} /><DetailItem label="Product" value={claim.license?.product?.name || "-"} /><DetailItem label="Risk score" value={claim.risk_score ?? 0} /><DetailItem label="Device" value={claim.device_fingerprint || "-"} /><DetailItem label="Machine" value={claim.machine_id || "-"} /><DetailItem label="Platform" value={claim.platform || "-"} /><DetailItem label="Request IP" value={claim.request_ip || "-"} /><DetailItem label="Expires" value={formatDateTime(claim.expires_at)} /><DetailItem label="Approved by" value={claim.approved_by_user?.email || claim.approved_by || "-"} /><DetailItem label="Approved at" value={formatDateTime(claim.approved_at)} /><DetailItem label="Rejected at" value={formatDateTime(claim.rejected_at)} /></div><div style={{ display: "grid", gap: 6 }}><span style={mutedTextStyle}>Risk reasons</span>{claim.risk_reasons?.length ? claim.risk_reasons.map((reason) => <div key={reason} style={mutedTextStyle}>{reason}</div>) : <span style={mutedTextStyle}>No risk reasons attached.</span>}</div>{claim.rejection_reason ? <DetailItem label="Rejection reason" value={claim.rejection_reason} /> : null}</InlineDetailsRow> : null}
-            </React.Fragment>
-          );
-        })}</tbody></table>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Claim</th>
+              <th style={thStyle}>License</th>
+              <th style={thStyle}>Owner</th>
+              <th style={thStyle}>Device</th>
+              <th style={thStyle}>Risk</th>
+              <th style={thStyle}>Expires</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.items.map((claim, idx) => {
+              const isSelected = selectedClaimId === claim.id;
+              const hasRisk = claim.risk_score > 0;
+              return (
+                <React.Fragment key={claim.id}>
+                  <tr style={rowStyle(idx)}>
+                    <td style={cellStyle}>
+                      <strong style={{ fontSize: 13 }}>#{claim.id}</strong>
+                      <div style={{ marginTop: 4 }}><StatusBadge value={claim.status} /></div>
+                    </td>
+                    <td style={cellStyle}>
+                      <div><code style={{ fontSize: 12, opacity: 0.9 }}>{claim.license?.uid || `license #${claim.license_id}`}</code></div>
+                      <div style={{ ...mutedTextStyle, fontSize: 12, marginTop: 2 }}>{claim.license?.product?.name || <span style={{ color: themeColors.textSubtle }}>—</span>}</div>
+                    </td>
+                    <td style={cellStyle}>{claim.owner_user?.email || claim.license?.user?.email || `user #${claim.owner_user_id}` || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}>
+                      <div style={{ fontFamily: "monospace", fontSize: 12 }}>{claim.device_fingerprint || <span style={{ color: themeColors.textSubtle }}>—</span>}</div>
+                      <div style={{ ...mutedTextStyle, fontSize: 12, marginTop: 2 }}>{[claim.platform, claim.plugin_version].filter(Boolean).join(" • ") || claim.machine_id || <span style={{ color: themeColors.textSubtle }}>—</span>}</div>
+                    </td>
+                    <td style={cellStyle}>
+                      <div style={{ fontWeight: hasRisk ? 700 : 400, color: hasRisk ? themeColors.warning : themeColors.text }}>{claim.risk_score ?? 0}</div>
+                      <div style={{ ...mutedTextStyle, fontSize: 11, marginTop: 2 }}>{claim.risk_reasons?.length ? `${claim.risk_reasons.length} flags` : "Clean"}</div>
+                    </td>
+                    <td style={cellStyle}>{claim.expires_at ? formatDateTime(claim.expires_at) : <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                        <button style={buttonStyle} onClick={() => toggleDetails(claim.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {claim.status === "pending_confirmation" ? (
+                          <>
+                            <button style={primaryButtonStyle} onClick={() => approve(claim)}>Approve</button>
+                            <button style={dangerButtonStyle} onClick={() => reject(claim)}>Reject</button>
+                          </>
+                        ) : null}
+                        {claim.status !== "pending_confirmation" ? <span style={{ color: themeColors.textSubtle }}>—</span> : null}
+                      </div>
+                    </td>
+                  </tr>
+                  {isSelected ? (
+                    <InlineDetailsRow colSpan={7} title={`Claim details • #${claim.id}`}>
+                      <div style={detailGridStyle}>
+                        <DetailItem label="Owner" value={claim.owner_user?.email || claim.license?.user?.email || "-"} />
+                        <DetailItem label="License" value={claim.license?.uid || `license #${claim.license_id}`} />
+                        <DetailItem label="Product" value={claim.license?.product?.name || "-"} />
+                        <DetailItem label="Risk score" value={claim.risk_score ?? 0} />
+                        <DetailItem label="Device" value={claim.device_fingerprint ? <code>{claim.device_fingerprint}</code> : "-"} />
+                        <DetailItem label="Machine" value={claim.machine_id ? <code>{claim.machine_id}</code> : "-"} />
+                        <DetailItem label="Platform" value={claim.platform || "-"} />
+                        <DetailItem label="Request IP" value={claim.request_ip || "-"} />
+                        <DetailItem label="Expires" value={formatDateTime(claim.expires_at)} />
+                        <DetailItem label="Approved by" value={claim.approved_by_user?.email || claim.approved_by || "-"} />
+                        <DetailItem label="Approved at" value={formatDateTime(claim.approved_at)} />
+                        <DetailItem label="Rejected at" value={formatDateTime(claim.rejected_at)} />
+                      </div>
+                      <div style={{ display: "grid", gap: 6 }}>
+                        <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>Risk reasons</span>
+                        {claim.risk_reasons?.length ? claim.risk_reasons.map((reason, idx) => (
+                          <div key={`${reason}-${idx}`} style={{ ...mutedTextStyle, display: "flex", gap: 6, alignItems: "center", color: themeColors.warning, fontWeight: 500 }}>
+                            <span>⚠</span> <span>{reason}</span>
+                          </div>
+                        )) : <span style={mutedTextStyle}>No risk reasons attached.</span>}
+                      </div>
+                      {claim.rejection_reason ? (
+                         <div style={{ ...detailGridStyle, marginTop: 8 }}>
+                           <DetailItem label="Rejection reason" value={<span style={{ color: themeColors.danger, fontWeight: 500 }}>{claim.rejection_reason}</span>} />
+                         </div>
+                      ) : null}
+                    </InlineDetailsRow>
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
