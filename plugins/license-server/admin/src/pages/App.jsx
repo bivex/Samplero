@@ -21,31 +21,130 @@ const ADMIN_API_BASE = "/license-server";
 const themeColors = {
   surface: "var(--strapi-colors-neutral0)",
   surfaceRaised: "var(--strapi-colors-neutral100)",
+  surfaceHover: "var(--strapi-colors-neutral50, #f6f6f9)",
   border: "var(--strapi-colors-neutral150)",
   borderStrong: "var(--strapi-colors-neutral200)",
   text: "var(--strapi-colors-neutral800)",
   textMuted: "var(--strapi-colors-neutral600)",
+  textSubtle: "var(--strapi-colors-neutral500)",
   primary: "var(--strapi-colors-primary600)",
+  primarySoft: "var(--strapi-colors-primary100)",
+  primaryBorder: "var(--strapi-colors-primary200)",
+  success: "var(--strapi-colors-success600, #328048)",
+  successSoft: "var(--strapi-colors-success100, #eafbe7)",
+  successBorder: "var(--strapi-colors-success200, #c6f0c2)",
+  warning: "var(--strapi-colors-warning600, #b34f00)",
+  warningSoft: "var(--strapi-colors-warning100, #fdf4dc)",
+  warningBorder: "var(--strapi-colors-warning200, #fae7b9)",
   danger: "var(--strapi-colors-danger600)",
   dangerSoft: "var(--strapi-colors-danger100)",
   dangerBorder: "var(--strapi-colors-danger200)",
   inverseText: "var(--strapi-colors-buttonNeutral0, #ffffff)",
 };
-const pageStyle = { padding: 24, display: "grid", gap: 16 };
-const cardGridStyle = { display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" };
-const cardStyle = { border: `1px solid ${themeColors.border}`, borderRadius: 12, padding: 16, background: themeColors.surface };
-const navStyle = { display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 8 };
+
+/* ── Layout ─────────────────────────────────────────────── */
+const pageStyle = { padding: "28px 32px", display: "grid", gap: 20 };
+const cardGridStyle = { display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))" };
+const cardStyle = {
+  border: `1px solid ${themeColors.border}`,
+  borderRadius: 12,
+  padding: 20,
+  background: themeColors.surface,
+  boxShadow: "0 1px 3px rgba(0,0,0,.04)",
+};
+const navStyle = { display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 };
 const listFooterStyle = { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" };
-const linkStyle = ({ isActive }) => ({ padding: "8px 12px", borderRadius: 8, textDecoration: "none", color: isActive ? themeColors.inverseText : themeColors.text, background: isActive ? themeColors.primary : themeColors.surfaceRaised, border: `1px solid ${isActive ? themeColors.primary : themeColors.border}`, fontWeight: 600 });
-const tableStyle = { width: "100%", borderCollapse: "collapse", background: themeColors.surface, border: `1px solid ${themeColors.border}`, borderRadius: 12, overflow: "hidden" };
-const cellStyle = { borderBottom: `1px solid ${themeColors.borderStrong}`, padding: "12px 10px", textAlign: "left", color: themeColors.text };
-const mutedTextStyle = { color: themeColors.textMuted, fontSize: 14 };
-const buttonStyle = { padding: "6px 10px", borderRadius: 8, border: `1px solid ${themeColors.border}`, background: themeColors.surface, color: themeColors.text, cursor: "pointer" };
-const buttonLinkStyle = { ...buttonStyle, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" };
-const disabledButtonStyle = { ...buttonStyle, opacity: 0.5, cursor: "not-allowed" };
-const dangerButtonStyle = { ...buttonStyle, borderColor: themeColors.dangerBorder, background: themeColors.dangerSoft, color: themeColors.danger };
+
+/* ── Navigation links ───────────────────────────────────── */
+const linkStyle = ({ isActive }) => ({
+  padding: "7px 14px",
+  borderRadius: 8,
+  textDecoration: "none",
+  fontSize: 13,
+  fontWeight: 600,
+  letterSpacing: "0.02em",
+  color: isActive ? themeColors.inverseText : themeColors.text,
+  background: isActive ? themeColors.primary : "transparent",
+  border: `1px solid ${isActive ? themeColors.primary : themeColors.border}`,
+  transition: "background 0.15s, color 0.15s",
+});
+
+/* ── Table ──────────────────────────────────────────────── */
+const tableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  background: themeColors.surface,
+  border: `1px solid ${themeColors.border}`,
+  borderRadius: 12,
+  overflow: "hidden",
+  fontSize: 13,
+};
+const thStyle = {
+  padding: "10px 14px",
+  textAlign: "left",
+  background: themeColors.surfaceRaised,
+  color: themeColors.textSubtle,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  borderBottom: `1px solid ${themeColors.borderStrong}`,
+};
+const cellStyle = {
+  borderBottom: `1px solid ${themeColors.border}`,
+  padding: "11px 14px",
+  textAlign: "left",
+  color: themeColors.text,
+  fontSize: 13,
+};
+const rowStyle = (idx) => ({
+  background: idx % 2 === 0 ? themeColors.surface : themeColors.surfaceRaised,
+});
+
+/* ── Typography ─────────────────────────────────────────── */
+const mutedTextStyle = { color: themeColors.textMuted, fontSize: 13 };
+
+/* ── Buttons ────────────────────────────────────────────── */
+const buttonStyle = {
+  padding: "7px 14px",
+  borderRadius: 8,
+  border: `1px solid ${themeColors.border}`,
+  background: themeColors.surface,
+  color: themeColors.text,
+  cursor: "pointer",
+  fontSize: 13,
+  fontWeight: 500,
+  lineHeight: 1.4,
+  transition: "background 0.12s, border-color 0.12s",
+};
+const primaryButtonStyle = {
+  ...buttonStyle,
+  background: themeColors.primary,
+  borderColor: themeColors.primary,
+  color: themeColors.inverseText,
+  fontWeight: 600,
+};
+const buttonLinkStyle = {
+  ...buttonStyle,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textDecoration: "none",
+};
+const disabledButtonStyle = { ...buttonStyle, opacity: 0.45, cursor: "not-allowed" };
+const dangerButtonStyle = {
+  ...buttonStyle,
+  borderColor: themeColors.dangerBorder,
+  background: themeColors.dangerSoft,
+  color: themeColors.danger,
+  fontWeight: 600,
+};
 const selectStyle = { ...buttonStyle, minWidth: 160 };
-const inputStyle = { ...buttonStyle, minWidth: 220 };
+const inputStyle = {
+  ...buttonStyle,
+  minWidth: 220,
+  outline: "none",
+};
 const LICENSES_PAGE_SIZE = 10;
 const ACTIVATIONS_PAGE_SIZE = 10;
 const ORDERS_PAGE_SIZE = 10;
@@ -517,21 +616,68 @@ const applyListQueryParams = ({ params, search, status, sortBy, sortDir, default
 
 const PageShell = ({ title, subtitle, actions, children }) => (
   <div style={pageStyle}>
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      gap: 16,
+      alignItems: "flex-start",
+      flexWrap: "wrap",
+      paddingBottom: 20,
+      borderBottom: `1px solid ${themeColors.border}`,
+    }}>
       <div>
-        <h1 style={{ margin: 0, fontSize: 28 }}>{title}</h1>
-        {subtitle ? <p style={{ ...mutedTextStyle, marginTop: 6 }}>{subtitle}</p> : null}
+        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em", color: themeColors.text }}>{title}</h1>
+        {subtitle ? <p style={{ ...mutedTextStyle, marginTop: 4 }}>{subtitle}</p> : null}
       </div>
-      {actions ? <div style={{ display: "flex", gap: 8 }}>{actions}</div> : null}
+      {actions ? <div style={{ display: "flex", gap: 8, alignItems: "center" }}>{actions}</div> : null}
     </div>
     {children}
   </div>
 );
 
 const DataState = ({ loading, error, empty, isEmpty = false, children }) => {
-  if (loading) return <p style={mutedTextStyle}>Loading…</p>;
-  if (error) return <p style={{ ...mutedTextStyle, color: themeColors.danger }}>{error}</p>;
-  if (isEmpty && empty) return <p style={mutedTextStyle}>{empty}</p>;
+  if (loading) return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "20px 0", color: themeColors.textMuted, fontSize: 13 }}>
+      <span style={{
+        display: "inline-block",
+        width: 16,
+        height: 16,
+        border: `2px solid ${themeColors.border}`,
+        borderTopColor: themeColors.primary,
+        borderRadius: "50%",
+        animation: "ls-spin 0.7s linear infinite",
+      }} />
+      Loading…
+    </div>
+  );
+  if (error) return (
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      padding: "12px 16px",
+      borderRadius: 8,
+      background: themeColors.dangerSoft,
+      border: `1px solid ${themeColors.dangerBorder}`,
+      color: themeColors.danger,
+      fontSize: 13,
+    }}>
+      ⚠ {error}
+    </div>
+  );
+  if (isEmpty && empty) return (
+    <div style={{
+      padding: "32px 20px",
+      textAlign: "center",
+      color: themeColors.textMuted,
+      fontSize: 13,
+      background: themeColors.surfaceRaised,
+      borderRadius: 12,
+      border: `1px dashed ${themeColors.border}`,
+    }}>
+      {empty}
+    </div>
+  );
   return children;
 };
 
@@ -600,13 +746,49 @@ const sectionMetaStyle = {
 const badgeStyle = {
   display: "inline-flex",
   alignItems: "center",
-  padding: "4px 8px",
+  padding: "3px 9px",
   borderRadius: 999,
   border: `1px solid ${themeColors.border}`,
   background: themeColors.surfaceRaised,
   color: themeColors.textMuted,
-  fontSize: 12,
-  fontWeight: 600,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.04em",
+};
+
+/* Semantic status badge resolver */
+const StatusBadge = ({ value }) => {
+  const v = String(value || "").toLowerCase();
+  let bg, border, color, icon;
+  if (v === "active" || v === "approved" || v === "paid") {
+    bg = themeColors.successSoft; border = themeColors.successBorder; color = themeColors.success; icon = "●";
+  } else if (v === "revoked" || v === "rejected" || v === "refunded" || v === "failed") {
+    bg = themeColors.dangerSoft; border = themeColors.dangerBorder; color = themeColors.danger; icon = "●";
+  } else if (v === "pending" || v === "pending_confirmation" || v === "scheduled") {
+    bg = themeColors.warningSoft; border = themeColors.warningBorder; color = themeColors.warning; icon = "◐";
+  } else if (v === "expired" || v === "exhausted" || v === "inactive") {
+    bg = themeColors.surfaceRaised; border = themeColors.borderStrong; color = themeColors.textMuted; icon = "○";
+  } else {
+    bg = themeColors.primarySoft; border = themeColors.primaryBorder; color = themeColors.primary; icon = "●";
+  }
+  return (
+    <span style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 5,
+      padding: "3px 9px",
+      borderRadius: 999,
+      border: `1px solid ${border}`,
+      background: bg,
+      color,
+      fontSize: 11,
+      fontWeight: 700,
+      letterSpacing: "0.04em",
+      whiteSpace: "nowrap",
+    }}>
+      <span style={{ fontSize: 9 }}>{icon}</span>{value || "-"}
+    </span>
+  );
 };
 
 const supportActionRowStyle = {
@@ -642,17 +824,17 @@ const detailGridStyle = {
 };
 
 const DetailItem = ({ label, value }) => (
-  <div style={{ display: "grid", gap: 4 }}>
-    <span style={mutedTextStyle}>{label}</span>
-    <div>{value ?? "-"}</div>
+  <div style={{ display: "grid", gap: 3 }}>
+    <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: themeColors.textSubtle }}>{label}</span>
+    <div style={{ fontSize: 13, color: themeColors.text }}>{value ?? <span style={{ color: themeColors.textSubtle }}>—</span>}</div>
   </div>
 );
 
 const InlineDetailsRow = ({ colSpan, title, children }) => (
   <tr>
-    <td style={cellStyle} colSpan={colSpan}>
-      <div style={detailPanelStyle}>
-        <strong>{title}</strong>
+    <td style={{ ...cellStyle, padding: 0, background: themeColors.surfaceRaised }} colSpan={colSpan}>
+      <div style={{ ...detailPanelStyle, borderRadius: 0, borderLeft: `3px solid ${themeColors.primary}`, margin: 0 }}>
+        <strong style={{ fontSize: 13, color: themeColors.text }}>{title}</strong>
         {children}
       </div>
     </td>
@@ -661,13 +843,29 @@ const InlineDetailsRow = ({ colSpan, title, children }) => (
 
 const AuditTrail = ({ events = [], empty = "No audit events available." }) => (
   <div style={auditListStyle}>
-    <span style={mutedTextStyle}>Audit trail</span>
+    <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Audit trail</span>
     {events.length ? (
       events.map((event) => (
-        <div key={`${event.label}-${event.at}`} style={auditItemStyle}>
-          <strong>{event.label}</strong>
-          <span style={mutedTextStyle}>{formatDateTime(event.at)}</span>
-          {event.description ? <span style={mutedTextStyle}>{event.description}</span> : null}
+        <div key={`${event.label}-${event.at}`} style={{
+          ...auditItemStyle,
+          display: "grid",
+          gridTemplateColumns: "auto 1fr",
+          gap: "4px 12px",
+          alignItems: "start",
+          paddingTop: 10,
+          marginTop: 2,
+        }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: "50%",
+            background: themeColors.primary,
+            marginTop: 5, flexShrink: 0,
+            display: "inline-block",
+          }} />
+          <div style={{ display: "grid", gap: 2 }}>
+            <strong style={{ fontSize: 13 }}>{event.label}</strong>
+            <span style={{ ...mutedTextStyle, fontSize: 12 }}>{formatDateTime(event.at)}</span>
+            {event.description ? <span style={{ ...mutedTextStyle, fontSize: 12 }}>{event.description}</span> : null}
+          </div>
         </div>
       ))
     ) : (
@@ -745,19 +943,45 @@ const DashboardPage = () => {
 
   const stats = state.stats || {};
 
+  const statCards = [
+    { label: "Total licenses", value: stats.totalLicenses, accent: themeColors.primary, soft: themeColors.primarySoft, icon: "🔑" },
+    { label: "Active licenses", value: stats.activeLicenses, accent: themeColors.success, soft: themeColors.successSoft, icon: "✅" },
+    { label: "Revoked licenses", value: stats.revokedLicenses, accent: themeColors.danger, soft: themeColors.dangerSoft, icon: "🚫" },
+    { label: "Activations", value: stats.totalActivations, accent: themeColors.primary, soft: themeColors.primarySoft, icon: "📡" },
+    { label: "Pending claims", value: stats.pendingClaims, accent: themeColors.warning, soft: themeColors.warningSoft, icon: "⏳" },
+    { label: "Active products", value: stats.activeProducts, accent: themeColors.success, soft: themeColors.successSoft, icon: "📦" },
+    { label: "Pending orders", value: stats.pendingOrders, accent: themeColors.warning, soft: themeColors.warningSoft, icon: "🛒" },
+  ];
+
   return (
-    <PageShell title="Dashboard" subtitle="Overview of licenses, activations, claims, products, and pending orders." actions={<button style={buttonStyle} onClick={load}>Refresh</button>}>
-      <DataState loading={state.loading} error={state.error}>
-        <div style={cardGridStyle}>
-          {[["Total licenses", stats.totalLicenses], ["Active licenses", stats.activeLicenses], ["Revoked licenses", stats.revokedLicenses], ["Activations", stats.totalActivations], ["Pending claims", stats.pendingClaims], ["Active products", stats.activeProducts], ["Pending orders", stats.pendingOrders]].map(([label, value]) => (
-            <div key={label} style={cardStyle}>
-              <div style={mutedTextStyle}>{label}</div>
-              <div style={{ fontSize: 28, fontWeight: 700, marginTop: 8 }}>{value ?? 0}</div>
-            </div>
-          ))}
-        </div>
-      </DataState>
-    </PageShell>
+    <>
+      <style>{`@keyframes ls-spin { to { transform: rotate(360deg); } }`}</style>
+      <PageShell
+        title="Dashboard"
+        subtitle="Overview of licenses, activations, claims, products, and pending orders."
+        actions={<button style={buttonStyle} onClick={load}>↻ Refresh</button>}
+      >
+        <DataState loading={state.loading} error={state.error}>
+          <div style={cardGridStyle}>
+            {statCards.map(({ label, value, accent, soft, icon }) => (
+              <div key={label} style={{
+                ...cardStyle,
+                borderTop: `3px solid ${accent}`,
+                background: soft,
+                display: "grid",
+                gap: 6,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ ...mutedTextStyle, fontWeight: 600, fontSize: 12, letterSpacing: "0.03em" }}>{label}</span>
+                  <span style={{ fontSize: 18, lineHeight: 1 }}>{icon}</span>
+                </div>
+                <div style={{ fontSize: 32, fontWeight: 800, color: accent, lineHeight: 1.1 }}>{value ?? 0}</div>
+              </div>
+            ))}
+          </div>
+        </DataState>
+      </PageShell>
+    </>
   );
 };
 
@@ -1221,15 +1445,61 @@ const LicensesPage = () => {
   return (
     <PageShell title="Licenses" subtitle="Manage issued licenses." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No licenses found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}><thead><tr><th style={cellStyle}>Key</th><th style={cellStyle}>User</th><th style={cellStyle}>Product</th><th style={cellStyle}>Status</th><th style={cellStyle}>Activations</th><th style={cellStyle}>Actions</th></tr></thead><tbody>{state.items.map((license) => {
-          const isSelected = selectedLicenseId === license.id;
-          return (
-            <React.Fragment key={license.id}>
-              <tr><td style={cellStyle}><code>{license.uid}</code></td><td style={cellStyle}>{license.user?.email || license.user?.username || "-"}</td><td style={cellStyle}>{license.product?.name || "-"}</td><td style={cellStyle}>{license.status || "-"}</td><td style={cellStyle}>{license.activations?.length || 0}</td><td style={cellStyle}><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><button style={buttonStyle} onClick={() => toggleDetails(license.id)}>{isSelected ? "Hide" : "View"}</button>{license.status === "active" ? <button style={dangerButtonStyle} onClick={() => revoke(license)}>Revoke</button> : null}</div></td></tr>
-              {isSelected ? <InlineDetailsRow colSpan={6} title={`License details • ${license.uid}`}><div style={detailGridStyle}><DetailItem label="Owner" value={license.user?.email || license.user?.username || "-"} /><DetailItem label="Product" value={license.product?.name || "-"} /><DetailItem label="Status" value={license.status || "-"} /><DetailItem label="Issued" value={formatDateTime(license.issued_at || license.createdAt)} /><DetailItem label="Revoked" value={formatDateTime(license.revoked_at)} /><DetailItem label="Activation count" value={license.activations?.length || 0} /></div><div style={{ display: "grid", gap: 6 }}><span style={mutedTextStyle}>Activation details</span>{license.activations?.length ? license.activations.map((activation) => <div key={activation.id} style={mutedTextStyle}>#{activation.id} • {activation.device_fingerprint || "Unknown device"} • {activation.revoked_at ? "revoked" : "active"}</div>) : <span style={mutedTextStyle}>No activations yet.</span>}</div></InlineDetailsRow> : null}
-            </React.Fragment>
-          );
-        })}</tbody></table>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Key</th>
+              <th style={thStyle}>User</th>
+              <th style={thStyle}>Product</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Activations</th>
+              <th style={thStyle}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.items.map((license, idx) => {
+              const isSelected = selectedLicenseId === license.id;
+              return (
+                <React.Fragment key={license.id}>
+                  <tr style={rowStyle(idx)}>
+                    <td style={cellStyle}><code style={{ fontSize: 12, opacity: 0.9 }}>{license.uid}</code></td>
+                    <td style={cellStyle}>{license.user?.email || license.user?.username || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}>{license.product?.name || <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
+                    <td style={cellStyle}><StatusBadge value={license.status || "unknown"} /></td>
+                    <td style={cellStyle}>{license.activations?.length || 0}</td>
+                    <td style={cellStyle}>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                        <button style={buttonStyle} onClick={() => toggleDetails(license.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {license.status === "active" ? <button style={dangerButtonStyle} onClick={() => revoke(license)}>Revoke</button> : null}
+                      </div>
+                    </td>
+                  </tr>
+                  {isSelected ? (
+                    <InlineDetailsRow colSpan={6} title={`License details • ${license.uid}`}>
+                      <div style={detailGridStyle}>
+                        <DetailItem label="Owner" value={license.user?.email || license.user?.username || "-"} />
+                        <DetailItem label="Product" value={license.product?.name || "-"} />
+                        <DetailItem label="Status" value={<StatusBadge value={license.status || "unknown"} />} />
+                        <DetailItem label="Issued" value={formatDateTime(license.issued_at || license.createdAt)} />
+                        <DetailItem label="Revoked" value={formatDateTime(license.revoked_at)} />
+                        <DetailItem label="Activation count" value={license.activations?.length || 0} />
+                      </div>
+                      <div style={{ display: "grid", gap: 6 }}>
+                        <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>Activation details</span>
+                        {license.activations?.length ? license.activations.map((activation) => (
+                          <div key={activation.id} style={{ ...mutedTextStyle, display: "flex", gap: 8, alignItems: "center" }}>
+                            <StatusBadge value={activation.revoked_at ? "revoked" : "active"} />
+                            <span>#{activation.id} • {activation.device_fingerprint || "Unknown device"}</span>
+                          </div>
+                        )) : <span style={mutedTextStyle}>No activations yet.</span>}
+                      </div>
+                    </InlineDetailsRow>
+                  ) : null}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
