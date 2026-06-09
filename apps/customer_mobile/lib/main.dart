@@ -27,10 +27,10 @@ void main() {
   // Configuration
   const String apiUrl = 'http://10.0.2.2:1337'; // Change to 10.0.2.2 for Android emulator
   final String nativeLibPath = Platform.isWindows
-      ? 'crypto.dll'
+      ? 'samplero_crypto.dll'
       : Platform.isMacOS || Platform.isIOS
-          ? 'crypto.dylib' // Or bundled framework
-          : 'libcrypto.so'; // Android/Linux
+          ? 'samplero_crypto.dylib'
+          : 'libsamplero_crypto.so';
 
   // Infrastructure Setup
   final httpClient = http.Client();
