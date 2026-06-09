@@ -75,21 +75,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _isRegistering = false;
   String? _error;
 
-  Future<void> _login() async {
+  Future<void> _submit() async {
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
     try {
-      await widget.authPort.login(
-        _emailController.text,
-        _passwordController.text,
-      );
+      if (_isRegistering) {
+        await widget.authPort.register(
+          _usernameController.text.isNotEmpty ? _usernameController.text : _emailController.text,
+          _emailController.text,
+          _passwordController.text,
+        );
+      } else {
+        await widget.authPort.login(
+          _emailController.text,
+          _passwordController.text,
+        );
+      }
       widget.onLoginSuccess();
     } catch (e) {
       setState(() {
@@ -107,15 +117,22 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login to Samplero')),
+      appBar: AppBar(title: Text(_isRegistering ? 'Register' : 'Login to Samplero')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (_isRegistering) ...[
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'Username'),
+              ),
+              const SizedBox(height: 16),
+            ],
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email / Username'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -130,9 +147,18 @@ class _LoginScreenState extends State<LoginScreen> {
             _isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Login'),
+                    onPressed: _submit,
+                    child: Text(_isRegistering ? 'Register' : 'Login'),
                   ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _isRegistering = !_isRegistering;
+                  _error = null;
+                });
+              },
+              child: Text(_isRegistering ? 'Already have an account? Login' : 'Need an account? Register'),
+            )
           ],
         ),
       ),
