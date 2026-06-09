@@ -34,7 +34,8 @@ class StrapiProductRepository implements ProductRepository {
     }
 
     final jsonBody = json.decode(response.body);
-    final List<dynamic> data = jsonBody['data'] ?? [];
+    // The API returns the array under the 'products' key, not 'data'
+    final List<dynamic> data = jsonBody['products'] ?? [];
 
     return data.map((json) => _fromJson(json)).toList();
   }
@@ -51,7 +52,8 @@ class StrapiProductRepository implements ProductRepository {
     if (response.statusCode != 200) throw Exception('API Error');
 
     final jsonBody = json.decode(response.body);
-    return _fromJson(jsonBody['data']);
+    // The API returns the product directly, not wrapped in a 'data' object
+    return _fromJson(jsonBody);
   }
 
   Product _fromJson(Map<String, dynamic> json) {
