@@ -31,6 +31,9 @@ RUN npm rebuild better-sqlite3
 # Copy the rest of the application
 COPY . .
 
+# Sync customer portal assets
+RUN node scripts/sync-customer-vendor-assets.js
+
 # Build Strapi admin panel
 RUN npm run build
 

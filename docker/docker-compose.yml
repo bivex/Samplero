@@ -55,6 +55,14 @@ services:
       - strapi-redis
       - cert-signer
 
+  customer-portal:
+    container_name: customer-portal
+    image: nginx:1.27-alpine
+    volumes:
+      - ../public/customer:/usr/share/nginx/html:ro
+    networks:
+      - strapi
+
   cert-signer:
     container_name: cert-signer
     build:
@@ -119,7 +127,8 @@ services:
     volumes:
       - ./nginx/strapi-docker.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ../certs/server:/etc/nginx/certs:ro
-      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/nginx/trust:ro
+      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/pki-trust:ro
+      - ../public/customer:/usr/share/nginx/html:ro
     ports:
       - "8443:8443"
     networks:

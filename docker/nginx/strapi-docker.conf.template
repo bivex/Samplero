@@ -79,6 +79,12 @@ server {
     }
 
     location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ @strapi;
+    }
+
+    location @strapi {
         proxy_pass http://strapi_upstream;
     }
 }
