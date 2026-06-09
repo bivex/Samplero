@@ -4,13 +4,14 @@ import 'dart:io';
 
 import 'infrastructure/api/strapi_product_repository.dart';
 import 'infrastructure/api/strapi_auth_repository.dart';
+import 'infrastructure/api/strapi_license_repository.dart';
 import 'infrastructure/native/ffi_crypto_adapter.dart';
 import 'application/use_cases/get_products_use_case.dart';
 import 'presentation/app.dart';
 import 'domain/repositories/crypto_port.dart';
 import 'domain/repositories/auth_port.dart';
+import 'domain/repositories/license_repository.dart';
 
-// Mock adapter for when native library is not built
 class MockCryptoAdapter implements CryptoPort {
   @override
   String generateDeviceFingerprint() => 'mock-fingerprint-no-native-lib';
@@ -23,18 +24,15 @@ class MockCryptoAdapter implements CryptoPort {
 }
 
 void main() {
-  // --- Composition Root ---
-  // Configuration
-  const String apiUrl = 'http://10.0.2.2:1337'; // Change to 10.0.2.2 for Android emulator
+  const String apiUrl = 'http://10.0.2.2:1337';
   final String nativeLibPath = Platform.isWindows
       ? 'samplero_crypto.dll'
       : Platform.isMacOS || Platform.isIOS
           ? 'samplero_crypto.dylib'
           : 'libsamplero_crypto.so';
 
-  // Infrastructure Setup
   final httpClient = http.Client();
-  
+
   final authRepository = StrapiAuthRepository(
     baseUrl: apiUrl,
     client: httpClient,
@@ -45,23 +43,27 @@ void main() {
     client: httpClient,
     authPort: authRepository,
   );
-  
+
+  final licenseRepository = StrapiLicenseRepository(
+    baseUrl: apiUrl,
+    client: httpClient,
+    authPort: authRepository,
+  );
+
   CryptoPort cryptoAdapter;
   try {
     cryptoAdapter = FfiCryptoAdapter(nativeLibPath);
   } catch (e) {
     print('Failed to load native crypto library: $e');
-    print('Falling back to MockCryptoAdapter.');
     cryptoAdapter = MockCryptoAdapter();
   }
 
-  // Application Use Cases Setup
   final getProductsUseCase = GetProductsUseCase(productRepository);
 
-  // Presentation Setup
   runApp(CustomerApp(
     getProductsUseCase: getProductsUseCase,
     cryptoPort: cryptoAdapter,
     authPort: authRepository,
+    licenseRepository: licenseRepository,
   ));
 }
