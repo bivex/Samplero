@@ -127,7 +127,7 @@ services:
     volumes:
       - ./nginx/strapi-docker.conf.template:/etc/nginx/templates/default.conf.template:ro
       - ../certs/server:/etc/nginx/certs:ro
-      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/pki-trust:ro
+      - ../.docker-pki/${PKI_USER:-default}/trust:/etc/nginx/trust:ro
       - ../public/customer:/usr/share/nginx/html:ro
     ports:
       - "8443:8443"
