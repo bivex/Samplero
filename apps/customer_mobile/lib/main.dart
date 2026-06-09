@@ -3,10 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 
 import 'infrastructure/api/strapi_product_repository.dart';
+import 'infrastructure/api/strapi_auth_repository.dart';
 import 'infrastructure/native/ffi_crypto_adapter.dart';
 import 'application/use_cases/get_products_use_case.dart';
 import 'presentation/app.dart';
 import 'domain/repositories/crypto_port.dart';
+import 'domain/repositories/auth_port.dart';
 
 // Mock adapter for when native library is not built
 class MockCryptoAdapter implements CryptoPort {
@@ -32,9 +34,16 @@ void main() {
 
   // Infrastructure Setup
   final httpClient = http.Client();
+  
+  final authRepository = StrapiAuthRepository(
+    baseUrl: apiUrl,
+    client: httpClient,
+  );
+
   final productRepository = StrapiProductRepository(
     baseUrl: apiUrl,
     client: httpClient,
+    authPort: authRepository,
   );
   
   CryptoPort cryptoAdapter;
@@ -53,5 +62,6 @@ void main() {
   runApp(CustomerApp(
     getProductsUseCase: getProductsUseCase,
     cryptoPort: cryptoAdapter,
+    authPort: authRepository,
   ));
 }

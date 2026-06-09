@@ -2,19 +2,31 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
+import '../../domain/repositories/auth_port.dart';
 
 // Adapter (Infrastructure) implementing Domain Port
 class StrapiProductRepository implements ProductRepository {
   final String baseUrl;
   final http.Client client;
+  final AuthPort authPort;
 
-  StrapiProductRepository({required this.baseUrl, required this.client});
+  StrapiProductRepository({required this.baseUrl, required this.client, required this.authPort});
+
+  Future<Map<String, String>> _getHeaders() async {
+    final headers = {'Accept': 'application/json'};
+    final token = await authPort.getToken();
+    if (token != null) {
+      headers['Authorization'] = 'Bearer $token';
+    }
+    return headers;
+  }
 
   @override
   Future<List<Product>> getProducts({int limit = 20, int offset = 0}) async {
+    final headers = await _getHeaders();
     final response = await client.get(
       Uri.parse('$baseUrl/api/license-server/products?pagination[limit]=$limit&pagination[start]=$offset'),
-      headers: {'Accept': 'application/json'},
+      headers: headers,
     );
 
     if (response.statusCode != 200) {
@@ -29,9 +41,10 @@ class StrapiProductRepository implements ProductRepository {
 
   @override
   Future<Product?> getProductBySlug(String slug) async {
+    final headers = await _getHeaders();
     final response = await client.get(
       Uri.parse('$baseUrl/api/license-server/products/$slug'),
-      headers: {'Accept': 'application/json'},
+      headers: headers,
     );
 
     if (response.statusCode == 404) return null;

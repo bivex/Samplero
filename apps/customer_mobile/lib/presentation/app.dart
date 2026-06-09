@@ -2,17 +2,40 @@ import 'package:flutter/material.dart';
 import '../domain/entities/product.dart';
 import '../application/use_cases/get_products_use_case.dart';
 import '../domain/repositories/crypto_port.dart';
+import '../domain/repositories/auth_port.dart';
 
-class CustomerApp extends StatelessWidget {
+class CustomerApp extends StatefulWidget {
   final GetProductsUseCase getProductsUseCase;
   final CryptoPort cryptoPort;
+  final AuthPort authPort;
 
-  // Dependencies injected from the composition root (main.dart)
   const CustomerApp({
     super.key,
     required this.getProductsUseCase,
     required this.cryptoPort,
+    required this.authPort,
   });
+
+  @override
+  State<CustomerApp> createState() => _CustomerAppState();
+}
+
+class _CustomerAppState extends State<CustomerApp> {
+  bool _isAuthenticated = false;
+
+  void _onLoginSuccess() {
+    setState(() {
+      _isAuthenticated = true;
+    });
+  }
+
+  void _onLogout() {
+    widget.authPort.logout().then((_) {
+      setState(() {
+        _isAuthenticated = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +45,96 @@ class CustomerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ProductListScreen(
-        getProductsUseCase: getProductsUseCase,
-        cryptoPort: cryptoPort,
+      home: _isAuthenticated
+          ? ProductListScreen(
+              getProductsUseCase: widget.getProductsUseCase,
+              cryptoPort: widget.cryptoPort,
+              onLogout: _onLogout,
+            )
+          : LoginScreen(
+              authPort: widget.authPort,
+              onLoginSuccess: _onLoginSuccess,
+            ),
+    );
+  }
+}
+
+class LoginScreen extends StatefulWidget {
+  final AuthPort authPort;
+  final VoidCallback onLoginSuccess;
+
+  const LoginScreen({
+    super.key,
+    required this.authPort,
+    required this.onLoginSuccess,
+  });
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _error;
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      await widget.authPort.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+      widget.onLoginSuccess();
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Login to Samplero')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email / Username'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            const SizedBox(height: 24),
+            if (_error != null)
+              Text(_error!, style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 24),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _login,
+                    child: const Text('Login'),
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -33,11 +143,13 @@ class CustomerApp extends StatelessWidget {
 class ProductListScreen extends StatefulWidget {
   final GetProductsUseCase getProductsUseCase;
   final CryptoPort cryptoPort;
+  final VoidCallback onLogout;
 
   const ProductListScreen({
     super.key,
     required this.getProductsUseCase,
     required this.cryptoPort,
+    required this.onLogout,
   });
 
   @override
@@ -53,7 +165,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
     super.initState();
     _productsFuture = widget.getProductsUseCase.execute();
     
-    // Demonstrate using the C++ Crypto Adapter
     try {
       _fingerprint = widget.cryptoPort.generateDeviceFingerprint();
     } catch (e) {
@@ -66,6 +177,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Storefront'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: widget.onLogout,
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(20),
           child: Text('Device: $_fingerprint', style: const TextStyle(fontSize: 10)),
