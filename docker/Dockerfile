@@ -1,7 +1,8 @@
 FROM node:22-alpine
 
-# Install dependencies for better-sqlite3 and other native modules
-RUN apk add --no-cache \
+# Use cache for apk
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk add --no-cache \
     build-base \
     gcc \
     autoconf \
@@ -17,14 +18,17 @@ WORKDIR /opt/app
 # Set environment
 ENV NODE_ENV=development
 
-# Copy package files
+# Copy package files first to leverage caching
 COPY package.json package-lock.json* ./
 
-# Install dependencies
-RUN npm install --legacy-peer-deps --ignore-scripts
+# Use cache for npm
+RUN --mount=type=cache,target=/root/.npm \
+    npm install --legacy-peer-deps --ignore-scripts
+
+# Rebuild only better-sqlite3
 RUN npm rebuild better-sqlite3
 
-# Copy project files
+# Copy the rest of the application
 COPY . .
 
 # Build Strapi admin panel

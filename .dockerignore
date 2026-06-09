@@ -10,3 +10,8 @@ upload
 .env
 *.db
 *.log
+apps/customer-tauri/src-tauri/target
+**/coverage
+**/node_modules
+# Allow plugin dist folders
+!plugins/**/dist
