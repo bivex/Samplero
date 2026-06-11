@@ -74,20 +74,21 @@ Updated: 2026-06-11
 
 ### Risk matrix
 
-| ID | Risk | Attack scenario | Current controls | Main gap | Likelihood | Impact | Residual |
-|---|---|---|---|---|---|---|---|
-| R1 | Direct Strapi exposure bypasses nginx trust boundary | атакующий шлёт запросы прямо в Strapi и подставляет `x-ssl-verified` / `x-client-cert-*` headers | `verify-mtls`, request signatures, rate limit, localhost-only Docker bind | risk remains if production infra re-exposes Strapi or bypasses nginx | Low-Medium | High | **Medium** |
-| R2 | Header spoofing for mTLS identity | при ошибке reverse-proxy/network policy attacker эмулирует mTLS context заголовками | `verify-mtls` checks cert serial/fingerprint and revocation; trusted proxy shared secret required | compromise now depends mostly on leaked proxy secret or broken ingress discipline | Low-Medium | High | **Medium** |
-| R3 | mTLS not globally required | если `LICENSE_REQUIRE_MTLS=false`, validate/heartbeat могут уйти в weaker trust path | `assertProofOfPossession`, request signature by client public key | risk now mostly shifts to misconfiguration/override rather than insecure default | Low-Medium | High | **Medium** |
-| R4 | Replay / stale signed request reuse | валидный signed request может быть переигран в допустимом окне | strict `verify-freshness`, timestamp window, nonce reservation, proof-of-possession | residual risk shifts to Redis outage/monitoring and client contract drift | Low-Medium | Medium | **Medium** |
-| R5 | Client private key extraction from plugin host | malware / local user / reverse engineer достаёт private key и подписывает легитимные requests | mTLS cert binding, revocation, device management, native C++ crypto adapter (FFI/HMAC) in clients | клиент всегда hostile environment; в текущей FFI-реализации ключ вычисляется из свойств железа, но аппаратного TPM/Keystore пока нет | Medium | High | **High** |
-| R6 | License key theft / first activation hijack | украденный `license_key` используется для первичной activation до владельца | activation flow, DB-side state, activation limits, first-activation security logging | initial activation still depends on possession of license key + client environment; no mandatory customer confirmation | Medium | Medium | **Medium** |
-| R7 | Webhook forgery or webhook secret reuse | attacker crafts `payment.succeeded` / `payment.refunded` with leaked secret | dedicated webhook secret, signed freshness headers, replay/idempotency guard, audit logs, optional source-IP allowlist | provider-native signature/cert validation absent; allowlist is optional rollout, not guaranteed by code alone | Low | High | **Low-Medium** |
-| R8 | Signer token leakage | attacker with `LICENSE_SIGNER_AUTH_TOKEN` can call `cert-signer` directly | bearer auth, signed timestamp+nonce HMAC layer, replay guard, optional Strapi↔signer mTLS, private network assumption | mTLS is not mandatory by default and managed workload identity / secretless auth still not present | Low | High | **Low** |
-| R9 | Download URL leakage | signed S3/object URL shared outside intended customer | authenticated download endpoint, active license check, expiring signed URL | once issued, signed URL is bearer access until expiry | Medium | Medium | **Medium** |
-| R10 | Redis unavailable reduces replay defense | nonce check silently degrades when Redis plugin unavailable | warning logs, route continues | fail-open behavior in `verify-nonce` | Medium | Medium | **Medium** |
-| R11 | Response-signing trust misuse | client treats `_signature` as full origin guarantee while request channel is weak | HMAC response signing middleware | response signing is integrity signal, not replacement for strong transport/request auth | Low | Medium | **Low-Medium** |
-| R12 | Production issuer secret compromise | attacker gets `intermediate_ca_key` / `step-ca` password from runtime host | bundle verification, no root key on host, audit scripts | intermediate remains highly sensitive; file-backed custody still risky | Low-Medium | Critical | **High** |
+| ID | Risk | Likelihood | Impact | Residual | Key Controls | Main Gap |
+|---|---|---|---|---|---|---|
+| [R1](#r1) | Direct Strapi Exposure | Low-Med | High | **Medium** | `verify-mtls`, local Docker bind | Bypass via production routing |
+| [R2](#r2) | Ingress Header Spoofing | Low-Med | High | **Medium** | Proxy shared secret, header strip | Leaked secret or ingress miswiring |
+| [R3](#r3) | mTLS Not Required | Low-Med | High | **Medium** | `LICENSE_REQUIRE_MTLS=true` | Manual config overrides |
+| [R4](#r4) | Replay / Stale Requests | Low-Med | Med | **Medium** | Nonce freshness checks, Redis | Redis outage / client time skew |
+| [R5](#r5) | Client Key Extraction | Med | High | **High** | Device binding, FFI C++ crypto | Hostile client environment (no TPM) |
+| [R6](#r6) | First Activation Hijack | Med | Med | **Medium** | Staged activations, audit logs | No out-of-band owner verification |
+| [R7](#r7) | Webhook Forgery | Low | High | **Low-Med** | Dedicated secret, replay protection | Missing provider-native signature validation |
+| [R8](#r8) | Signer Token Leakage | Low | High | **Low** | Signed HMAC auth, private network | Non-mandatory signer mTLS |
+| [R9](#r9) | S3 Download URL Leakage | Med | Med | **Medium** | Time-limited presigned S3 URLs | Sharing of URLs before expiration |
+| [R10](#r10) | Redis Outage (No Replay) | Med | Med | **Medium** | Log warnings, route continuity | Fail-open behavior in `verify-nonce` |
+| [R11](#r11) | Response-Signing Misuse | Low | Med | **Low-Med** | HMAC signature middleware | Client relying on signature over weak transport |
+| [R12](#r12) | Issuer CA Key Compromise | Low-Med | Critical | **High** | Offline root, server bundle script | File-backed intermediate keys on host |
+
 
 ### Detailed notes by risk
 
