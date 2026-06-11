@@ -1,6 +1,6 @@
 ## Security Risk Matrix
 
-Updated: 2026-03-06
+Updated: 2026-06-11
 
 ### Purpose
 
@@ -63,7 +63,7 @@ Updated: 2026-03-06
 
 | Area | Current state | Why still incomplete |
 |---|---|---|
-| Client private key storage | Not solved in this repo | здесь нет runtime/client app кода для Keychain / DPAPI / TPM / Secure Enclave integration |
+| Client private key storage | Partially addressed in clients | добавлены Tauri и Flutter клиенты с нативным FFI C++ крипто-адаптером (HMAC/JNI/FFI), но аппаратного Keychain/DPAPI/TPM/Secure Enclave пока нет |
 | First activation hijack prevention | Partially reduced | есть server-side audit signal, но нет полноценного customer notification / explicit approval / out-of-band confirmation flow |
 | Webhook provider validation | Partially reduced | есть собственная HMAC + freshness + replay + optional IP allowlist, но нет provider-native signature/cert verification |
 | Webhook ingress restriction rollout | Operationally incomplete | `LICENSE_WEBHOOK_ALLOWED_IPS` optional; production может не включить allowlist или provider IP ranges могут быть нестабильны |
@@ -80,7 +80,7 @@ Updated: 2026-03-06
 | R2 | Header spoofing for mTLS identity | при ошибке reverse-proxy/network policy attacker эмулирует mTLS context заголовками | `verify-mtls` checks cert serial/fingerprint and revocation; trusted proxy shared secret required | compromise now depends mostly on leaked proxy secret or broken ingress discipline | Low-Medium | High | **Medium** |
 | R3 | mTLS not globally required | если `LICENSE_REQUIRE_MTLS=false`, validate/heartbeat могут уйти в weaker trust path | `assertProofOfPossession`, request signature by client public key | risk now mostly shifts to misconfiguration/override rather than insecure default | Low-Medium | High | **Medium** |
 | R4 | Replay / stale signed request reuse | валидный signed request может быть переигран в допустимом окне | strict `verify-freshness`, timestamp window, nonce reservation, proof-of-possession | residual risk shifts to Redis outage/monitoring and client contract drift | Low-Medium | Medium | **Medium** |
-| R5 | Client private key extraction from plugin host | malware / local user / reverse engineer достаёт private key и подписывает легитимные requests | mTLS cert binding, revocation, device management | клиент всегда hostile environment; нет гарантии hardware-backed key storage | Medium | High | **High** |
+| R5 | Client private key extraction from plugin host | malware / local user / reverse engineer достаёт private key и подписывает легитимные requests | mTLS cert binding, revocation, device management, native C++ crypto adapter (FFI/HMAC) in clients | клиент всегда hostile environment; в текущей FFI-реализации ключ вычисляется из свойств железа, но аппаратного TPM/Keystore пока нет | Medium | High | **High** |
 | R6 | License key theft / first activation hijack | украденный `license_key` используется для первичной activation до владельца | activation flow, DB-side state, activation limits, first-activation security logging | initial activation still depends on possession of license key + client environment; no mandatory customer confirmation | Medium | Medium | **Medium** |
 | R7 | Webhook forgery or webhook secret reuse | attacker crafts `payment.succeeded` / `payment.refunded` with leaked secret | dedicated webhook secret, signed freshness headers, replay/idempotency guard, audit logs, optional source-IP allowlist | provider-native signature/cert validation absent; allowlist is optional rollout, not guaranteed by code alone | Low | High | **Low-Medium** |
 | R8 | Signer token leakage | attacker with `LICENSE_SIGNER_AUTH_TOKEN` can call `cert-signer` directly | bearer auth, signed timestamp+nonce HMAC layer, replay guard, optional Strapi↔signer mTLS, private network assumption | mTLS is not mandatory by default and managed workload identity / secretless auth still not present | Low | High | **Low** |
