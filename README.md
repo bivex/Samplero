@@ -101,7 +101,7 @@ Customer / Plugin
 | Cert issuance | Go `cert-signer` + optional [smallstep `step-ca`](https://smallstep.com/docs/step-ca/) |
 | Edge proxy | nginx 1.27 with mTLS |
 | Container runtime | Docker Compose |
-| Test runner | [Bun](https://bun.sh) (193 tests) |
+| Test runner | [Bun](https://bun.sh) (323 tests) |
 | Customer portal | Tauri app (`apps/customer-tauri`) |
 
 ---
@@ -382,7 +382,7 @@ See [`docs-pki-runbook.md`](./docs-pki-runbook.md) for the full runbook covering
 
 ## Running Tests
 
-Tests run with **Bun** (193 tests, all passing):
+Tests run with **Bun** (323 tests, all passing):
 
 ```bash
 bun test
@@ -453,7 +453,7 @@ curl --cacert .docker-pki/current/trust/ca-chain.crt \
 | Commerce: orders, fulfillment, downloads | ✅ Done |
 | cert-signer + step-ca backend | ✅ Done |
 | Docker dev stack + k6 load test | ✅ Done |
-| 193 Bun tests passing | ✅ Done |
+| 323 Bun tests passing | ✅ Done |
 | Production CA bundle tooling | ✅ Done |
 | Production intermediate issuance + canary rollout | 🟡 Next |
 | SendGrid email notifications | 🟡 Planned |

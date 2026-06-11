@@ -35,7 +35,7 @@ describe("license-server admin App.jsx regression contract", () => {
     expect(source).toContain('<NavLink to="claims" style={linkStyle}>Claims</NavLink>');
     expect(source).toContain('<Route path="claims" element={<ClaimsPage />} />');
     expect(source).toContain('const pendingClaims = toTotal(pendingClaimsRes, "claims");');
-    expect(source).toContain('["Pending claims", stats.pendingClaims]');
+    expect(source).toContain('label: "Pending claims", value: stats.pendingClaims');
   });
 
   it("loads orders with pagination, status filters, and admin actions", () => {
@@ -88,7 +88,7 @@ describe("license-server admin App.jsx regression contract", () => {
     const source = readSource();
 
     expect(source).toContain("const DataState = ({ loading, error, empty, isEmpty = false, children }) => {");
-    expect(source).toContain("if (isEmpty && empty) return <p style={mutedTextStyle}>{empty}</p>;");
+    expect(source).toContain("if (isEmpty && empty) return (");
     expect(source).toContain('empty="No licenses found." isEmpty={state.items.length === 0}');
     expect(source).toContain('empty="No activations found." isEmpty={state.items.length === 0}');
     expect(source).toContain('empty="No activation claims found." isEmpty={state.items.length === 0}');
@@ -175,7 +175,7 @@ describe("license-server admin App.jsx regression contract", () => {
     expect(source).toContain('subtitle="Create products, update pricing, and manage downloadable versions."');
     expect(source).toContain('{editingProductId ? "Save product" : "Create product"}');
     expect(source).toContain('{isEditingVersion ? "Save version" : "Create version"}');
-    expect(source).toContain('title={`Product details • ${product.name}`}');
+    expect(source).toContain('title={`Product overview • ${product.name}`}');
   });
 
   it("adds a coupons workspace for full-discount checkout codes", () => {

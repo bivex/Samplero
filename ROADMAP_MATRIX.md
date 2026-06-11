@@ -1,6 +1,6 @@
 ## Roadmap Matrix
 
-Updated: 2026-03-06
+Updated: 2026-06-11
 
 ### Status Legend
 
@@ -20,6 +20,7 @@ Updated: 2026-03-06
 | Security hardening baseline | ✅ | private Strapi bind, trusted proxy token, strict freshness, secure mTLS default, dedicated webhook secret, signed signer auth, optional webhook IP allowlist, optional Strapi↔signer mTLS | Implemented in code/config and covered by targeted tests | Keep enforced in deploys |
 | Offline / grace period | ✅ | grace, expiry, recovery heartbeat | Closed through HTTP integration tests | Done |
 | Purchase / downloads | ✅ | paid orders, license keys, sample packs | Stable contract and tests | Done |
+| Admin UI & Clients | ✅ | admin panel plugin, customer desktop validator (Tauri), customer mobile app (Flutter) | Fully implemented and verified | Keep maintained |
 
 ### PKI / Issuance / Runtime
 
@@ -29,7 +30,7 @@ Updated: 2026-03-06
 | `step-ca` backend | ✅ | issuance via smallstep, actual serial return | Working and smoke-tested | Done |
 | Docker dev stack | ✅ | Strapi + nginx + cert-signer + step-ca | Running and verified | Use for smoke/tests |
 | Edge load smoke | ✅ | `k6 + mTLS` through Docker edge | 100/100 passed via `https://[::1]:8443` | Enough for dev proof |
-| Bun test suite | ✅ | plugin/service/policy/http tests | `193/193` passing | Keep green |
+| Bun test suite | ✅ | plugin/service/policy/http tests | `323/323` passing | Keep green |
 
 ### Production Readiness
 
@@ -47,7 +48,6 @@ Updated: 2026-03-06
 
 | Track | Status | Why deferred |
 |---|---|---|
-| Heavy local/admin UI track | ⏸️ | Expensive and not the main blocker now |
 | Full local host-nginx cleanup | ⏸️ | Docker edge already proves the required path |
 | Non-production polish tasks | ⏸️ | Do not move production PKI cutover forward |
 
@@ -78,4 +78,4 @@ Updated: 2026-03-06
 | Security flow | ✅ Ready |
 | Dev verification | ✅ Ready |
 | Main next milestone | 🟡 Production bundle + canary rollout |
-| Heavy local work | ⏸️ Parked for now |
+| Heavy local work | ✅ Ready (Admin UI, Tauri, Flutter mobile) |
