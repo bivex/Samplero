@@ -74,20 +74,20 @@ Updated: 2026-06-11
 
 ### Risk matrix
 
-| ID | Risk | Likelihood | Impact | Residual | Key Controls | Main Gap |
-|---|---|---|---|---|---|---|
-| [R1](#r1) | Direct Strapi Exposure | Low-Med | High | **Medium** | `verify-mtls`, local Docker bind | Bypass via production routing |
-| [R2](#r2) | Ingress Header Spoofing | Low-Med | High | **Medium** | Proxy shared secret, header strip | Leaked secret or ingress miswiring |
-| [R3](#r3) | mTLS Not Required | Low-Med | High | **Medium** | `LICENSE_REQUIRE_MTLS=true` | Manual config overrides |
-| [R4](#r4) | Replay / Stale Requests | Low-Med | Med | **Medium** | Nonce freshness checks, Redis | Redis outage / client time skew |
-| [R5](#r5) | Client Key Extraction | Med | High | **High** | Device binding, FFI C++ crypto | Hostile client environment (no TPM) |
-| [R6](#r6) | First Activation Hijack | Med | Med | **Medium** | Staged activations, audit logs | No out-of-band owner verification |
-| [R7](#r7) | Webhook Forgery | Low | High | **Low-Med** | Dedicated secret, replay protection | Missing provider-native signature validation |
-| [R8](#r8) | Signer Token Leakage | Low | High | **Low** | Signed HMAC auth, private network | Non-mandatory signer mTLS |
-| [R9](#r9) | S3 Download URL Leakage | Med | Med | **Medium** | Time-limited presigned S3 URLs | Sharing of URLs before expiration |
-| [R10](#r10) | Redis Outage (No Replay) | Med | Med | **Medium** | Log warnings, route continuity | Fail-open behavior in `verify-nonce` |
-| [R11](#r11) | Response-Signing Misuse | Low | Med | **Low-Med** | HMAC signature middleware | Client relying on signature over weak transport |
-| [R12](#r12) | Issuer CA Key Compromise | Low-Med | Critical | **High** | Offline root, server bundle script | File-backed intermediate keys on host |
+| ID          | Risk                           | Likelihood | Impact   | Residual     | Key Controls                                | Main Gap                                         |
+|-------------|--------------------------------|------------|----------|--------------|---------------------------------------------|--------------------------------------------------|
+| [R1](#r1)   | Direct Strapi Exposure         | Low-Med    | High     | **Medium**   | `verify-mtls`, local Docker bind            | Bypass via production routing                    |
+| [R2](#r2)   | Ingress Header Spoofing        | Low-Med    | High     | **Medium**   | Proxy shared secret, header strip           | Leaked secret or ingress miswiring               |
+| [R3](#r3)   | mTLS Not Required              | Low-Med    | High     | **Medium**   | `LICENSE_REQUIRE_MTLS=true`                 | Manual config overrides                          |
+| [R4](#r4)   | Replay / Stale Requests        | Low-Med    | Med      | **Medium**   | Nonce freshness checks, Redis               | Redis outage / client time skew                  |
+| [R5](#r5)   | Client Key Extraction          | Med        | High     | **High**     | Device binding, FFI C++ crypto              | Hostile client environment (no TPM)              |
+| [R6](#r6)   | First Activation Hijack        | Med        | Med      | **Medium**   | Staged activations, audit logs              | No out-of-band owner verification                |
+| [R7](#r7)   | Webhook Forgery                | Low        | High     | **Low-Med**  | Dedicated secret, replay protection         | Missing provider-native signature validation     |
+| [R8](#r8)   | Signer Token Leakage           | Low        | High     | **Low**      | Signed HMAC auth, private network           | Non-mandatory signer mTLS                        |
+| [R9](#r9)   | S3 Download URL Leakage        | Med        | Med      | **Medium**   | Time-limited presigned S3 URLs              | Sharing of URLs before expiration                |
+| [R10](#r10) | Redis Outage (No Replay)       | Med        | Med      | **Medium**   | Log warnings, route continuity              | Fail-open behavior in `verify-nonce`             |
+| [R11](#r11) | Response-Signing Misuse        | Low        | Med      | **Low-Med**  | HMAC signature middleware                   | Client relying on signature over weak transport  |
+| [R12](#r12) | Issuer CA Key Compromise       | Low-Med    | Critical | **High**     | Offline root, server bundle script          | File-backed intermediate keys on host            |
 
 
 ### Detailed notes by risk
