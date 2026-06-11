@@ -92,7 +92,7 @@ Updated: 2026-06-11
 
 ### Detailed notes by risk
 
-#### R1 — Direct Strapi exposure bypasses nginx trust boundary
+#### R1 — Direct Strapi exposure bypasses nginx trust boundary <a id="r1"></a>
 
 Why it matters:
 
@@ -108,7 +108,7 @@ Recommended actions:
 3. preserve this as a hard deployment invariant
 4. alert on unexpected external reachability of Strapi port
 
-#### R2 — Header spoofing for mTLS identity
+#### R2 — Header spoofing for mTLS identity <a id="r2"></a>
 
 Why it matters:
 
@@ -122,7 +122,7 @@ Recommended actions:
 2. enforce network ACLs so only nginx can reach Strapi
 3. ensure all reverse-proxy configs preserve header stripping behavior
 
-#### R3 — mTLS not globally required
+#### R3 — mTLS not globally required <a id="r3"></a>
 
 Observed state:
 
@@ -136,7 +136,7 @@ Recommended actions:
 2. treat any non-mTLS validate/heartbeat as suspicious or unsupported
 3. keep signed fallback only for controlled migration/canary windows
 
-#### R4 — Replay / stale signed request reuse
+#### R4 — Replay / stale signed request reuse <a id="r4"></a>
 
 Observed state:
 
@@ -151,7 +151,7 @@ Recommended actions:
 2. monitor Redis/freshness-store health as security-critical
 3. alert on repeated freshness rejections / replay attempts
 
-#### R5 — Client private key extraction
+#### R5 — Client private key extraction <a id="r5"></a>
 
 Reality check:
 
@@ -165,7 +165,7 @@ Recommended actions:
 3. make device revoke/self-service easy
 4. alert on unusual activation churn / geography / fingerprint changes
 
-#### R6 — License key theft
+#### R6 — License key theft <a id="r6"></a>
 
 Why it matters:
 
@@ -180,7 +180,7 @@ Recommended actions:
 3. expose device management and revoke flow clearly
 4. consider email confirmation for first activation on high-value products
 
-#### R7 — Webhook forgery / secret reuse
+#### R7 — Webhook forgery / secret reuse <a id="r7"></a>
 
 Observed state:
 
@@ -196,7 +196,7 @@ Recommended actions:
 3. alert on repeated stale/replay/IP-blocked webhook events
 4. treat missing allowlist rollout as deployment debt when provider IPs are predictable
 
-#### R8 — Signer token leakage
+#### R8 — Signer token leakage <a id="r8"></a>
 
 Why it matters:
 
@@ -209,7 +209,7 @@ Recommended actions:
 2. keep signer reachable only on private network
 3. keep Strapi↔signer mTLS enabled where possible, or move further to short-lived service credentials
 
-#### R9 — Download URL leakage
+#### R9 — Download URL leakage <a id="r9"></a>
 
 Observed state:
 
@@ -222,7 +222,7 @@ Recommended actions:
 2. avoid logging full signed URLs
 3. consider one-time download tokens for very sensitive assets
 
-#### R10 — Redis unavailable reduces replay defense
+#### R10 — Redis unavailable reduces replay defense <a id="r10"></a>
 
 Observed state:
 
@@ -233,7 +233,7 @@ Recommended actions:
 1. fail closed for freshness checks on critical security routes
 2. monitor Redis availability as security dependency, not only performance dependency
 
-#### R11 — Response-signing misuse
+#### R11 — Response-signing misuse <a id="r11"></a>
 
 Observed state:
 
@@ -245,7 +245,7 @@ Recommended actions:
 1. document response signing as additive integrity signal
 2. do not rely on it to compensate for weak ingress boundary
 
-#### R12 — Production issuer secret compromise
+#### R12 — Production issuer secret compromise <a id="r12"></a>
 
 Observed state:
 
