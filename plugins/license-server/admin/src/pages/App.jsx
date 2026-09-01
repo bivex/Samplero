@@ -53,12 +53,25 @@ const cardStyle = {
   boxShadow: "0 1px 2px rgba(0,0,0,.03)",
   transition: "all 0.15s ease",
 };
-const navStyle = { display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 4 };
+const navHeaderStyle = {
+  background: themeColors.surface,
+  borderBottom: `1px solid ${themeColors.border}`,
+  padding: "0 32px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 16,
+  minHeight: 52,
+  flexWrap: "wrap",
+};
+const navStyle = { display: "flex", gap: 4, flexWrap: "wrap", alignItems: "center", padding: "8px 0" };
 const listFooterStyle = { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" };
 
 /* ── Navigation links ───────────────────────────────────── */
 const linkStyle = ({ isActive }) => ({
-  padding: "6px 14px",
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "6px 12px",
   borderRadius: 6,
   textDecoration: "none",
   fontSize: 13,
@@ -2648,17 +2661,23 @@ const ClaimsPage = () => {
 };
 
 const App = () => (
-  <div style={{ padding: 24, color: themeColors.text }}>
-    <nav style={navStyle}>
-      <NavLink to="dashboard" style={linkStyle}>Dashboard</NavLink>
-      <NavLink to="support" style={linkStyle}>Support</NavLink>
-      <NavLink to="licenses" style={linkStyle}>Licenses</NavLink>
-      <NavLink to="activations" style={linkStyle}>Activations</NavLink>
-      <NavLink to="claims" style={linkStyle}>Claims</NavLink>
-      <NavLink to="orders" style={linkStyle}>Orders</NavLink>
-      <NavLink to="products" style={linkStyle}>Products</NavLink>
-      <NavLink to="coupons" style={linkStyle}>Coupons</NavLink>
-    </nav>
+  <div style={{ color: themeColors.text, minHeight: "100%" }}>
+    <header style={navHeaderStyle}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ fontSize: 16 }}>🔑</span>
+        <span style={{ fontWeight: 700, fontSize: 14, color: themeColors.text, letterSpacing: "-0.01em" }}>License Server</span>
+      </div>
+      <nav aria-label="Plugin navigation" style={navStyle}>
+        <NavLink to="dashboard" style={linkStyle}>Dashboard</NavLink>
+        <NavLink to="support" style={linkStyle}>Support</NavLink>
+        <NavLink to="licenses" style={linkStyle}>Licenses</NavLink>
+        <NavLink to="activations" style={linkStyle}>Activations</NavLink>
+        <NavLink to="claims" style={linkStyle}>Claims</NavLink>
+        <NavLink to="orders" style={linkStyle}>Orders</NavLink>
+        <NavLink to="products" style={linkStyle}>Products</NavLink>
+        <NavLink to="coupons" style={linkStyle}>Coupons</NavLink>
+      </nav>
+    </header>
     <Routes>
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<DashboardPage />} />
