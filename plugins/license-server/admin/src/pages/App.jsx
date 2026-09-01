@@ -657,8 +657,8 @@ const PageShell = ({ title, subtitle, actions, children }) => (
 
 const DataState = ({ loading, error, empty, isEmpty = false, children }) => {
   if (loading) return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "20px 0", color: themeColors.textMuted, fontSize: 13 }}>
-      <span style={{
+    <div role="status" aria-live="polite" style={{ display: "flex", alignItems: "center", gap: 10, padding: "20px 0", color: themeColors.textMuted, fontSize: 13 }}>
+      <span aria-hidden="true" style={{
         display: "inline-block",
         width: 16,
         height: 16,
@@ -667,11 +667,11 @@ const DataState = ({ loading, error, empty, isEmpty = false, children }) => {
         borderRadius: "50%",
         animation: "ls-spin 0.7s linear infinite",
       }} />
-      Loading…
+      <span>Loading…</span>
     </div>
   );
   if (error) return (
-    <div style={{
+    <div role="alert" aria-live="assertive" style={{
       display: "flex",
       alignItems: "center",
       gap: 8,
@@ -682,11 +682,11 @@ const DataState = ({ loading, error, empty, isEmpty = false, children }) => {
       color: themeColors.danger,
       fontSize: 13,
     }}>
-      ⚠ {error}
+      <span aria-hidden="true">⚠</span> {error}
     </div>
   );
   if (isEmpty && empty) return (
-    <div style={{
+    <div role="status" style={{
       padding: "32px 20px",
       textAlign: "center",
       color: themeColors.textMuted,
@@ -792,7 +792,7 @@ const StatusBadge = ({ value }) => {
     bg = themeColors.primarySoft; border = themeColors.primaryBorder; color = themeColors.primary; icon = "●";
   }
   return (
-    <span style={{
+    <span role="status" aria-label={`Status: ${value || "unknown"}`} style={{
       display: "inline-flex",
       alignItems: "center",
       gap: 5,
@@ -806,7 +806,7 @@ const StatusBadge = ({ value }) => {
       letterSpacing: "0.04em",
       whiteSpace: "nowrap",
     }}>
-      <span style={{ fontSize: 9 }}>{icon}</span>{value || "-"}
+      <span aria-hidden="true" style={{ fontSize: 9 }}>{icon}</span>{value || "-"}
     </span>
   );
 };
@@ -979,35 +979,37 @@ const DashboardPage = () => {
       <PageShell
         title="Dashboard"
         subtitle="Overview of licenses, activations, claims, products, and pending orders."
-        actions={<button style={buttonStyle} onClick={load}>↻ Refresh</button>}
+        actions={<button type="button" style={buttonStyle} onClick={load} aria-label="Refresh dashboard">↻ Refresh</button>}
       >
         <DataState loading={state.loading} error={state.error}>
-          <div style={cardGridStyle}>
-            {statCards.map(({ label, value, soft, icon }) => (
-              <div key={label} style={{
-                ...cardStyle,
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ ...mutedTextStyle, fontWeight: 500, fontSize: 13 }}>{label}</span>
-                  <span style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 32,
-                    height: 32,
-                    borderRadius: 8,
-                    background: soft,
-                    fontSize: 16,
-                    lineHeight: 1,
-                  }}>{icon}</span>
-                </div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: themeColors.text, lineHeight: 1 }}>{value ?? 0}</div>
-              </div>
-            ))}
-          </div>
+          <section aria-label="Key statistics">
+            <ul style={{ ...cardGridStyle, listStyle: "none", padding: 0, margin: 0 }}>
+              {statCards.map(({ label, value, soft, icon }) => (
+                <li key={label} style={{
+                  ...cardStyle,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <h2 style={{ ...mutedTextStyle, fontWeight: 500, fontSize: 13, margin: 0 }}>{label}</h2>
+                    <span aria-hidden="true" style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      background: soft,
+                      fontSize: 16,
+                      lineHeight: 1,
+                    }}>{icon}</span>
+                  </div>
+                  <p style={{ fontSize: 28, fontWeight: 700, color: themeColors.text, lineHeight: 1, margin: 0 }}>{value ?? 0}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
         </DataState>
       </PageShell>
     </>
@@ -1124,7 +1126,7 @@ const SupportPage = () => {
   } : null;
 
   const actions = (
-    <form style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-start" }} onSubmit={handleSubmit}>
+    <form role="search" aria-label="Support search" style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-start" }} onSubmit={handleSubmit}>
       <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}>
         <span>Support search</span>
         <input style={inputStyle} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Email, license key, order ref, or device" />
@@ -1132,7 +1134,7 @@ const SupportPage = () => {
       </label>
       <div style={{ display: "flex", gap: 8, marginTop: 20 }}>
         <button style={state.loading ? disabledButtonStyle : buttonStyle} type="submit" disabled={state.loading}>{state.loading ? "Searching…" : "Search"}</button>
-        <button style={buttonStyle} type="button" onClick={clearSearch}>Clear</button>
+        <button type="button" style={buttonStyle} onClick={clearSearch}>Clear</button>
       </div>
     </form>
   );
@@ -1152,7 +1154,7 @@ const SupportPage = () => {
             <strong>Support coupon helper</strong>
             <span style={mutedTextStyle}>Generate a one-time full-discount coupon so the customer can redeem it from the pending order page.</span>
           </div>
-          <button style={isCreatingCoupon ? disabledButtonStyle : buttonStyle} onClick={() => issueSupportCoupon(order)} disabled={isCreatingCoupon}>{isCreatingCoupon ? "Creating…" : issuedCoupon ? "Create replacement coupon" : "Create one-time coupon"}</button>
+          <button type="button" style={isCreatingCoupon ? disabledButtonStyle : buttonStyle} onClick={() => issueSupportCoupon(order)} disabled={isCreatingCoupon}>{isCreatingCoupon ? "Creating…" : issuedCoupon ? "Create replacement coupon" : "Create one-time coupon"}</button>
         </div>
         {issuedCoupon ? (
           <div style={detailGridStyle}>
@@ -1469,22 +1471,22 @@ const LicensesPage = () => {
         </select>
       </label>
       {state.search.trim() ? <Link style={buttonLinkStyle} to={buildSupportHref(state.search)}>Open in Support</Link> : null}
-      <button style={buttonStyle} onClick={load}>Refresh</button>
+      <button type="button" style={buttonStyle} onClick={load} aria-label="Refresh licenses list">Refresh</button>
     </>
   );
 
   return (
     <PageShell title="Licenses" subtitle="Manage issued licenses." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No licenses found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Licenses">
           <thead>
             <tr>
-              <th style={thStyle}>Key</th>
-              <th style={thStyle}>User</th>
-              <th style={thStyle}>Product</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Activations</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>Key</th>
+              <th scope="col" style={thStyle}>User</th>
+              <th scope="col" style={thStyle}>Product</th>
+              <th scope="col" style={thStyle}>Status</th>
+              <th scope="col" style={thStyle}>Activations</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -1500,8 +1502,8 @@ const LicensesPage = () => {
                     <td style={cellStyle}>{license.activations?.length || 0}</td>
                     <td style={cellStyle}>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                        <button style={buttonStyle} onClick={() => toggleDetails(license.id)}>{isSelected ? "Hide" : "View"}</button>
-                        {license.status === "active" ? <button style={dangerButtonStyle} onClick={() => revoke(license)}>Revoke</button> : null}
+                        <button type="button" style={buttonStyle} onClick={() => toggleDetails(license.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {license.status === "active" ? <button type="button" style={dangerButtonStyle} onClick={() => revoke(license)}>Revoke</button> : null}
                       </div>
                     </td>
                   </tr>
@@ -1534,8 +1536,8 @@ const LicensesPage = () => {
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
-            <button style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
-            <button style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
+            <button type="button" style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
+            <button type="button" style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
           </div>
         </div>
       </DataState>
@@ -1661,22 +1663,22 @@ const ActivationsPage = () => {
         </select>
       </label>
       {state.search.trim() ? <Link style={buttonLinkStyle} to={buildSupportHref(state.search)}>Open in Support</Link> : null}
-      <button style={buttonStyle} onClick={load}>Refresh</button>
+      <button type="button" style={buttonStyle} onClick={load} aria-label="Refresh activations list">Refresh</button>
     </>
   );
 
   return (
     <PageShell title="Activations" subtitle="Inspect device activations and their current state." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No activations found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Activations">
           <thead>
             <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>User</th>
-              <th style={thStyle}>Product</th>
-              <th style={thStyle}>Device</th>
-              <th style={thStyle}>Last check-in</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>ID</th>
+              <th scope="col" style={thStyle}>User</th>
+              <th scope="col" style={thStyle}>Product</th>
+              <th scope="col" style={thStyle}>Device</th>
+              <th scope="col" style={thStyle}>Last check-in</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -1692,11 +1694,11 @@ const ActivationsPage = () => {
                     <td style={cellStyle}>{activation.last_checkin ? formatDateTime(activation.last_checkin) : <span style={{ color: themeColors.textSubtle }}>Never</span>}</td>
                     <td style={cellStyle}>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                        <button style={buttonStyle} onClick={() => toggleDetails(activation.id)}>{isSelected ? "Hide" : "View"}</button>
+                        <button type="button" style={buttonStyle} onClick={() => toggleDetails(activation.id)}>{isSelected ? "Hide" : "View"}</button>
                         {activation.revoked_at ? (
                           <StatusBadge value="revoked" />
                         ) : (
-                          <button style={dangerButtonStyle} onClick={() => revoke(activation)}>Revoke</button>
+                          <button type="button" style={dangerButtonStyle} onClick={() => revoke(activation)}>Revoke</button>
                         )}
                       </div>
                     </td>
@@ -1723,8 +1725,8 @@ const ActivationsPage = () => {
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
-            <button style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
-            <button style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
+            <button type="button" style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
+            <button type="button" style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
           </div>
         </div>
       </DataState>
@@ -1966,19 +1968,19 @@ const ProductsPage = () => {
           Active and available for new licenses/orders
         </label>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button style={buttonStyle} onClick={submitProduct}>{editingProductId ? "Save product" : "Create product"}</button>
-          <button style={buttonStyle} onClick={resetProductEditor}>Reset</button>
+          <button type="button" style={buttonStyle} onClick={submitProduct}>{editingProductId ? "Save product" : "Create product"}</button>
+          <button type="button" style={buttonStyle} onClick={resetProductEditor}>Reset</button>
         </div>
       </div>
       <DataState loading={state.loading} error={state.error} empty="No products found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Products">
           <thead>
             <tr>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Type</th>
-              <th style={thStyle}>Price</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>Name</th>
+              <th scope="col" style={thStyle}>Type</th>
+              <th scope="col" style={thStyle}>Price</th>
+              <th scope="col" style={thStyle}>Status</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -1999,9 +2001,9 @@ const ProductsPage = () => {
                     <td style={cellStyle}><StatusBadge value={product.is_active ? "active" : "inactive"} /></td>
                     <td style={cellStyle}>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                        <button style={buttonStyle} onClick={() => toggleDetails(product.id)}>{isSelected ? "Hide" : "Versions"}</button>
-                        <button style={buttonStyle} onClick={() => editProduct(product)}>Edit</button>
-                        <button style={dangerButtonStyle} onClick={() => removeProduct(product)}>Delete</button>
+                        <button type="button" style={buttonStyle} onClick={() => toggleDetails(product.id)}>{isSelected ? "Hide" : "Versions"}</button>
+                        <button type="button" style={buttonStyle} onClick={() => editProduct(product)}>Edit</button>
+                        <button type="button" style={dangerButtonStyle} onClick={() => removeProduct(product)}>Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -2153,14 +2155,14 @@ const CouponsPage = () => {
   };
 
   return (
-    <PageShell title="Coupons" subtitle="Create admin-issued full-discount coupons that instantly mark orders as paid." actions={<><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Status</span><select style={selectStyle} value={state.status} onChange={(event) => setState((prev) => ({ ...prev, status: event.target.value }))}>{COUPON_STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><button style={buttonStyle} onClick={load}>Refresh</button></>}>
+    <PageShell title="Coupons" subtitle="Create admin-issued full-discount coupons that instantly mark orders as paid." actions={<><label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Status</span><select style={selectStyle} value={state.status} onChange={(event) => setState((prev) => ({ ...prev, status: event.target.value }))}>{COUPON_STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label><button type="button" style={buttonStyle} onClick={load} aria-label="Refresh coupons list">Refresh</button></>}>
       <div style={formSectionStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <div>
             <strong>{editingCouponId ? `Edit coupon #${editingCouponId}` : "Create coupon"}</strong>
             <div style={mutedTextStyle}>These coupons cover 100% of the order total and use the same fulfillment path as a paid order.</div>
           </div>
-          {editingCouponId ? <button style={buttonStyle} onClick={resetEditor}>Cancel edit</button> : null}
+          {editingCouponId ? <button type="button" style={buttonStyle} onClick={resetEditor}>Cancel edit</button> : null}
         </div>
         <div style={formGridStyle}>
           <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Code</span><input style={inputStyle} value={couponForm.code} onChange={handleFieldChange("code")} placeholder="FULLFREE2026" /></label>
@@ -2171,19 +2173,19 @@ const CouponsPage = () => {
         <label style={checkboxLabelStyle}><input type="checkbox" checked={couponForm.is_active} onChange={handleFieldChange("is_active")} />Coupon is active and redeemable when other constraints pass</label>
         <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}><span>Notes</span><textarea style={textareaStyle} value={couponForm.notes} onChange={handleFieldChange("notes")} placeholder="Campaign notes, partner name, or internal approval context" /></label>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-          <button style={buttonStyle} onClick={submitCoupon}>{editingCouponId ? "Save coupon" : "Create coupon"}</button>
+          <button type="button" style={buttonStyle} onClick={submitCoupon}>{editingCouponId ? "Save coupon" : "Create coupon"}</button>
           <span style={mutedTextStyle}>Full-discount only</span>
         </div>
       </div>
       <DataState loading={state.loading} error={state.error} empty="No coupons found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Coupons">
           <thead>
             <tr>
-              <th style={thStyle}>Code</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Redemptions</th>
-              <th style={thStyle}>Window</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>Code</th>
+              <th scope="col" style={thStyle}>Status</th>
+              <th scope="col" style={thStyle}>Redemptions</th>
+              <th scope="col" style={thStyle}>Window</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -2201,8 +2203,8 @@ const CouponsPage = () => {
                 </td>
                 <td style={cellStyle}>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                    <button style={buttonStyle} onClick={() => editCoupon(coupon)}>Edit</button>
-                    <button style={coupon.is_active ? dangerButtonStyle : buttonStyle} onClick={() => toggleCouponActive(coupon)}>
+                    <button type="button" style={buttonStyle} onClick={() => editCoupon(coupon)}>Edit</button>
+                    <button type="button" style={coupon.is_active ? dangerButtonStyle : buttonStyle} onClick={() => toggleCouponActive(coupon)}>
                       {coupon.is_active ? "Deactivate" : "Activate"}
                     </button>
                   </div>
@@ -2352,23 +2354,23 @@ const OrdersPage = () => {
         </select>
       </label>
       {state.search.trim() ? <Link style={buttonLinkStyle} to={buildSupportHref(state.search)}>Open in Support</Link> : null}
-      <button style={buttonStyle} onClick={load}>Refresh</button>
+      <button type="button" style={buttonStyle} onClick={load} aria-label="Refresh orders list">Refresh</button>
     </>
   );
 
   return (
     <PageShell title="Orders" subtitle="Review checkout status and manually finalize or refund purchases." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No orders found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Orders">
           <thead>
             <tr>
-              <th style={thStyle}>Reference</th>
-              <th style={thStyle}>Customer</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Amount</th>
-              <th style={thStyle}>Items</th>
-              <th style={thStyle}>Created</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>Reference</th>
+              <th scope="col" style={thStyle}>Customer</th>
+              <th scope="col" style={thStyle}>Status</th>
+              <th scope="col" style={thStyle}>Amount</th>
+              <th scope="col" style={thStyle}>Items</th>
+              <th scope="col" style={thStyle}>Created</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -2385,9 +2387,9 @@ const OrdersPage = () => {
                     <td style={cellStyle}>{order.createdAt ? formatDateTime(order.createdAt) : "-"}</td>
                     <td style={cellStyle}>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                        <button style={buttonStyle} onClick={() => toggleDetails(order.id)}>{isSelected ? "Hide" : "View"}</button>
-                        {order.status === "pending" ? <button style={primaryButtonStyle} onClick={() => markPaid(order)}>Mark paid</button> : null}
-                        {order.status === "paid" ? <button style={dangerButtonStyle} onClick={() => refund(order)}>Refund</button> : null}
+                        <button type="button" style={buttonStyle} onClick={() => toggleDetails(order.id)}>{isSelected ? "Hide" : "View"}</button>
+                        {order.status === "pending" ? <button type="button" style={primaryButtonStyle} onClick={() => markPaid(order)}>Mark paid</button> : null}
+                        {order.status === "paid" ? <button type="button" style={dangerButtonStyle} onClick={() => refund(order)}>Refund</button> : null}
                         {!["pending", "paid"].includes(order.status) ? <span style={{ color: themeColors.textSubtle }}>—</span> : null}
                       </div>
                     </td>
@@ -2422,8 +2424,8 @@ const OrdersPage = () => {
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
-            <button style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
-            <button style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
+            <button type="button" style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
+            <button type="button" style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
           </div>
         </div>
       </DataState>
@@ -2562,23 +2564,23 @@ const ClaimsPage = () => {
         </select>
       </label>
       {state.search.trim() ? <Link style={buttonLinkStyle} to={buildSupportHref(state.search)}>Open in Support</Link> : null}
-      <button style={buttonStyle} onClick={load}>Refresh</button>
+      <button type="button" style={buttonStyle} onClick={load} aria-label="Refresh claims list">Refresh</button>
     </>
   );
 
   return (
     <PageShell title="Activation Claims" subtitle="Review first-activation confirmation requests and moderate risky devices." actions={pageActions}>
       <DataState loading={state.loading} error={state.error} empty="No activation claims found." isEmpty={state.items.length === 0}>
-        <table style={tableStyle}>
+        <table style={tableStyle} aria-label="Activation claims">
           <thead>
             <tr>
-              <th style={thStyle}>Claim</th>
-              <th style={thStyle}>License</th>
-              <th style={thStyle}>Owner</th>
-              <th style={thStyle}>Device</th>
-              <th style={thStyle}>Risk</th>
-              <th style={thStyle}>Expires</th>
-              <th style={thStyle}>Actions</th>
+              <th scope="col" style={thStyle}>Claim</th>
+              <th scope="col" style={thStyle}>License</th>
+              <th scope="col" style={thStyle}>Owner</th>
+              <th scope="col" style={thStyle}>Device</th>
+              <th scope="col" style={thStyle}>Risk</th>
+              <th scope="col" style={thStyle}>Expires</th>
+              <th scope="col" style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -2608,11 +2610,11 @@ const ClaimsPage = () => {
                     <td style={cellStyle}>{claim.expires_at ? formatDateTime(claim.expires_at) : <span style={{ color: themeColors.textSubtle }}>—</span>}</td>
                     <td style={cellStyle}>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-                        <button style={buttonStyle} onClick={() => toggleDetails(claim.id)}>{isSelected ? "Hide" : "View"}</button>
+                        <button type="button" style={buttonStyle} onClick={() => toggleDetails(claim.id)}>{isSelected ? "Hide" : "View"}</button>
                         {claim.status === "pending_confirmation" ? (
                           <>
-                            <button style={primaryButtonStyle} onClick={() => approve(claim)}>Approve</button>
-                            <button style={dangerButtonStyle} onClick={() => reject(claim)}>Reject</button>
+                            <button type="button" style={primaryButtonStyle} onClick={() => approve(claim)}>Approve</button>
+                            <button type="button" style={dangerButtonStyle} onClick={() => reject(claim)}>Reject</button>
                           </>
                         ) : null}
                         {claim.status !== "pending_confirmation" ? <span style={{ color: themeColors.textSubtle }}>—</span> : null}
@@ -2639,7 +2641,7 @@ const ClaimsPage = () => {
                         <span style={{ ...mutedTextStyle, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}>Risk reasons</span>
                         {claim.risk_reasons?.length ? claim.risk_reasons.map((reason, idx) => (
                           <div key={`${reason}-${idx}`} style={{ ...mutedTextStyle, display: "flex", gap: 6, alignItems: "center", color: themeColors.warning, fontWeight: 500 }}>
-                            <span>⚠</span> <span>{reason}</span>
+                            <span aria-hidden="true">⚠</span> <span>{reason}</span>
                           </div>
                         )) : <span style={mutedTextStyle}>No risk reasons attached.</span>}
                       </div>
@@ -2658,8 +2660,8 @@ const ClaimsPage = () => {
         <div style={listFooterStyle}>
           <span style={mutedTextStyle}>{formatPaginationSummary({ offset: state.offset, limit: state.limit, total: state.total, count: state.items.length })}</span>
           <div style={{ display: "flex", gap: 8 }}>
-            <button style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
-            <button style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
+            <button type="button" style={hasPrevPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToPreviousPage} disabled={!hasPrevPage || state.loading}>Prev</button>
+            <button type="button" style={hasNextPage && !state.loading ? buttonStyle : disabledButtonStyle} onClick={goToNextPage} disabled={!hasNextPage || state.loading}>Next</button>
           </div>
         </div>
       </DataState>
