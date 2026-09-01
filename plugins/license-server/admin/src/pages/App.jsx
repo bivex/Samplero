@@ -617,8 +617,8 @@ const applyListQueryParams = ({ params, search, status, sortBy, sortDir, default
 };
 
 const PageShell = ({ title, subtitle, actions, children }) => (
-  <div style={pageStyle}>
-    <div style={{
+  <main role="main" style={pageStyle}>
+    <header style={{
       display: "flex",
       justifyContent: "space-between",
       gap: 16,
@@ -632,9 +632,9 @@ const PageShell = ({ title, subtitle, actions, children }) => (
         {subtitle ? <p style={{ ...mutedTextStyle, marginTop: 4 }}>{subtitle}</p> : null}
       </div>
       {actions ? <div style={{ display: "flex", gap: 8, alignItems: "center" }}>{actions}</div> : null}
-    </div>
+    </header>
     {children}
-  </div>
+  </main>
 );
 
 const DataState = ({ loading, error, empty, isEmpty = false, children }) => {
