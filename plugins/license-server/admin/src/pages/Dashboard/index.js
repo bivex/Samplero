@@ -120,40 +120,40 @@ const DashboardPage = () => {
 
       <Grid gap={4} gridCols={2}>
         <StatCard
-          icon={<Key width="24" height="24" color="#4945FF" />}
+          icon={<Key width="24" height="24" color="primary600" />}
           title={formatMessage({
             id: "license-server.dashboard.total",
             defaultMessage: "Total Licenses",
           })}
           value={stats.totalLicenses}
-          color="#F0F0FF"
+          color="primary100"
         />
         <StatCard
-          icon={<CheckCircle width="24" height="24" color="#02B07A" />}
+          icon={<CheckCircle width="24" height="24" color="success600" />}
           title={formatMessage({
             id: "license-server.dashboard.active",
             defaultMessage: "Active Licenses",
           })}
           value={stats.activeLicenses}
-          color="#E6F8F0"
+          color="success100"
         />
         <StatCard
-          icon={<XCircle width="24" height="24" color="#D02B48" />}
+          icon={<XCircle width="24" height="24" color="danger600" />}
           title={formatMessage({
             id: "license-server.dashboard.revoked",
             defaultMessage: "Revoked Licenses",
           })}
           value={stats.revokedLicenses}
-          color="#FCE8EC"
+          color="danger100"
         />
         <StatCard
-          icon={<Clock width="24" height="24" color="#8B80F9" />}
+          icon={<Clock width="24" height="24" color="primary600" />}
           title={formatMessage({
             id: "license-server.dashboard.activations",
             defaultMessage: "Total Activations",
           })}
           value={stats.totalActivations}
-          color="#F4F0FF"
+          color="primary100"
         />
       </Grid>
 

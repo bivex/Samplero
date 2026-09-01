@@ -21,7 +21,7 @@ const ADMIN_API_BASE = "/license-server";
 const themeColors = {
   surface: "var(--strapi-colors-neutral0)",
   surfaceRaised: "var(--strapi-colors-neutral100)",
-  surfaceHover: "var(--strapi-colors-neutral50, #f6f6f9)",
+  surfaceHover: "var(--strapi-colors-neutral50, var(--strapi-colors-neutral100))",
   border: "var(--strapi-colors-neutral150)",
   borderStrong: "var(--strapi-colors-neutral200)",
   text: "var(--strapi-colors-neutral800)",
@@ -31,11 +31,11 @@ const themeColors = {
   primarySoft: "var(--strapi-colors-primary100)",
   primaryBorder: "var(--strapi-colors-primary200)",
   success: "var(--strapi-colors-success600, #328048)",
-  successSoft: "var(--strapi-colors-success100, #eafbe7)",
-  successBorder: "var(--strapi-colors-success200, #c6f0c2)",
+  successSoft: "var(--strapi-colors-success100, rgba(47, 148, 97, 0.15))",
+  successBorder: "var(--strapi-colors-success200, rgba(47, 148, 97, 0.3))",
   warning: "var(--strapi-colors-warning600, #b34f00)",
-  warningSoft: "var(--strapi-colors-warning100, #fdf4dc)",
-  warningBorder: "var(--strapi-colors-warning200, #fae7b9)",
+  warningSoft: "var(--strapi-colors-warning100, rgba(217, 130, 43, 0.15))",
+  warningBorder: "var(--strapi-colors-warning200, rgba(217, 130, 43, 0.3))",
   danger: "var(--strapi-colors-danger600)",
   dangerSoft: "var(--strapi-colors-danger100)",
   dangerBorder: "var(--strapi-colors-danger200)",
@@ -966,16 +966,29 @@ const DashboardPage = () => {
             {statCards.map(({ label, value, accent, soft, icon }) => (
               <div key={label} style={{
                 ...cardStyle,
+                border: `1px solid ${themeColors.border}`,
                 borderTop: `3px solid ${accent}`,
-                background: soft,
+                background: themeColors.surface,
                 display: "grid",
-                gap: 6,
+                gap: 8,
+                boxShadow: "0 1px 3px rgba(0,0,0,.08)",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ ...mutedTextStyle, fontWeight: 600, fontSize: 12, letterSpacing: "0.03em" }}>{label}</span>
-                  <span style={{ fontSize: 18, lineHeight: 1 }}>{icon}</span>
+                  <span style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: soft,
+                    border: `1px solid ${themeColors.border}`,
+                    fontSize: 16,
+                    lineHeight: 1,
+                  }}>{icon}</span>
                 </div>
-                <div style={{ fontSize: 32, fontWeight: 800, color: accent, lineHeight: 1.1 }}>{value ?? 0}</div>
+                <div style={{ fontSize: 32, fontWeight: 800, color: themeColors.text, lineHeight: 1.1 }}>{value ?? 0}</div>
               </div>
             ))}
           </div>
