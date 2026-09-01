@@ -6,7 +6,7 @@ const readRootFile = (relativePath) =>
 
 describe("customer portal source contract", () => {
   it("documents the chosen static customer-ui architecture", () => {
-    const source = readRootFile("docs/customer-ui-architecture.md");
+    const source = readRootFile("ARCHITECTURE.md");
 
     expect(source).toContain("static customer portal");
     expect(source).toContain("public/customer/");

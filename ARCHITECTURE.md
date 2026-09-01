@@ -44,6 +44,26 @@ Samplero is a high-availability, zero-trust digital rights management (DRM) and 
 
 ---
 
+## 3. Customer Portal Architecture
+
+The buyer-facing web workspace is implemented as a **static customer portal** served from `public/customer/`:
+- **Routes**:
+  - `#/store` — storefront and featured products
+  - `#/products/:slug` — product detail + latest versions + order CTA
+  - `#/account/licenses` — license cabinet
+  - `#/account/licenses/:id` — license detail + recovery workspace
+  - `#/account/downloads` — download hub
+  - `#/account/orders` — order history
+  - `#/account/orders/:id` — order detail + post-purchase CTA
+- **Endpoints**:
+  - `POST /api/license-server/orders`
+  - `POST /api/license-server/me/orders/:id/redeem-coupon`
+  - `GET /api/license-server/me/licenses`
+  - `GET /api/license-server/me/downloads`
+  - `GET /api/license-server/me/orders`
+
+---
+
 ## 3. License Verification & Activation State Machine
 
 ```mermaid
