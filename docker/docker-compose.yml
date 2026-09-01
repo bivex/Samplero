@@ -103,7 +103,7 @@ services:
     volumes:
       - strapi-data:/var/lib/postgresql/data
     ports:
-      - "127.0.0.1:5432:5432"
+      - "${DATABASE_HOST_PORT:-127.0.0.1:54320}:5432"
     networks:
       - strapi
 
