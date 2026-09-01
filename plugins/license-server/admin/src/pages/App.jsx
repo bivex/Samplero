@@ -121,8 +121,12 @@ const mutedTextStyle = { color: themeColors.textMuted, fontSize: 13 };
 
 /* ── Buttons ────────────────────────────────────────────── */
 const buttonStyle = {
-  padding: "7px 14px",
-  borderRadius: 8,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 6,
+  padding: "6px 14px",
+  borderRadius: 6,
   border: `1px solid ${themeColors.border}`,
   background: themeColors.surface,
   color: themeColors.text,
@@ -130,7 +134,9 @@ const buttonStyle = {
   fontSize: 13,
   fontWeight: 500,
   lineHeight: 1.4,
-  transition: "background 0.12s, border-color 0.12s",
+  transition: "all 0.12s ease",
+  whiteSpace: "nowrap",
+  flexShrink: 0,
 };
 const primaryButtonStyle = {
   ...buttonStyle,
@@ -141,9 +147,6 @@ const primaryButtonStyle = {
 };
 const buttonLinkStyle = {
   ...buttonStyle,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
   textDecoration: "none",
 };
 const disabledButtonStyle = { ...buttonStyle, opacity: 0.45, cursor: "not-allowed" };
@@ -154,11 +157,13 @@ const dangerButtonStyle = {
   color: themeColors.danger,
   fontWeight: 600,
 };
-const selectStyle = { ...buttonStyle, minWidth: 160 };
+const selectStyle = { ...buttonStyle, minWidth: 140, display: "block" };
 const inputStyle = {
   ...buttonStyle,
-  minWidth: 220,
+  minWidth: 200,
+  display: "block",
   outline: "none",
+  cursor: "text",
 };
 const LICENSES_PAGE_SIZE = 10;
 const ACTIVATIONS_PAGE_SIZE = 10;
@@ -635,16 +640,16 @@ const PageShell = ({ title, subtitle, actions, children }) => (
       display: "flex",
       justifyContent: "space-between",
       gap: 16,
-      alignItems: "flex-start",
+      alignItems: "flex-end",
       flexWrap: "wrap",
       paddingBottom: 20,
       borderBottom: `1px solid ${themeColors.border}`,
     }}>
-      <div>
+      <div style={{ flex: "1 1 220px", minWidth: 200 }}>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, letterSpacing: "-0.02em", color: themeColors.text }}>{title}</h1>
         {subtitle ? <p style={{ ...mutedTextStyle, marginTop: 4 }}>{subtitle}</p> : null}
       </div>
-      {actions ? <div style={{ display: "flex", gap: 8, alignItems: "center" }}>{actions}</div> : null}
+      {actions ? <div style={{ display: "flex", gap: 8, alignItems: "flex-end", flexWrap: "wrap", flexShrink: 0 }}>{actions}</div> : null}
     </header>
     {children}
   </main>
@@ -1119,14 +1124,16 @@ const SupportPage = () => {
   } : null;
 
   const actions = (
-    <form style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "end" }} onSubmit={handleSubmit}>
+    <form style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-start" }} onSubmit={handleSubmit}>
       <label style={{ ...mutedTextStyle, display: "grid", gap: 4 }}>
         <span>Support search</span>
         <input style={inputStyle} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Email, license key, order ref, or device" />
         <span style={{ ...mutedTextStyle, fontSize: 12 }}>Press Enter to search across all operational pages.</span>
       </label>
-      <button style={state.loading ? disabledButtonStyle : buttonStyle} type="submit" disabled={state.loading}>{state.loading ? "Searching…" : "Search"}</button>
-      <button style={buttonStyle} type="button" onClick={clearSearch}>Clear</button>
+      <div style={{ display: "flex", gap: 8, marginTop: 20 }}>
+        <button style={state.loading ? disabledButtonStyle : buttonStyle} type="submit" disabled={state.loading}>{state.loading ? "Searching…" : "Search"}</button>
+        <button style={buttonStyle} type="button" onClick={clearSearch}>Clear</button>
+      </div>
     </form>
   );
 
