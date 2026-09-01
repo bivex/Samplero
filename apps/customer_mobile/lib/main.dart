@@ -9,8 +9,6 @@ import 'infrastructure/native/ffi_crypto_adapter.dart';
 import 'application/use_cases/get_products_use_case.dart';
 import 'presentation/app.dart';
 import 'domain/repositories/crypto_port.dart';
-import 'domain/repositories/auth_port.dart';
-import 'domain/repositories/license_repository.dart';
 
 class MockCryptoAdapter implements CryptoPort {
   @override
@@ -54,7 +52,7 @@ void main() {
   try {
     cryptoAdapter = FfiCryptoAdapter(nativeLibPath);
   } catch (e) {
-    print('Failed to load native crypto library: $e');
+    debugPrint('Failed to load native crypto library: $e');
     cryptoAdapter = MockCryptoAdapter();
   }
 

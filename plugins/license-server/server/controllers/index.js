@@ -22,6 +22,7 @@ const webhook = require("./webhook");
 const product = require("./product");
 const order = require("./order");
 const coupon = require("./coupon");
+const system = require("./system");
 
 module.exports = {
   license,
@@ -31,4 +32,5 @@ module.exports = {
   product,
   order,
   coupon,
+  system,
 };

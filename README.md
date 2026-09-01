@@ -1,469 +1,246 @@
-# Samplero — License Server
+<div align="center">
 
-A production-grade license server for VST plugins and sample packs, built on **Strapi 5**. Handles purchase fulfillment, device activation, certificate issuance, and offline grace periods — secured end-to-end with **mTLS + signed requests**.
+# 🎹 Samplero License Server
+### Google Production Grade Zero-Trust Licensing & Digital Delivery Platform for Audio Software
 
----
+[![Node.js](https://img.shields.io/badge/Node.js-22_LTS-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat&logo=go&logoColor=white)](https://go.dev/)
+[![Strapi](https://img.shields.io/badge/Strapi-5.38-4945FF?style=flat&logo=strapi&logoColor=white)](https://strapi.io/)
+[![Tauri](https://img.shields.io/badge/Tauri-2.0-FFC131?style=flat&logo=tauri&logoColor=black)](https://tauri.app/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=flat&logo=flutter&logoColor=white)](https://flutter.dev/)
+[![Security](https://img.shields.io/badge/Security-mTLS_%2B_Ed25519-critical?style=flat&logo=security&logoColor=white)](SECURITY.md)
 
-## Table of Contents
-
-- [Screenshots](#screenshots)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Quick Start (Local Dev)](#quick-start-local-dev)
-- [Docker Stack](#docker-stack)
-- [Environment Variables](#environment-variables)
-- [Security Model](#security-model)
-- [API Overview](#api-overview)
-- [PKI & Certificate Management](#pki--certificate-management)
-- [Running Tests](#running-tests)
-- [Deployment](#deployment)
-- [Roadmap](#roadmap)
+</div>
 
 ---
 
-## Screenshots
+## 📖 Table of Contents
 
-### Customer Portal — Storefront, Downloads & License Recovery
-
-| Desktop | Mobile |
-|---|---|
-| ![Customer Portal — desktop](customer-portal-home.png) | ![Customer Portal — mobile](customer-portal-mobile.png) |
-
-### Customer Portal — Production
-
-| Desktop | Mobile |
-|---|---|
-| ![Customer Portal — desktop](customer-production-after-desktop.png) | ![Customer Portal — mobile](customer-production-after-mobile.png) |
-
-### My Samplero — Unified Ownership Workspace
-
-| Desktop | Mobile |
-|---|---|
-| ![My Samplero — desktop](customer-premium-copy-desktop.png) | ![My Samplero — mobile](customer-premium-copy-mobile.png) |
-
-### Admin Panel — License Server Plugin
-
-| Dashboard | Licenses |
-|---|---|
-| ![Admin dashboard](admin-dashboard.png) | ![Admin licenses](admin-licenses.png) |
-
-| Activations | Products |
-|---|---|
-| ![Admin activations](admin-activations.png) | ![Admin products](admin-products.png) |
+- [Overview](#-overview)
+- [System Architecture](#-system-architecture)
+- [Monorepo & Multi-Service Map](#-monorepo--multi-service-map)
+- [Security & Cryptographic Model](#-security--cryptographic-model)
+- [Quick Start (Local Development)](#-quick-start-local-development)
+- [Production Deployment (Docker)](#-production-deployment-docker)
+- [Observability & SRE Metrics](#-observability--sRE-metrics)
+- [Verification & Testing](#-verification--testing)
+- [API Reference](#-api-reference)
+- [Visual Showcase](#-visual-showcase)
+- [Documentation & Runbooks](#-documentation--runbooks)
 
 ---
 
-## Architecture
+## 🌟 Overview
 
-```
-Customer / Plugin
-       │
-       ▼
-  nginx (port 8443)
-  mTLS termination
-       │
-       ├─── /api/license/*  ────────────────► Strapi (port 1337, internal)
-       │                                        │
-       │                                        ├── strapi-plugin-license-server
-       │                                        │     ├── license service
-       │                                        │     ├── purchase / fulfillment
-       │                                        │     ├── crypto / signing
-       │                                        │     └── admin UI panel
-       │                                        │
-       │                                        └── cert-signer (Go, port 8081)
-       │                                              ├── local CA mode
-       │                                              └── step-ca mode
-       │
-       ├─── /api/license-server/me/*  ─────► customer cabinet (orders, licenses, downloads)
-       └─── /api/license-server/webhooks/payment  ─► payment fulfillment
+**Samplero License Server** is an enterprise-grade digital rights management (DRM), PKI certificate authority, and commerce distribution engine tailored specifically for VST/AU/AAX audio plugins, DAWs, and digital sample libraries.
+
+### Key Capabilities
+- **Zero-Trust Mutual TLS (mTLS)**: Every licensed hardware workstation receives an ephemeral X.509 client certificate issued dynamically via CSR.
+- **Proof-of-Possession Request Signatures**: Prevents API-key forgery and proxy spoofing with asymmetric HMAC/Ed25519 signatures over canonical query strings and JSON payloads.
+- **Anti-Tamper Response Signing**: The server signs all JSON responses (`x-response-signature`), preventing local hosts-file redirection and rogue proxy emulation.
+- **Resilient Offline Grace Period**: Seamless offline operation for touring musicians and studio workstations with monotonic clock protection and automatic online heartbeat recovery.
+- **Automated Digital Fulfillment**: Webhook-driven payment fulfillment delivering machine-specific VST licenses or archive-only sample pack assets via AWS S3 presigned URLs.
+
+---
+
+## 🏛️ System Architecture
+
+```mermaid
+graph TD
+    Client["Client Workstation<br/>(DAW / VST Plugin / Desktop App)"]
+    Edge["Nginx Ingress Proxy (Port 8443)<br/>mTLS Client Cert Termination"]
+    Strapi["Strapi 5 Backend (Port 1337)<br/>License State Machine & Commerce"]
+    Signer["Cert-Signer Microservice (Port 8081)<br/>Go Standard PKI / Step-CA Backend"]
+    DB[("PostgreSQL 16/17<br/>License & Activation Data")]
+    Redis[("Redis 7 Cache<br/>Nonce Freshness & Rate Limits")]
+    S3[("AWS S3 Storage<br/>Encrypted Asset Buckets")]
+
+    Client -->|"mTLS + Signed Requests"| Edge
+    Edge -->|"Forward Verified Cert CN/SAN"| Strapi
+    Strapi -->|"Query/Mutate State"| DB
+    Strapi -->|"Anti-Replay / Rate Limits"| Redis
+    Strapi -->|"Issue Signed Client Cert (mTLS)"| Signer
+    Strapi -->|"Generate Presigned Downloads"| S3
+    Client -->|"Direct Download"| S3
 ```
 
-**Services:**
-
-| Service | Role |
-|---|---|
-| `strapi` | Core API, admin panel, business logic |
-| `cert-signer` | Go microservice — signs CSRs and issues client certificates |
-| `strapiDB` | PostgreSQL 16 — persistent storage |
-| `strapi-redis` | Redis 7 — rate-limit state |
-| `nginx` | TLS/mTLS edge proxy |
-
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| API framework | [Strapi 5](https://strapi.io) (Node.js) |
-| Database | PostgreSQL 16 (SQLite supported for dev) |
-| Cache / rate-limit | Redis 7 |
-| Cert issuance | Go `cert-signer` + optional [smallstep `step-ca`](https://smallstep.com/docs/step-ca/) |
-| Edge proxy | nginx 1.27 with mTLS |
-| Container runtime | Docker Compose |
-| Test runner | [Bun](https://bun.sh) (323 tests) |
-| Customer portal | Tauri app (`apps/customer-tauri`) |
-
----
-
-## Project Structure
+## 🗂️ Monorepo & Multi-Service Map
 
 ```
-.
-├── config/                   # Strapi config (database, plugins, middleware, server)
-├── src/
-│   ├── admin/                # Admin panel extensions & Vite config
-│   └── extensions/           # users-permissions server patch
-├── plugins/
-│   ├── license-server/       # Core custom plugin (controllers, services, policies, admin UI)
-│   └── strapi-plugin-rate-limit/  # Vendored rate-limit plugin
-├── services/
-│   └── cert-signer/          # Go CSR-signing microservice
+Samplero/
 ├── apps/
-│   └── customer-tauri/       # Customer desktop portal (Tauri)
-├── docker/
-│   ├── docker-compose.yml    # Main stack
-│   ├── docker-compose.stepca.yml  # step-ca overlay
-│   ├── nginx/                # nginx config templates
-│   └── pki-stack.sh          # PKI-aware compose wrapper
+│   ├── customer-tauri/          # Desktop Client (Tauri 2.0 + React + TypeScript + Rust)
+│   └── customer_mobile/         # Mobile App (Flutter 3.x / Dart)
+├── config/                      # Strapi 5 Configuration (Database, Middlewares, Security, Plugins)
+├── docs/                        # Engineering Specifications, Architecture & Runbooks
+│   ├── api/                     # OpenAPI 3.1 YAML Specification
+│   ├── architecture/            # Architectural Analysis & Roadmaps
+│   ├── assets/screenshots/      # UI & Portal Visual Screenshots
+│   ├── deployment/              # Debian & Ubuntu Production Deployment Guides
+│   ├── runbooks/                # SRE Operational Runbooks (Disaster Recovery, Rotation, Alerts)
+│   └── spec/                    # Purchase Contracts & Domain Specifications
+├── docker/                      # Hardened Docker Compose & Dockerfiles
+│   ├── Dockerfile               # Multi-stage Development Image
+│   ├── Dockerfile.prod          # Distroless/Alpine Production Image
+│   ├── docker-compose.yml       # Dev/Staging Docker Stack
+│   ├── docker-compose.prod.yml  # Production Docker Compose Overlay (Resource Limits, Logging)
+│   └── nginx/                   # Edge Nginx Reverse Proxy with mTLS Gate
+├── plugins/
+│   ├── license-server/          # Core License Server Plugin (Server + Admin UI)
+│   └── strapi-plugin-rate-limit/# Distributed Redis Rate Limiting Plugin
+├── public/customer/             # Responsive Web Customer Portal
 ├── scripts/
-│   └── pki/                  # CA bootstrap, bundle build/install, rollout/rollback helpers
-├── tests/                    # Bun test suites (unit + HTTP integration)
-├── docs/                     # Wireframes and design docs
-├── .docker-pki/              # Local PKI state (gitignored)
-└── certs/                    # nginx server TLS certs (gitignored)
+│   ├── pki/                     # PKI Automation Scripts (Intermediate CA, Step-CA, Bundles)
+│   └── k6/                      # K6 Load & Performance Smoke Scripts
+├── services/
+│   └── cert-signer/             # Lightweight Go Microservice for X.509 CSR Signing
+├── src/                         # Strapi Extensions, Custom Middlewares, and Bootstrapping
+└── tests/                       # Root Integration & Supertest Test Suites
 ```
 
 ---
 
-## Quick Start (Local Dev)
+## 🔐 Security & Cryptographic Model
 
-### Prerequisites
+| Trust Level | Level Code | Transport | Proof-of-Possession | Target Endpoints |
+| :--- | :---: | :---: | :---: | :--- |
+| **ANONYMOUS** | `0` | HTTPS | None | Storefront, Products, Version lookups |
+| **API_KEY** | `1` | HTTPS | License Key String | Legacy checkouts |
+| **CLIENT_CERT** | `2` | mTLS (8443) | X.509 Handshake | Basic device validation |
+| **SIGNED** | `3` | HTTPS | Asymmetric Payload Signature | Direct validation fallback |
+| **MTLS_SIGNED** | `4` | mTLS (8443) | X.509 Cert + Payload Signature | **Google Production Standard** |
 
-- Node.js 18–22
-- npm ≥ 6 (or Bun)
-- Docker + Docker Compose
-- Go 1.22+ (only if building `cert-signer` locally)
+For complete threat modeling and mitigation matrices, consult [`SECURITY.md`](SECURITY.md).
 
-### 1. Install dependencies
+---
 
+## 🚀 Quick Start (Local Development)
+
+### 1. Prerequisites
+- **Node.js**: >= 20.x (or **Bun** >= 1.2)
+- **Go**: >= 1.24+
+- **Docker & Docker Compose**: >= 2.20+
+
+### 2. Setup Environment
 ```bash
+# Clone the repository
+git clone https://github.com/bivex/Samplero.git
+cd Samplero
+
+# Copy environment template
+cp .env.example .env
+
+# Install dependencies
 npm install
+# Or: bun install
 ```
 
-### 2. Configure environment
-
+### 3. Start Supporting Infrastructure
 ```bash
-cp docker/.env.example .env
-# Edit .env — at minimum set JWT_SECRET, ADMIN_JWT_SECRET, APP_KEYS, LICENSE_SERVER_SECRET
+# Launch PostgreSQL and Redis
+docker compose -f docker/docker-compose.yml up -d strapiDB strapi-redis
 ```
 
-### 3. Bootstrap the dev PKI
-
-```bash
-bash scripts/pki/bootstrap-step-ca.sh
-```
-
-This generates a local root CA, intermediate CA, and server TLS certs under `.docker-pki/`.
-
-### 4. Start the full Docker stack
-
-```bash
-bash docker/pki-stack.sh up
-```
-
-Or with step-ca as the issuance backend:
-
-```bash
-docker compose -f docker/docker-compose.yml -f docker/docker-compose.stepca.yml up
-```
-
-### 5. Run Strapi in dev mode (without Docker)
-
+### 4. Start Development Server
 ```bash
 npm run develop
+# Or: bun run develop
 ```
-
-Strapi admin panel will be available at `http://localhost:1337/admin`.
+- **Admin Panel**: `http://localhost:1337/admin`
+- **Customer Portal**: `http://localhost:1337/customer`
+- **Health Endpoint**: `http://localhost:1337/api/license-server/healthz`
 
 ---
 
-## Docker Stack
+## 🚢 Production Deployment (Docker)
 
-The `pki-stack.sh` wrapper manages the PKI user context and exposes the standard compose commands:
+To deploy the production-hardened stack on a Linux node:
 
 ```bash
-bash docker/pki-stack.sh up       # Start all services
-bash docker/pki-stack.sh down     # Stop services
-bash docker/pki-stack.sh restart  # Restart
-bash docker/pki-stack.sh status   # Show status
+# 1. Initialize production Intermediate CA
+bash scripts/pki/bootstrap-intermediate-ca.sh
+
+# 2. Build and launch with production overlay
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up -d --build
+
+# 3. Verify deployment health
+curl -f http://127.0.0.1:1337/api/license-server/healthz
+curl -f http://127.0.0.1:1337/api/license-server/readyz
 ```
 
-**Exposed ports:**
-
-| Port | Service |
-|---|---|
-| `8443` | nginx mTLS edge (external) |
-| `1337` | Strapi (localhost only, internal) |
-| `5432` | PostgreSQL |
-| `6379` | Redis |
+For zero-downtime deployment instructions, consult [`docs/runbooks/01-production-deployment-guide.md`](docs/runbooks/01-production-deployment-guide.md).
 
 ---
 
-## Environment Variables
+## 📊 Observability & SRE Metrics
 
-Copy `docker/.env.example` to `.env` and fill in the required values.
+Samplero provides native Prometheus metrics and Kubernetes-compatible health probes:
 
-### Core Strapi
+- **Liveness Probe**: `GET /api/license-server/healthz` (200 OK)
+- **Readiness Probe**: `GET /api/license-server/readyz` (Verifies DB, Redis, and Cert-Signer connectivity)
+- **Prometheus Metrics**: `GET /api/license-server/metrics`
+- **Cert-Signer Metrics**: `GET http://127.0.0.1:8081/metrics`
 
-| Variable | Description |
-|---|---|
-| `JWT_SECRET` | Strapi JWT secret (required) |
-| `ADMIN_JWT_SECRET` | Admin panel JWT secret (required) |
-| `APP_KEYS` | Comma-separated app keys (required) |
-| `DATABASE_CLIENT` | `postgres` or `sqlite` |
-| `DATABASE_*` | PostgreSQL connection settings |
-| `REDIS_URL` | Redis connection URL |
-
-### License Server
-
-| Variable | Description | Default |
-|---|---|---|
-| `LICENSE_SERVER_SECRET` | HMAC key for response signing | — (required) |
-| `LICENSE_WEBHOOK_SECRET` | Dedicated webhook HMAC secret | — (required) |
-| `LICENSE_SIGNER_MODE` | `local` or `remote` | `remote` |
-| `LICENSE_SIGNER_URL` | cert-signer base URL | `http://cert-signer:8081` |
-| `LICENSE_SIGNER_AUTH_TOKEN` | Auth token for signer requests | — |
-| `LICENSE_SIGNER_SHARED_SECRET` | HMAC shared secret for signer freshness | — |
-| `LICENSE_GRACE_PERIOD_DAYS` | Offline grace period | `7` |
-| `LICENSE_HEARTBEAT_HOURS` | Heartbeat interval | `24` |
-| `LICENSE_MAX_ACTIVATIONS` | Default activation slots per license | `3` |
-| `LICENSE_REQUIRE_MTLS` | Enforce mTLS on validate/heartbeat | `true` |
-| `LICENSE_MTLS_ENDPOINT` | Public mTLS base URL shown to clients | `https://api` |
-| `LICENSE_FRESHNESS_MAX_SKEW_SECONDS` | Max clock skew for request freshness | `300` |
-| `LICENSE_WEBHOOK_ALLOWED_IPS` | Optional IP allowlist for payment webhook | — |
-
-### cert-signer (Go)
-
-| Variable | Description |
-|---|---|
-| `CERT_SIGNER_AUTH_TOKEN` | Must match `LICENSE_SIGNER_AUTH_TOKEN` |
-| `CERT_SIGNER_AUTH_SHARED_SECRET` | Must match `LICENSE_SIGNER_SHARED_SECRET` |
-| `CERT_SIGNER_CA_CERT_PATH` | Path to intermediate CA cert |
-| `CERT_SIGNER_CA_KEY_PATH` | Path to intermediate CA private key |
-| `CERT_SIGNER_CA_CHAIN_PATH` | Path to full CA chain |
-| `CERT_SIGNER_VALIDITY_DAYS` | Client cert validity in days |
+Prometheus metrics include:
+- `process_uptime_seconds`, `process_heap_bytes`
+- `license_server_licenses_total{status="active|revoked|expired"}`
+- `license_server_activations_active_total{platform="mac|windows|linux"}`
+- `cert_signer_issued_certificates_total`, `cert_signer_failures_total`
 
 ---
 
-## Security Model
+## 🧪 Verification & Testing
 
-### mTLS
-
-- nginx terminates client TLS and passes `X-Client-Cert-Serial`, `X-Client-Cert-DN`, and `X-SSL-Verified` headers to Strapi.
-- The `verify-mtls` policy validates the cert serial against the `Activation` table.
-- Requests without a valid client cert are rejected with `403` at nginx.
-
-### Request Signing
-
-For activations that include a `client_public_key`, both the API-key path and the mTLS path enforce **proof-of-possession**:
-
-- `X-Request-Signature`: HMAC or ECDSA signature over canonical request body.
-- `X-Payload-Signature`: Signature over the full payload.
-- Any post-signature tampering of `license_key` or `device_fingerprint` is detected and rejected (`401 INVALID_REQUEST_SIGNATURE`).
-- `heartbeat` does not update `last_checkin` until the signature is successfully verified.
-
-### Trust Levels
-
-| Level | Requirements |
-|---|---|
-| `MTLS_SIGNED` | Valid client cert + valid request signature |
-| `SIGNED` | Valid API key + valid request signature |
-
-### Response Signing
-
-A global middleware signs all API responses with `LICENSE_SERVER_SECRET` so clients can detect tampering.
-
-### Rate Limiting
-
-Per-route limits enforced via `strapi-plugin-rate-limit` (vendored):
-
-| Endpoint | Limit |
-|---|---|
-| `POST /license/activate` | 10 / min |
-| `POST /license/heartbeat` | 60 / min |
-| `GET /license/validate` | 100 / min |
-
----
-
-## API Overview
-
-All endpoints are under `/api/license-server/`.
-
-### Plugin Lifecycle
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `POST` | `/license/activate` | API key / mTLS | Activate a license on a device; issues client cert |
-| `GET` | `/license/validate` | mTLS + signature | Validate an active license |
-| `POST` | `/license/heartbeat` | mTLS + signature | Check in; resets offline timer |
-| `POST` | `/license/deactivate` | Bearer JWT | Deactivate a specific device |
-| `GET` | `/license/status` | Bearer JWT | Get license and activation status |
-
-### Customer Cabinet
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/me/orders` | Bearer JWT | List customer orders |
-| `GET` | `/me/licenses` | Bearer JWT | List customer licenses |
-| `GET` | `/me/downloads` | Bearer JWT | List available downloads |
-
-### Commerce / Fulfilment
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `POST` | `/webhooks/payment` | Webhook secret | Payment provider callback; triggers fulfillment |
-
-### Admin (Strapi panel + API)
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/license-server/licenses` | Admin JWT | List all licenses |
-| `GET` | `/license-server/activations` | Admin JWT | List all activations |
-| `POST` | `/license-server/licenses/:id/revoke` | Admin JWT | Revoke a license |
-| `POST` | `/license-server/activations/:id/deactivate` | Admin JWT | Deactivate a slot |
-
-### Products
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/products` | Public | List active products |
-| `GET` | `/products/:slug` | Public | Get product by slug |
-| `GET` | `/products/:id/versions` | Public | List plugin versions |
-| `GET` | `/products/:id/versions/:vid/download` | Bearer JWT | Get presigned S3 download URL |
-
-See [`openapi.md`](./openapi.md) for the full OpenAPI 3.0 specification.
-
----
-
-## Offline Grace Period
-
-When a device cannot reach the server:
-
-1. `validate` returns `grace_period` status — the license remains valid offline.
-2. After `LICENSE_GRACE_PERIOD_DAYS`, `validate` returns `grace_period_expired`.
-3. The first successful online `heartbeat` restores `active` status and resets the offline budget.
-
----
-
-## PKI & Certificate Management
-
-See [`docs-pki-runbook.md`](./docs-pki-runbook.md) for the full runbook covering:
-
-- Root CA generation (offline, air-gapped)
-- Intermediate CA issuance and custody
-- cert-signer deployment (local mode vs step-ca mode)
-- nginx trust configuration
-- Canary rollout and rollback procedures
-
-### Key scripts
-
-| Script | Purpose |
-|---|---|
-| `scripts/pki/bootstrap-step-ca.sh` | Bootstrap dev step-ca instance |
-| `scripts/pki/bootstrap-intermediate-ca.sh` | Issue intermediate CA from offline root |
-| `scripts/pki/build-production-stepca-bundle.sh` | Build production bundle (no root key) |
-| `scripts/pki/install-production-stepca-bundle.sh` | Install bundle on target server |
-| `scripts/pki/rollout-production-intermediate.sh` | Canary rollout |
-| `scripts/pki/rollback-production-intermediate.sh` | Rollback to previous intermediate |
-| `scripts/pki/audit-production-stepca-host.sh` | Host custody audit |
-
----
-
-## Running Tests
-
-Tests run with **Bun** (323 tests, all passing):
+Every subproject in the repository is covered by automated unit and integration test suites:
 
 ```bash
-bun test
-```
+# 1. Run all backend & plugin tests (320+ tests)
+npm test
+# Or: bun test
 
-Run targeted suites:
+# 2. Run Go cert-signer tests
+cd services/cert-signer && go test -v ./... && cd ../..
 
-```bash
-# Plugin unit tests
-bun test tests/services/license.test.js
+# 3. Run Flutter mobile analysis
+cd apps/customer_mobile && flutter analyze && cd ../..
 
-# HTTP integration (requires running Strapi)
-bun test tests/integration/license-server-licenses.test.js
-bun test tests/integration/license-server-activations.test.js
-
-# Anti-forgery / signed request tests
-bun test tests/integration/anti-forgery.test.js
-```
-
-Build check:
-
-```bash
-npm run build
+# 4. Check Tauri Rust backend
+cd apps/customer-tauri/src-tauri && cargo check && cd ../../..
 ```
 
 ---
 
-## Deployment
+## 📚 Visual Showcase
 
-See [`DEBIAN_PRODUCTION_DEPLOYMENT.md`](./DEBIAN_PRODUCTION_DEPLOYMENT.md) and [`UBUNTU_22_04_PRODUCTION_DEPLOYMENT.md`](./UBUNTU_22_04_PRODUCTION_DEPLOYMENT.md) for full step-by-step guides.
+### Customer Portal
+| Storefront & Downloads | My Samplero Cabinet |
+| :---: | :---: |
+| ![Storefront](docs/assets/screenshots/customer-portal-home.png) | ![Cabinet](docs/assets/screenshots/customer-premium-copy-desktop.png) |
 
-### Quickref
-
-```bash
-# 1. Copy repo to server
-# 2. Set up .env (production secrets)
-# 3. Install production PKI bundle
-bash scripts/pki/install-production-stepca-bundle.sh
-
-# 4. Start the stack
-bash docker/pki-stack.sh up
-
-# 5. Verify
-curl --cacert .docker-pki/current/trust/ca-chain.crt \
-     --cert client.crt --key client.key \
-     https://your-domain:8443/api/license-server/license/validate
-```
-
-### Production Checklist
-
-- [ ] Replace all `change-me-*` secrets in `.env`
-- [ ] Issue a real production intermediate CA from your offline root
-- [ ] Confirm root CA private key is **not** on the server
-- [ ] Run `audit-production-stepca-host.sh` to verify custody
-- [ ] Configure SendGrid for transactional email
-- [ ] Configure Sentry for error monitoring
-- [ ] Configure Prometheus + Grafana for metrics
+### Admin Dashboard & Management
+| Dashboard Overview | License Management |
+| :---: | :---: |
+| ![Admin Dashboard](docs/assets/screenshots/admin-dashboard.png) | ![Admin Licenses](docs/assets/screenshots/admin-licenses.png) |
 
 ---
 
-## Roadmap
+## 📖 Documentation & Runbooks
 
-| Milestone | Status |
-|---|---|
-| License core API (activate / validate / heartbeat / deactivate) | ✅ Done |
-| mTLS + signed request security | ✅ Done |
-| Offline grace period | ✅ Done |
-| Commerce: orders, fulfillment, downloads | ✅ Done |
-| cert-signer + step-ca backend | ✅ Done |
-| Docker dev stack + k6 load test | ✅ Done |
-| 323 Bun tests passing | ✅ Done |
-| Production CA bundle tooling | ✅ Done |
-| Production intermediate issuance + canary rollout | 🟡 Next |
-| SendGrid email notifications | 🟡 Planned |
-| Sentry error monitoring | 🟡 Planned |
-| Prometheus / Grafana metrics | 🟡 Planned |
-
-See [`ROADMAP_MATRIX.md`](./ROADMAP_MATRIX.md) for the full execution matrix.
+- [System Architecture & RFC](ARCHITECTURE.md)
+- [Security Policy & Key Custody](SECURITY.md)
+- [OpenAPI 3.1 Specification](docs/api/openapi.yaml)
+- [Production Deployment Runbook](docs/runbooks/01-production-deployment-guide.md)
+- [Intermediate CA Rotation Runbook](docs/runbooks/02-intermediate-ca-rotation.md)
+- [Disaster Recovery & Backup Runbook](docs/runbooks/03-disaster-recovery-and-backup.md)
+- [Incident Response & Revocation Runbook](docs/runbooks/04-incident-response-and-revocation.md)
+- [Prometheus Alerting Runbook](docs/runbooks/05-observability-and-alerts.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ---
 
-## License
+## 📄 License
 
-MIT — © Samplero
+This project is licensed under the [MIT License](LICENSE).

@@ -6,6 +6,30 @@ module.exports = {
     type: "content-api",
     routes: [
       {
+        method: "GET",
+        path: "/healthz",
+        handler: "plugin::license-server.system.healthz",
+        config: {
+          auth: false,
+        },
+      },
+      {
+        method: "GET",
+        path: "/readyz",
+        handler: "plugin::license-server.system.readyz",
+        config: {
+          auth: false,
+        },
+      },
+      {
+        method: "GET",
+        path: "/metrics",
+        handler: "plugin::license-server.system.metrics",
+        config: {
+          auth: false,
+        },
+      },
+      {
         method: "POST",
         path: "/license/activate",
         handler: "plugin::license-server.license.activate",

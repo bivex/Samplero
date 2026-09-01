@@ -1,0 +1,113 @@
+# ==============================================================================
+# Google Production Grade Docker Compose Production Stack
+# ==============================================================================
+
+services:
+  strapi:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    image: strapi-license-server:prod
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    networks:
+      - internal_backend
+      - edge_network
+
+  cert-signer:
+    build:
+      context: ../services/cert-signer
+      dockerfile: Dockerfile
+    image: cert-signer:prod
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    networks:
+      - internal_backend
+
+  strapiDB:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    # Do not expose port to host in production
+    ports: []
+    networks:
+      - internal_backend
+
+  strapi-redis:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    ports: []
+    networks:
+      - internal_backend
+
+  nginx:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    networks:
+      - edge_network
+
+networks:
+  internal_backend:
+    driver: bridge
+    internal: true
+  edge_network:
+    driver: bridge

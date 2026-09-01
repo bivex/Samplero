@@ -122,14 +122,19 @@ export async function seedAdminUser(strapi: any) {
     return admins[0];
   }
 
-  console.log('Seeding admin user...');
+  const email = process.env.ADMIN_INITIAL_EMAIL || ADMIN_EMAIL;
+  const password = process.env.ADMIN_INITIAL_PASSWORD || ADMIN_PASSWORD;
+  const firstname = process.env.ADMIN_INITIAL_FIRSTNAME || ADMIN_FIRSTNAME;
+  const lastname = process.env.ADMIN_INITIAL_LASTNAME || ADMIN_LASTNAME;
 
-  const hashedPassword = await hash(ADMIN_PASSWORD, 10);
+  console.log('Seeding initial admin user...');
+
+  const hashedPassword = await hash(password, 10);
   const admin = await strapi.query('admin::user').create({
     data: {
-      email: ADMIN_EMAIL,
-      firstname: ADMIN_FIRSTNAME,
-      lastname: ADMIN_LASTNAME,
+      email,
+      firstname,
+      lastname,
       password: hashedPassword,
       isActive: true,
     },
@@ -289,8 +294,16 @@ export async function bootstrapSeed(strapi: any) {
 }
 
 export default {
-  async bootstrap({ strapi }) {
+  async bootstrap({ strapi }: { strapi: any }) {
     try {
+      if (process.env.NODE_ENV === 'production' && process.env.SEED_SAMPLE_DATA !== 'true') {
+        strapi.log.info('[Bootstrap] Production mode active - skipping sample demo dataset seeding');
+        // Still seed initial admin if provided via environment
+        if (process.env.ADMIN_INITIAL_EMAIL && process.env.ADMIN_INITIAL_PASSWORD) {
+          await seedAdminUser(strapi);
+        }
+        return;
+      }
       await bootstrapSeed(strapi);
     } catch (error) {
       console.error('Error seeding:', error);

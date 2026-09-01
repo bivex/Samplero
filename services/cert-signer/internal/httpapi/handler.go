@@ -5,12 +5,16 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/samplero/cert-signer/internal/issuer"
@@ -20,6 +24,14 @@ type issuerService interface {
 	Issue(issuer.IssueRequest) (issuer.IssueResponse, error)
 }
 
+type metricsTracker struct {
+	startTime      time.Time
+	requestsTotal  atomic.Uint64
+	issuedTotal    atomic.Uint64
+	failuresTotal  atomic.Uint64
+	authFailsTotal atomic.Uint64
+}
+
 type Handler struct {
 	service          issuerService
 	authToken        string
@@ -27,44 +39,120 @@ type Handler struct {
 	authMaxSkew      time.Duration
 	nonceMu          sync.Mutex
 	seenNonces       map[string]time.Time
+	metrics          metricsTracker
+	logger           *slog.Logger
 }
 
 func New(service issuerService, authToken, authSharedSecret string, authMaxSkew time.Duration) http.Handler {
 	if authMaxSkew <= 0 {
 		authMaxSkew = 60 * time.Second
 	}
+
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}))
+
 	h := &Handler{
 		service:          service,
 		authToken:        authToken,
 		authSharedSecret: authSharedSecret,
 		authMaxSkew:      authMaxSkew,
 		seenNonces:       map[string]time.Time{},
+		metrics: metricsTracker{
+			startTime: time.Now().UTC(),
+		},
+		logger: logger,
 	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", h.healthz)
+	mux.HandleFunc("/readyz", h.readyz)
+	mux.HandleFunc("/metrics", h.prometheusMetrics)
 	mux.HandleFunc("/v1/certificates/issue", h.issue)
 	return mux
 }
 
 func (h *Handler) healthz(w http.ResponseWriter, _ *http.Request) {
-	writeJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+	writeJSON(w, http.StatusOK, map[string]any{
+		"status":    "ok",
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+	})
+}
+
+func (h *Handler) readyz(w http.ResponseWriter, _ *http.Request) {
+	if h.service == nil {
+		writeJSON(w, http.StatusServiceUnavailable, map[string]any{
+			"status": "unhealthy",
+			"error":  "issuer service not initialized",
+		})
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{
+		"status":    "ready",
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+	})
+}
+
+func (h *Handler) prometheusMetrics(w http.ResponseWriter, _ *http.Request) {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+
+	uptime := time.Since(h.metrics.startTime).Seconds()
+
+	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+	_, _ = fmt.Fprintf(w, "# HELP cert_signer_uptime_seconds Process uptime in seconds\n")
+	_, _ = fmt.Fprintf(w, "# TYPE cert_signer_uptime_seconds gauge\n")
+	_, _ = fmt.Fprintf(w, "cert_signer_uptime_seconds %.2f\n", uptime)
+
+	_, _ = fmt.Fprintf(w, "# HELP cert_signer_requests_total Total HTTP requests handled\n")
+	_, _ = fmt.Fprintf(w, "# TYPE cert_signer_requests_total counter\n")
+	_, _ = fmt.Fprintf(w, "cert_signer_requests_total %d\n", h.metrics.requestsTotal.Load())
+
+	_, _ = fmt.Fprintf(w, "# HELP cert_signer_issued_certificates_total Total X.509 client certificates successfully signed\n")
+	_, _ = fmt.Fprintf(w, "# TYPE cert_signer_issued_certificates_total counter\n")
+	_, _ = fmt.Fprintf(w, "cert_signer_issued_certificates_total %d\n", h.metrics.issuedTotal.Load())
+
+	_, _ = fmt.Fprintf(w, "# HELP cert_signer_failures_total Total issuance failures\n")
+	_, _ = fmt.Fprintf(w, "# TYPE cert_signer_failures_total counter\n")
+	_, _ = fmt.Fprintf(w, "cert_signer_failures_total %d\n", h.metrics.failuresTotal.Load())
+
+	_, _ = fmt.Fprintf(w, "# HELP cert_signer_auth_failures_total Total authentication/HMAC verification failures\n")
+	_, _ = fmt.Fprintf(w, "# TYPE cert_signer_auth_failures_total counter\n")
+	_, _ = fmt.Fprintf(w, "cert_signer_auth_failures_total %d\n", h.metrics.authFailsTotal.Load())
+
+	_, _ = fmt.Fprintf(w, "# HELP go_goroutines Number of active goroutines\n")
+	_, _ = fmt.Fprintf(w, "# TYPE go_goroutines gauge\n")
+	_, _ = fmt.Fprintf(w, "go_goroutines %d\n", runtime.NumGoroutine())
+
+	_, _ = fmt.Fprintf(w, "# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use\n")
+	_, _ = fmt.Fprintf(w, "# TYPE go_memstats_alloc_bytes gauge\n")
+	_, _ = fmt.Fprintf(w, "go_memstats_alloc_bytes %d\n", m.Alloc)
 }
 
 func (h *Handler) issue(w http.ResponseWriter, r *http.Request) {
+	h.metrics.requestsTotal.Add(1)
+
 	if r.Method != http.MethodPost {
 		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "method_not_allowed"})
 		return
 	}
+
+	// Protect against unbounded body memory DOS attacks (limit to 1MB)
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid_json"})
 		return
 	}
+	defer r.Body.Close()
+
 	if !h.authorized(r, body) {
+		h.metrics.authFailsTotal.Add(1)
 		writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "unauthorized"})
 		return
 	}
-	defer r.Body.Close()
+
 	var req issuer.IssueRequest
 	if err := json.Unmarshal(body, &req); err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid_json"})
@@ -74,18 +162,22 @@ func (h *Handler) issue(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "csr_pem, machine_id, and key_hash are required"})
 		return
 	}
+
 	resp, err := h.service.Issue(req)
 	if err != nil {
-		log.Printf("issue failed: %v", err)
+		h.metrics.failuresTotal.Add(1)
+		h.logger.Error("Certificate issuance failed", "error", err)
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
+
+	h.metrics.issuedTotal.Add(1)
 	writeJSON(w, http.StatusOK, resp)
 }
 
 func (h *Handler) authorized(r *http.Request, body []byte) bool {
 	if !h.validBearer(r.Header.Get("Authorization")) {
-		log.Printf("[Security] signer auth failed: invalid bearer token")
+		h.logger.Warn("signer auth failed: invalid bearer token")
 		return false
 	}
 
@@ -93,27 +185,27 @@ func (h *Handler) authorized(r *http.Request, body []byte) bool {
 	nonce := strings.TrimSpace(r.Header.Get("x-signer-nonce"))
 	signature := normalizeHex(r.Header.Get("x-signer-signature"))
 	if timestamp == "" || nonce == "" || signature == "" {
-		log.Printf("[Security] signer auth failed: missing signed freshness headers")
+		h.logger.Warn("signer auth failed: missing signed freshness headers")
 		return false
 	}
 
 	requestTime, err := parseUnixTimestamp(timestamp)
 	if err != nil {
-		log.Printf("[Security] signer auth failed: invalid timestamp")
+		h.logger.Warn("signer auth failed: invalid timestamp", "error", err)
 		return false
 	}
 	if delta := time.Since(requestTime); delta > h.authMaxSkew || delta < -h.authMaxSkew {
-		log.Printf("[Security] signer auth failed: stale timestamp")
+		h.logger.Warn("signer auth failed: stale timestamp", "delta", delta)
 		return false
 	}
 
 	expected := h.computeSignature(timestamp, nonce, body)
 	if !hmac.Equal([]byte(expected), []byte(signature)) {
-		log.Printf("[Security] signer auth failed: invalid HMAC signature")
+		h.logger.Warn("signer auth failed: invalid HMAC signature")
 		return false
 	}
 	if !h.reserveNonce(nonce) {
-		log.Printf("[Security] signer auth failed: replay detected for nonce %s", nonce)
+		h.logger.Warn("signer auth failed: replay detected for nonce", "nonce", nonce)
 		return false
 	}
 

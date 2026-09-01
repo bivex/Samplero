@@ -98,3 +98,35 @@ func signBody(secret, timestamp, nonce string, body []byte) string {
 	_, _ = mac.Write(body)
 	return hex.EncodeToString(mac.Sum(nil))
 }
+
+func TestHealthzAndReadyz(t *testing.T) {
+	service := &stubIssuer{}
+	handler := New(service, "token-1", "shared-1", 60*time.Second)
+
+	// Healthz
+	reqHealth := httptest.NewRequest(http.MethodGet, "/healthz", nil)
+	rrHealth := httptest.NewRecorder()
+	handler.ServeHTTP(rrHealth, reqHealth)
+	if rrHealth.Code != http.StatusOK {
+		t.Fatalf("expected healthz 200, got %d", rrHealth.Code)
+	}
+
+	// Readyz
+	reqReady := httptest.NewRequest(http.MethodGet, "/readyz", nil)
+	rrReady := httptest.NewRecorder()
+	handler.ServeHTTP(rrReady, reqReady)
+	if rrReady.Code != http.StatusOK {
+		t.Fatalf("expected readyz 200, got %d", rrReady.Code)
+	}
+
+	// Metrics
+	reqMetrics := httptest.NewRequest(http.MethodGet, "/metrics", nil)
+	rrMetrics := httptest.NewRecorder()
+	handler.ServeHTTP(rrMetrics, reqMetrics)
+	if rrMetrics.Code != http.StatusOK {
+		t.Fatalf("expected metrics 200, got %d", rrMetrics.Code)
+	}
+	if !bytes.Contains(rrMetrics.Body.Bytes(), []byte("cert_signer_uptime_seconds")) {
+		t.Fatalf("expected metrics output to contain cert_signer_uptime_seconds")
+	}
+}
