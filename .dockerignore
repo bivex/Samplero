@@ -1,17 +1,51 @@
+# Dependencies & Build artifacts
 node_modules
 .tmp
 .cache
 dist
 build
+coverage
+
+# Version control & local environment
 .git
-.docker-pki
-certs
-upload
-.env
-*.db
+.github
+.DS_Store
 *.log
-apps/customer-tauri/src-tauri/target
-**/coverage
-**/node_modules
-# Allow plugin dist folders
-!plugins/**/dist
+.env
+.env.*
+!.env.example
+
+# Documentation & Design Assets (not needed inside runtime container)
+docs/
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# Client Apps
+apps/
+
+# Tests & CI
+tests/
+*.test.ts
+*.test.js
+jest.config.js
+
+# PKI & Private secrets
+.docker-pki/
+.docker-pki-backups/
+certs/private/
+certs/root/
+certs/intermediate/
+*.key
+*.pem
+*.srl
+*.csr
+
+# Database dumps
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore unneeded plugins source maps
+plugins/**/dist/*.map

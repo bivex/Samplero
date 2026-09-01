@@ -1,8 +1,8 @@
 {
   "name": "strapi-license-server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "License Server for VST Plugins",
+  "description": "Zero-Trust mTLS License Server and Digital Delivery Platform for VST Plugins",
   "license": "MIT",
   "author": {
     "name": "Samplero"
@@ -12,7 +12,11 @@
     "build": "strapi build",
     "develop": "strapi develop",
     "start": "strapi start",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "dev:restart": "bash scripts/restarter.sh",
+    "clean": "rm -rf dist build .tmp .cache"
   },
   "dependencies": {
     "@strapi-community/plugin-redis": "^2.0.0",
@@ -50,5 +54,12 @@
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
     "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.0",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "typescript": "^7.0.2"
   }
 }

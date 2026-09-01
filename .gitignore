@@ -6,20 +6,12 @@ node_modules/
 .pnp.js
 
 ##############################################################
-# Lock files — keep one canonical lockfile per sub-project
-# Uncomment any line below if you DO want to keep that lockfile
+# Lock files — keep canonical lockfile in git
 ##############################################################
-package-lock.json
-yarn.lock
-bun.lock
-# src/yarn.lock            # already matched by top-level
-src/yarn.lock
-plugins/*/package-lock.json
-apps/*/package-lock.json
-apps/*/bun.lock
+# yarn.lock
 
 ##############################################################
-# Build artefacts
+# Build & Runtime artefacts
 ##############################################################
 dist/
 build/
@@ -27,9 +19,34 @@ build/
 out/
 .cache/
 coverage/
+.turbo/
+.strapi/
+.meilisearch-data/
+.tmp/
+upload/
+public/uploads/
+
+# Tauri & Rust artifacts
+apps/customer-tauri/src-tauri/target/
+
+# Flutter & Dart artifacts
+apps/customer_mobile/.dart_tool/
+apps/customer_mobile/build/
+apps/customer_mobile/.flutter-plugins
+apps/customer_mobile/.flutter-plugins-dependencies
+apps/customer_mobile/.packages
+
+# Go binaries
+services/cert-signer/cert-signer
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
 
 ##############################################################
-# Environment — keep .env.example files, never real secrets
+# Environment & Secrets (Never Commit Real Secrets)
 ##############################################################
 .env
 .env.local
@@ -37,24 +54,17 @@ coverage/
 .env.development
 .env.test
 .env.production
-# docker/.env is a real env file too
 docker/.env
 
 ##############################################################
-# Private keys, certificates, and PKI secrets
+# PKI & Private Cryptographic Keys
 ##############################################################
-# Private keys — never commit
 *.key
 *.pem
-# PKCS12 / PFX bundles
 *.p12
 *.pfx
-# CA serial files
 *.srl
-# CSR scratch files (keep only test fixtures if truly needed)
 *.csr
-
-# Full cert directories with private material
 certs/private/
 certs/root/
 certs/intermediate/
@@ -62,24 +72,15 @@ certs/server/
 certs/client/
 certs/step-ca/secrets/
 certs/step-ca/db/
-
-# Keep public CA cert so nginx trust chain can reference it
-!certs/ca.crt
-!certs/step-ca/certs/
-
-# PKI runtime state (generated locally, never shared)
 .docker-pki/
 .docker-pki-backups/
 
-##############################################################
-# Runtime / test scratch directories
-##############################################################
-.tmp/
-.strapi/
-.meilisearch-data/
+# Allow public CA certificates
+!certs/ca.crt
+!certs/step-ca/certs/
 
 ##############################################################
-# Database files
+# Databases & Storage
 ##############################################################
 *.db
 *.sqlite
@@ -96,53 +97,26 @@ yarn-debug.log*
 yarn-error.log*
 
 ##############################################################
-# Strapi-specific
-##############################################################
-.uploads/
-.strapi-updater.json
-# Public dir is mostly generated; keep customer portal and favicon
-public/
-!public/customer/
-!public/customer/**
-!public/favicon.ico
-!public/favicon.png
-
-##############################################################
-# Local analysis / Understand IDE exports
-##############################################################
-*.und/
-license-server.und/
-all.cfg
-deps.csv
-fanout.csv
-full_deps.csv
-
-##############################################################
-# Personal / confidential notes — never publish
-##############################################################
-"admin creds.md"
-admin\ creds.md
-"potential clients.md"
-potential\ clients.md
-"В голове.md"
-"Техническое Задание*.md"
-
-##############################################################
-# OS & editor noise
+# OS & IDE Files
 ##############################################################
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 .idea/
 .vscode/
+*.sublime-project
+*.sublime-workspace
 *.swp
 *.swo
-*.orig
+*~
 
-##############################################################
-# Cargo (customer-tauri)
-##############################################################
-apps/customer-tauri/src-tauri/.cargo-home-temp/
-apps/customer-tauri/src-tauri/target/
-license-server.csv
-В голове.md
-Техническое Задание: Кастомный плагин лицензирования (strapi-plugin-license-server).md
+# Strapi updater & local temp
+.strapi-updater.json
+
+# Rust & Cargo scratch
+.cargo-home-temp/
+**/.cargo-home-temp/

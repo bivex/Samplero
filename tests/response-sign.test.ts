@@ -39,7 +39,7 @@ function createCtx(overrides: Record<string, any> = {}) {
   const headers: Record<string, string> = {};
   return {
     path: '/api/license-server/products',
-    body: { ok: true },
+    body: { ok: true } as Record<string, any>,
     set(name: string, value: string) {
       headers[name] = value;
     },
