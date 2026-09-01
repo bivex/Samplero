@@ -43,62 +43,64 @@ const themeColors = {
 };
 
 /* ── Layout ─────────────────────────────────────────────── */
-const pageStyle = { padding: "28px 32px", display: "grid", gap: 20 };
-const cardGridStyle = { display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))" };
+const pageStyle = { padding: "24px 32px", display: "grid", gap: 20 };
+const cardGridStyle = { display: "grid", gap: 14, gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" };
 const cardStyle = {
   border: `1px solid ${themeColors.border}`,
-  borderRadius: 12,
-  padding: 20,
+  borderRadius: 8,
+  padding: "16px 20px",
   background: themeColors.surface,
-  boxShadow: "0 1px 3px rgba(0,0,0,.04)",
+  boxShadow: "0 1px 2px rgba(0,0,0,.03)",
+  transition: "all 0.15s ease",
 };
-const navStyle = { display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 };
+const navStyle = { display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 4 };
 const listFooterStyle = { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" };
 
 /* ── Navigation links ───────────────────────────────────── */
 const linkStyle = ({ isActive }) => ({
-  padding: "7px 14px",
-  borderRadius: 8,
+  padding: "6px 14px",
+  borderRadius: 6,
   textDecoration: "none",
   fontSize: 13,
-  fontWeight: 600,
-  letterSpacing: "0.02em",
-  color: isActive ? themeColors.inverseText : themeColors.text,
-  background: isActive ? themeColors.primary : "transparent",
-  border: `1px solid ${isActive ? themeColors.primary : themeColors.border}`,
-  transition: "background 0.15s, color 0.15s",
+  fontWeight: isActive ? 600 : 500,
+  letterSpacing: "0.01em",
+  color: isActive ? themeColors.primary : themeColors.textMuted,
+  background: isActive ? themeColors.primarySoft : "transparent",
+  border: `1px solid ${isActive ? themeColors.primaryBorder : "transparent"}`,
+  transition: "all 0.15s ease",
 });
 
 /* ── Table ──────────────────────────────────────────────── */
 const tableStyle = {
   width: "100%",
-  borderCollapse: "collapse",
+  borderCollapse: "separate",
+  borderSpacing: 0,
   background: themeColors.surface,
   border: `1px solid ${themeColors.border}`,
-  borderRadius: 12,
+  borderRadius: 8,
   overflow: "hidden",
   fontSize: 13,
 };
 const thStyle = {
-  padding: "10px 14px",
+  padding: "10px 16px",
   textAlign: "left",
   background: themeColors.surfaceRaised,
   color: themeColors.textSubtle,
   fontSize: 11,
-  fontWeight: 700,
-  letterSpacing: "0.06em",
+  fontWeight: 600,
+  letterSpacing: "0.04em",
   textTransform: "uppercase",
-  borderBottom: `1px solid ${themeColors.borderStrong}`,
+  borderBottom: `1px solid ${themeColors.border}`,
 };
 const cellStyle = {
   borderBottom: `1px solid ${themeColors.border}`,
-  padding: "11px 14px",
+  padding: "12px 16px",
   textAlign: "left",
   color: themeColors.text,
   fontSize: 13,
 };
-const rowStyle = (idx) => ({
-  background: idx % 2 === 0 ? themeColors.surface : themeColors.surfaceRaised,
+const rowStyle = () => ({
+  background: themeColors.surface,
 });
 
 /* ── Typography ─────────────────────────────────────────── */
@@ -963,18 +965,15 @@ const DashboardPage = () => {
       >
         <DataState loading={state.loading} error={state.error}>
           <div style={cardGridStyle}>
-            {statCards.map(({ label, value, accent, soft, icon }) => (
+            {statCards.map(({ label, value, soft, icon }) => (
               <div key={label} style={{
                 ...cardStyle,
-                border: `1px solid ${themeColors.border}`,
-                borderTop: `3px solid ${accent}`,
-                background: themeColors.surface,
-                display: "grid",
-                gap: 8,
-                boxShadow: "0 1px 3px rgba(0,0,0,.08)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ ...mutedTextStyle, fontWeight: 600, fontSize: 12, letterSpacing: "0.03em" }}>{label}</span>
+                  <span style={{ ...mutedTextStyle, fontWeight: 500, fontSize: 13 }}>{label}</span>
                   <span style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -983,12 +982,11 @@ const DashboardPage = () => {
                     height: 32,
                     borderRadius: 8,
                     background: soft,
-                    border: `1px solid ${themeColors.border}`,
                     fontSize: 16,
                     lineHeight: 1,
                   }}>{icon}</span>
                 </div>
-                <div style={{ fontSize: 32, fontWeight: 800, color: themeColors.text, lineHeight: 1.1 }}>{value ?? 0}</div>
+                <div style={{ fontSize: 28, fontWeight: 700, color: themeColors.text, lineHeight: 1 }}>{value ?? 0}</div>
               </div>
             ))}
           </div>
