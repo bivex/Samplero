@@ -66,7 +66,14 @@ module.exports = async (policyContext, config, { strapi }) => {
   const proxyToken = headers["x-license-proxy-token"];
 
   const cryptoService = strapi.plugin("license-server")?.service("crypto");
-  const clientCertPem = rawCert ? decodeURIComponent(rawCert) : null;
+  let clientCertPem = null;
+  if (rawCert) {
+    try {
+      clientCertPem = decodeURIComponent(rawCert);
+    } catch {
+      clientCertPem = rawCert;
+    }
+  }
   const baseCertSerial =
     (clientCertPem && cryptoService?.extractCertificateSerial?.(clientCertPem)) ||
     certSerial;
@@ -107,24 +114,13 @@ module.exports = async (policyContext, config, { strapi }) => {
         return deny(`Certificate ${revocationCheck.reason}`);
       }
     }
-  }
 
-  const activation = await strapi.db
-    .query("plugin::license-server.activation")
-    .findOne({
-      where: { certificate_serial: resolvedCertSerial || "none" },
-    });
+    const activation = await strapi.db
+      .query("plugin::license-server.activation")
+      .findOne({
+        where: { certificate_serial: resolvedCertSerial || "none" },
+      });
 
-  let license = activation?.license;
-
-  if (activation?.license_id && !license) {
-    license = await strapi.db.query("plugin::license-server.license").findOne({
-      where: { id: activation.license_id },
-      populate: ["user"],
-    });
-  }
-
-  if (sslVerified === "SUCCESS" && resolvedCertSerial) {
     if (!activation) {
       strapi.log.warn(
         `[Security] Activation not found for serial: ${resolvedCertSerial}`,
@@ -135,6 +131,22 @@ module.exports = async (policyContext, config, { strapi }) => {
     if (activation.revoked_at) {
       strapi.log.warn(`[Security] Activation revoked: ${resolvedCertSerial}`);
       return deny("Activation revoked");
+    }
+
+    let license =
+      typeof activation.license === "object" && activation.license !== null
+        ? activation.license
+        : null;
+    const licenseId =
+      license?.id ||
+      activation.license_id ||
+      (typeof activation.license === "number" ? activation.license : null);
+
+    if (licenseId && (!license || !license.status)) {
+      license = await strapi.db.query("plugin::license-server.license").findOne({
+        where: { id: licenseId },
+        populate: ["user"],
+      });
     }
 
     if (!license) {
@@ -160,7 +172,7 @@ module.exports = async (policyContext, config, { strapi }) => {
       ...activation,
       license,
     };
-    ctx.state.user = license.user;
+    ctx.state.user = license.user || null;
 
     return true;
   }

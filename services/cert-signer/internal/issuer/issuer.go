@@ -105,6 +105,13 @@ func issueLocal(caCert *x509.Certificate, caKey *rsa.PrivateKey, caChainPEM []by
 		serialInt = randomSerial()
 	}
 	cn := fmt.Sprintf("client:%s:%s", req.MachineID, req.KeyHash)
+	var dnsNames []string
+	if trimmedSerial := strings.TrimSpace(req.SerialNumber); trimmedSerial != "" {
+		dnsNames = []string{trimmedSerial}
+	} else if serialInt != nil {
+		dnsNames = []string{strings.ToUpper(serialInt.Text(16))}
+	}
+
 	now := time.Now().UTC()
 	tpl := &x509.Certificate{
 		SerialNumber:          serialInt,
@@ -115,7 +122,7 @@ func issueLocal(caCert *x509.Certificate, caKey *rsa.PrivateKey, caChainPEM []by
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth},
 		BasicConstraintsValid: true,
-		DNSNames:              []string{req.SerialNumber},
+		DNSNames:              dnsNames,
 		IPAddresses:           []net.IP{net.ParseIP("127.0.0.1")},
 	}
 	der, err := x509.CreateCertificate(rand.Reader, tpl, caCert, csr.PublicKey, caKey)

@@ -388,7 +388,8 @@ module.exports = {
       return normalized || null;
     }
 
-    return normalized.replace(/^(?:00)+/, "") || "00";
+    const stripped = normalized.replace(/^0+/, "");
+    return stripped || "00";
   },
 
   computeFingerprint(certPem) {
@@ -533,7 +534,7 @@ module.exports = {
       caCertificate: caCertPem,
       fingerprint,
       subjectCN: cnValue,
-      serial: clientCert.serialNumber?.toUpperCase?.() || serialNumber,
+      serial: this.normalizeCertificateSerial(clientCert.serialNumber || serialNumber),
     };
   },
 
@@ -738,14 +739,25 @@ module.exports = {
   },
 
   async checkRevocation(serialNumber, fingerprint) {
+    const normalizedSerial = this.normalizeCertificateSerial(serialNumber);
+    const orConditions = [];
+
+    if (normalizedSerial) {
+      orConditions.push({ certificate_serial: normalizedSerial });
+    }
+    if (fingerprint) {
+      orConditions.push({ fingerprint_sha256: fingerprint });
+    }
+
+    if (orConditions.length === 0) {
+      return { revoked: false, reason: "not_found" };
+    }
+
     const certRecord = await strapi.db
       .query("plugin::license-server.client-certificate")
       .findOne({
         where: {
-          $or: [
-            { certificate_serial: serialNumber },
-            { fingerprint_sha256: fingerprint },
-          ],
+          $or: orConditions,
         },
       });
 
