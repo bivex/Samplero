@@ -193,22 +193,46 @@ Prometheus metrics include:
 
 ## 🧪 Verification & Testing
 
-Every subproject in the repository is covered by automated unit and integration test suites:
+Every layer in the monorepo is covered by automated unit, integration, and end-to-end test suites:
 
 ```bash
-# 1. Run all backend & plugin tests (320+ tests)
+# 1. Run full backend & plugin test suite (336 tests across 29 files)
 npm test
 # Or: bun test
 
-# 2. Run Go cert-signer tests
+# 2. Run License Lifecycle End-to-End (E2E) test suite
+bun test tests/licenses-e2e.test.ts
+
+# 3. Perform static TypeScript type checking
+npm run typecheck
+
+# 4. Run Go cert-signer microservice tests
 cd services/cert-signer && go test -v ./... && cd ../..
 
-# 3. Run Flutter mobile analysis
+# 5. Run Flutter mobile analysis
 cd apps/customer_mobile && flutter analyze && cd ../..
 
-# 4. Check Tauri Rust backend
-cd apps/customer-tauri/src-tauri && cargo check && cd ../../..
+# 6. Check Tauri Rust desktop backend
+cd apps/customer-tauri/src-tauri && cargo test && cd ../../..
 ```
+
+### End-to-End (E2E) Test Coverage (`tests/licenses-e2e.test.ts`)
+The test suite validates 6 end-to-end scenarios across HTTP endpoints:
+1. **Checkout & Coupon Redemption**: Order creation (`POST /orders`), 100% promo coupon redemption (`POST /me/orders/:id/redeem-coupon`), and license generation.
+2. **Zero-Trust Onboarding**: Ephemeral machine activation, initial pending confirmation claim (`status: "pending_confirmation"`), competing device hijacking rejection (`400 FIRST_ACTIVATION_PENDING`), and owner/admin approval.
+3. **Heartbeats & Nonce Freshness**: Freshness header verification (`x-request-nonce`, `x-request-timestamp`), periodic heartbeat validation, and cryptographic nonce replay prevention (`409 Conflict`).
+4. **Grace Period & Offline Self-Healing**: Expiration detection after prolonged offline disconnect (`grace_period_expired`), followed by online reconnection and heartbeat recovery.
+5. **Multi-Device Capacity Limits**: Maximum concurrent activation slot enforcement (`400 ACTIVATION_LIMIT_EXCEEDED`) and slot recycling via deactivation (`POST /license/deactivate`).
+6. **Emergency Revocation Blast-Radius**: Instant invalidation of active device activations upon admin license revocation (`POST /licenses/:id/revoke`), and subsequent restoration upon reactivation.
+
+---
+
+## 🎨 Admin Dashboard & UI Standards
+
+The Strapi Admin Plugin interface (`plugins/license-server/admin`) is built for production operations:
+- **Dark Theme Ergonomics**: Tuned color palette for extended low-light studio environments.
+- **Semantic HTML5 & WAI-ARIA**: Screen-reader accessible tables with scoped headers (`<th scope="col">`), live region status alerts (`role="status"`, `aria-live="polite"`), and accessible action buttons.
+- **Responsive Layout**: Optimized flex layouts and mobile-ready viewport adaptations.
 
 ---
 
@@ -244,3 +268,4 @@ cd apps/customer-tauri/src-tauri && cargo check && cd ../../..
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
