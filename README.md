@@ -196,34 +196,45 @@ Prometheus metrics include:
 Every layer in the monorepo is covered by automated unit, integration, and end-to-end test suites:
 
 ```bash
-# 1. Run full backend & plugin test suite (336 tests across 29 files)
+# 1. Run full backend & plugin test suite (342 tests across 30 files)
 npm test
 # Or: bun test
 
 # 2. Run License Lifecycle End-to-End (E2E) test suite
 bun test tests/licenses-e2e.test.ts
 
-# 3. Perform static TypeScript type checking
+# 3. Run Asset Downloads & Rate Limiting End-to-End (E2E) test suite
+bun test tests/asset-downloads-and-ratelimit-e2e.test.ts
+
+# 4. Perform static TypeScript type checking
 npm run typecheck
 
-# 4. Run Go cert-signer microservice tests
+# 5. Run Go cert-signer microservice tests
 cd services/cert-signer && go test -v ./... && cd ../..
 
-# 5. Run Flutter mobile analysis
+# 6. Run Flutter mobile analysis
 cd apps/customer_mobile && flutter analyze && cd ../..
 
-# 6. Check Tauri Rust desktop backend
+# 7. Check Tauri Rust desktop backend
 cd apps/customer-tauri/src-tauri && cargo test && cd ../../..
 ```
 
-### End-to-End (E2E) Test Coverage (`tests/licenses-e2e.test.ts`)
-The test suite validates 6 end-to-end scenarios across HTTP endpoints:
-1. **Checkout & Coupon Redemption**: Order creation (`POST /orders`), 100% promo coupon redemption (`POST /me/orders/:id/redeem-coupon`), and license generation.
-2. **Zero-Trust Onboarding**: Ephemeral machine activation, initial pending confirmation claim (`status: "pending_confirmation"`), competing device hijacking rejection (`400 FIRST_ACTIVATION_PENDING`), and owner/admin approval.
-3. **Heartbeats & Nonce Freshness**: Freshness header verification (`x-request-nonce`, `x-request-timestamp`), periodic heartbeat validation, and cryptographic nonce replay prevention (`409 Conflict`).
-4. **Grace Period & Offline Self-Healing**: Expiration detection after prolonged offline disconnect (`grace_period_expired`), followed by online reconnection and heartbeat recovery.
-5. **Multi-Device Capacity Limits**: Maximum concurrent activation slot enforcement (`400 ACTIVATION_LIMIT_EXCEEDED`) and slot recycling via deactivation (`POST /license/deactivate`).
-6. **Emergency Revocation Blast-Radius**: Instant invalidation of active device activations upon admin license revocation (`POST /licenses/:id/revoke`), and subsequent restoration upon reactivation.
+### End-to-End (E2E) Test Suites
+- **License Lifecycle (`tests/licenses-e2e.test.ts`)**:
+  1. **Checkout & Coupon Redemption**: Order creation (`POST /orders`), 100% promo coupon redemption (`POST /me/orders/:id/redeem-coupon`), and license generation.
+  2. **Zero-Trust Onboarding**: Ephemeral machine activation, initial pending confirmation claim (`status: "pending_confirmation"`), competing device hijacking rejection (`400 FIRST_ACTIVATION_PENDING`), and owner/admin approval.
+  3. **Heartbeats & Nonce Freshness**: Freshness header verification (`x-request-nonce`, `x-request-timestamp`), periodic heartbeat validation, and cryptographic nonce replay prevention (`409 Conflict`).
+  4. **Grace Period & Offline Self-Healing**: Expiration detection after prolonged offline disconnect (`grace_period_expired`), followed by online reconnection and heartbeat recovery.
+  5. **Multi-Device Capacity Limits**: Maximum concurrent activation slot enforcement (`400 ACTIVATION_LIMIT_EXCEEDED`) and slot recycling via deactivation (`POST /license/deactivate`).
+  6. **Emergency Revocation Blast-Radius**: Instant invalidation of active device activations upon admin license revocation (`POST /licenses/:id/revoke`), and subsequent restoration upon reactivation.
+
+- **Asset Delivery & Rate Limiting (`tests/asset-downloads-and-ratelimit-e2e.test.ts`)**:
+  1. **Authorized S3 Presigned Downloads**: Authenticated customer with active license fetches signed download URL (`GET /products/:id/versions/:versionId/download`).
+  2. **Zero-Trust Access Control**: Complete 401 Unauthorized / 403 Forbidden blocking for unauthenticated requests, unentitled users, or revoked licenses.
+  3. **Multi-Platform Binary Resolution**: Platform-targeted filtering (`mac` vs `windows` vs `all`) and latest version resolution (`/products/:id/versions/latest`).
+  4. **Customer Cabinet Download Hub**: Aggregation of entitled active products (`GET /me/downloads`), with direct archive delivery for soundware sample packs.
+  5. **Distributed Redis Rate-Limiting**: Edge burst protection, 429 Too Many Requests enforcement, and `Retry-After: 60` header emission.
+  6. **Search Query Length Guards**: Minimum query length validation (rejecting < 2 chars) to prevent database table scans and DoS flooding.
 
 ---
 
