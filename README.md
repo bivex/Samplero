@@ -196,7 +196,7 @@ Prometheus metrics include:
 Every layer in the monorepo is covered by automated unit, integration, and end-to-end test suites:
 
 ```bash
-# 1. Run full backend & plugin test suite (342 tests across 30 files)
+# 1. Run full backend & plugin test suite (349 tests across 31 files)
 npm test
 # Or: bun test
 
@@ -206,16 +206,19 @@ bun test tests/licenses-e2e.test.ts
 # 3. Run Asset Downloads & Rate Limiting End-to-End (E2E) test suite
 bun test tests/asset-downloads-and-ratelimit-e2e.test.ts
 
-# 4. Perform static TypeScript type checking
+# 4. Run Payment Webhooks End-to-End (E2E) test suite
+bun test tests/payment-webhooks-e2e.test.ts
+
+# 5. Perform static TypeScript type checking
 npm run typecheck
 
-# 5. Run Go cert-signer microservice tests
+# 6. Run Go cert-signer microservice tests
 cd services/cert-signer && go test -v ./... && cd ../..
 
-# 6. Run Flutter mobile analysis
+# 7. Run Flutter mobile analysis
 cd apps/customer_mobile && flutter analyze && cd ../..
 
-# 7. Check Tauri Rust desktop backend
+# 8. Check Tauri Rust desktop backend
 cd apps/customer-tauri/src-tauri && cargo test && cd ../../..
 ```
 
@@ -235,6 +238,15 @@ cd apps/customer-tauri/src-tauri && cargo test && cd ../../..
   4. **Customer Cabinet Download Hub**: Aggregation of entitled active products (`GET /me/downloads`), with direct archive delivery for soundware sample packs.
   5. **Distributed Redis Rate-Limiting**: Edge burst protection, 429 Too Many Requests enforcement, and `Retry-After: 60` header emission.
   6. **Search Query Length Guards**: Minimum query length validation (rejecting < 2 chars) to prevent database table scans and DoS flooding.
+
+- **Payment Webhook Processing & Security (`tests/payment-webhooks-e2e.test.ts`)**:
+  1. **Order Fulfillment & License Minting**: Payment success event (`payment.succeeded`) with HMAC-SHA256 signature verification, transition to paid status, automatic license minting, and download entitlement generation.
+  2. **Cryptographic Replay Defense**: Anti-replay validation on `x-webhook-id`, preventing duplicated fulfillment through atomic nonce reservation.
+  3. **Payload Tamper Resistance**: Strict HMAC-SHA256 signature enforcement rejecting altered bodies or forged headers (`401 Unauthorized`).
+  4. **Clock Skew Window Enforcement**: Time-drift protection rejecting stale webhooks outside the allowed freshness window.
+  5. **Automated Refund & Device Revocation**: Processing refund events (`payment.refunded`), marking orders refunded, revoking licenses, and cascading instant deactivation across all active client devices.
+  6. **Edge IP Allowlist Filtering**: Reverse-proxy header extraction and IP allowlisting protecting webhook entry points from untrusted sources.
+  7. **Malformed Payload & Header Validation**: Defense against missing freshness headers or incomplete payment parameters.
 
 ---
 

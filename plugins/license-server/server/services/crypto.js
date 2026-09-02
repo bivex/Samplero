@@ -59,6 +59,20 @@ function buildSignedInternalRequestHeaders(body, config) {
   };
 }
 
+function getRedisService() {
+  try {
+    if (typeof strapi?.plugin === "function") {
+      const plugin = strapi.plugin("redis");
+      if (plugin && typeof plugin.service === "function") {
+        return plugin.service("default") || null;
+      }
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 function getNonceQuery() {
   if (!strapi?.db?.query) {
     return null;
@@ -704,11 +718,11 @@ module.exports = {
   },
 
   hasNonceStore() {
-    return !!strapi.plugin("redis")?.service("default") || !!getNonceQuery();
+    return !!getRedisService() || !!getNonceQuery();
   },
 
   async reserveNonce(nonce, scope = "default") {
-    const redisService = strapi.plugin("redis")?.service("default");
+    const redisService = getRedisService();
     const config = strapi.config.get("plugin::license-server", {});
     const ttl = config.nonceTtl || 300;
 
@@ -722,7 +736,7 @@ module.exports = {
   },
 
   setNonce(nonce) {
-    const redisService = strapi.plugin("redis")?.service("default");
+    const redisService = getRedisService();
     const config = strapi.config.get("plugin::license-server", {});
     const ttl = config.nonceTtl || 300;
 

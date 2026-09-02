@@ -77,11 +77,11 @@ function extractWebhookSourceIp(ctx) {
     : [];
 
   const candidates = [
+    ...forwardedIps,
     ...(Array.isArray(ctx.request?.ips) ? ctx.request.ips : []),
     ...(Array.isArray(ctx.ips) ? ctx.ips : []),
     ctx.request?.ip,
     ctx.ip,
-    ...forwardedIps,
   ]
     .map((value) => normalizeIp(value))
     .filter(Boolean);

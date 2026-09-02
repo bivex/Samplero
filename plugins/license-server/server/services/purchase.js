@@ -588,16 +588,30 @@ module.exports = {
   },
 
   async revokeOrderLicenses({ orderId, reason = "payment.refunded" }) {
-    const order = await strapi.db.query("plugin::license-server.order").findOne({
+    const orderQuery = strapi.db.query("plugin::license-server.order");
+    const order = await orderQuery.findOne({
       where: { id: orderId },
     });
     if (!order) throw new Error("ORDER_NOT_FOUND");
 
+    await orderQuery.update({
+      where: { id: orderId },
+      data: { status: "refunded" },
+    });
+
+    const licenseService = strapi.plugin("license-server").service("license");
     const orderItems = await getOrderItems(orderId);
     const licenses = await strapi.db.query("plugin::license-server.license").findMany({
       where: { order_item: { $in: orderItems.map((item) => item.id) } },
     });
     for (const license of licenses) {
+      if (licenseService && typeof licenseService.revokeLicense === "function") {
+        try {
+          await licenseService.revokeLicense(license.id);
+        } catch {
+          // fallback to manual license status update below
+        }
+      }
       await strapi.db.query("plugin::license-server.license").update({
         where: { id: license.id },
         data: { status: "revoked", revoked_at: new Date(), revocation_reason: reason },
