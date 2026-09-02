@@ -381,8 +381,8 @@ module.exports = {
   },
 
   async activate(ctx) {
-    const { license_key, device_fingerprint, plugin_version, platform, csr, machine_id } =
-      ctx.request.body;
+    const { license_key, device_fingerprint, plugin_version, platform, csr, csr_pem, machine_id } =
+      ctx.request?.body || {};
 
     try {
       const licenseService = strapi.plugin("license-server").service("license");
@@ -392,7 +392,7 @@ module.exports = {
         deviceFingerprint: device_fingerprint,
         pluginVersion: plugin_version,
         platform,
-        csr,
+        csr: csr || csr_pem,
         machineId: machine_id,
         requestIp: ctx.request.ip || ctx.ip,
       });

@@ -146,7 +146,17 @@ const parseActivationMaterial = ({ csr }) => {
     };
   }
 
-  const decodedCsr = Buffer.from(csr, "base64").toString("utf8");
+  let decodedCsr = String(csr).trim();
+  if (!decodedCsr.includes("-----BEGIN")) {
+    try {
+      const fromBase64 = Buffer.from(decodedCsr, "base64").toString("utf8");
+      if (fromBase64.includes("-----BEGIN")) {
+        decodedCsr = fromBase64;
+      }
+    } catch {
+      // keep as is
+    }
+  }
   const forge = require("node-forge");
   const csrObj = forge.pki.certificationRequestFromPem(decodedCsr);
   const clientPublicKey = forge.pki.publicKeyToPem(csrObj.publicKey);
