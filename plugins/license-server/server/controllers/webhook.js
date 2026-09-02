@@ -92,12 +92,13 @@ function extractWebhookSourceIp(ctx) {
 module.exports = {
   async handlePayment(ctx) {
     const config = strapi.config.get("plugin::license-server", {});
-    const { event, data } = ctx.request.body;
+    const body = ctx.request?.body || {};
+    const { event, data } = body;
     const headers = ctx.request?.headers || {};
     const signature = normalizeSignature(headers["x-webhook-signature"]);
     const timestamp = headers["x-webhook-timestamp"];
     const eventId =
-      headers["x-webhook-id"] || ctx.request.body?.id || ctx.request.body?.event_id;
+      headers["x-webhook-id"] || body?.id || body?.event_id;
     const expectedSecret = config.webhookSecret;
     const parsedTimestamp = parseTimestampSeconds(timestamp);
     const maxSkewSeconds = config.webhookFreshnessMaxSkewSeconds || config.freshnessMaxSkewSeconds || 300;
@@ -106,16 +107,6 @@ module.exports = {
       : [];
     const requireFreshnessStore = config.requireFreshnessStore !== false;
     const sourceIp = extractWebhookSourceIp(ctx);
-    const computedSignature = crypto
-      .createHmac("sha256", expectedSecret)
-      .update(
-        buildSignedWebhookPayload({
-          timestamp,
-          eventId,
-          body: ctx.request.body,
-        }),
-      )
-      .digest("hex");
 
     if (allowedIps.length > 0 && (!sourceIp || !allowedIps.includes(sourceIp))) {
       strapi.log.warn(
@@ -127,10 +118,29 @@ module.exports = {
       return ctx.unauthorized("Webhook source not allowed");
     }
 
+    if (!expectedSecret) {
+      strapi.log.error("[Security] Webhook secret not configured");
+      if (typeof ctx.throw === "function") {
+        return ctx.throw(500, "Webhook secret not configured");
+      }
+      return ctx.badRequest("Webhook secret not configured");
+    }
+
     if (!timestamp || !eventId || parsedTimestamp === null) {
       strapi.log.warn("[Security] Webhook rejected: missing or invalid freshness headers");
       return ctx.unauthorized("Missing webhook freshness headers");
     }
+
+    const computedSignature = crypto
+      .createHmac("sha256", expectedSecret)
+      .update(
+        buildSignedWebhookPayload({
+          timestamp,
+          eventId,
+          body,
+        }),
+      )
+      .digest("hex");
 
     if (!timingSafeHexEqual(signature, computedSignature)) {
       strapi.log.warn("[Security] Webhook rejected: invalid signature");
@@ -180,7 +190,10 @@ module.exports = {
     }
   },
 
-  async createLicenseFromPayment(paymentData) {
+  async createLicenseFromPayment(paymentData = {}) {
+    if (!paymentData || !paymentData.order_id) {
+      throw new Error("Missing order_id in payment data");
+    }
     const result = await strapi.plugin("license-server").service("purchase").fulfillPaidOrder({
       orderId: paymentData.order_id,
       paymentId: paymentData.payment_id,
@@ -191,7 +204,10 @@ module.exports = {
     return result;
   },
 
-  async revokeLicenseFromPayment(paymentData) {
+  async revokeLicenseFromPayment(paymentData = {}) {
+    if (!paymentData || !paymentData.order_id) {
+      throw new Error("Missing order_id in payment data");
+    }
     const { order_id } = paymentData;
     await strapi.plugin("license-server").service("purchase").revokeOrderLicenses({
       orderId: order_id,

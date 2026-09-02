@@ -220,7 +220,8 @@ async fn send_native_http_request(
     }
 
     let client = client_builder.build().map_err(|err| err.to_string())?;
-    let method = reqwest::Method::from_bytes(method.as_bytes()).map_err(|err| err.to_string())?;
+    let method_upper = method.to_uppercase();
+    let method = reqwest::Method::from_bytes(method_upper.as_bytes()).map_err(|err| err.to_string())?;
     let mut pending = client.request(method, &url);
 
     for (key, value) in headers {

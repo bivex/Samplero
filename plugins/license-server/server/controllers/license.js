@@ -288,7 +288,7 @@ module.exports = {
       product: productId,
       activation_limit,
       expires_at,
-    } = ctx.request.body;
+    } = ctx.request?.body || {};
 
     try {
       const licenseService = strapi.plugin("license-server").service("license");
@@ -318,7 +318,7 @@ module.exports = {
 
   async update(ctx) {
     const { id } = ctx.params;
-    const updateData = ctx.request.body;
+    const updateData = ctx.request?.body || {};
 
     try {
       const licenseService = strapi.plugin("license-server").service("license");
@@ -526,7 +526,7 @@ module.exports = {
   },
 
   async deactivate(ctx) {
-    const { license_key, device_fingerprint } = ctx.request.body;
+    const { license_key, device_fingerprint } = ctx.request?.body || {};
 
     try {
       const licenseService = strapi.plugin("license-server").service("license");

@@ -451,12 +451,13 @@ module.exports = {
 
   async findOne(ctx) {
     const { id } = ctx.params;
+    const storefrontRequest = isStorefrontRequest(ctx);
 
     try {
       const product = await strapi.db
         .query(PRODUCT_UID)
         .findOne({
-          where: { id },
+          where: storefrontRequest ? { id, is_active: true } : { id },
           populate: ["cover_image", "versions"],
         });
 
@@ -464,7 +465,7 @@ module.exports = {
         return ctx.notFound("Product not found");
       }
 
-      return product;
+      return storefrontRequest ? sanitizeProductDetailForStorefront(product) : product;
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -494,7 +495,7 @@ module.exports = {
 
   async create(ctx) {
     const { name, type, description, price_cents, currency, is_active } =
-      ctx.request.body;
+      ctx.request?.body || {};
 
     try {
       const product = await strapi.db
@@ -518,7 +519,7 @@ module.exports = {
 
   async update(ctx) {
     const { id } = ctx.params;
-    const updateData = ctx.request.body;
+    const updateData = ctx.request?.body || {};
 
     try {
       const product = await strapi.db

@@ -32,7 +32,12 @@ class StrapiLicenseRepository implements LicenseRepository {
       throw Exception('Failed to load licenses: ${response.body}');
     }
 
-    final List<dynamic> data = json.decode(response.body) as List<dynamic>;
+    final decoded = json.decode(response.body);
+    final List<dynamic> data = decoded is List<dynamic>
+        ? decoded
+        : (decoded is Map<String, dynamic> && decoded['licenses'] is List<dynamic>)
+            ? decoded['licenses'] as List<dynamic>
+            : [];
     return data.map((json) => License.fromJson(json as Map<String, dynamic>)).toList();
   }
 }

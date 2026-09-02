@@ -621,7 +621,7 @@ module.exports = {
     const config = strapi.config.get("plugin::license-server");
     const secret = config.serverSecret;
 
-    if (!includeSignature) {
+    if (!includeSignature || !secret) {
       return { payload, signature: null };
     }
 

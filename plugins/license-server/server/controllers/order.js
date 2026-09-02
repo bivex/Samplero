@@ -178,7 +178,7 @@ module.exports = {
 
   async create(ctx) {
     const userId = ctx.state.user?.id;
-    const { items, payment_method, coupon_code } = ctx.request.body;
+    const { items, payment_method, coupon_code } = ctx.request?.body || {};
 
     if (!userId) {
       return ctx.unauthorized("Authentication required");
@@ -397,7 +397,7 @@ module.exports = {
 
   async markAsPaid(ctx) {
     const { id } = ctx.params;
-    const { payment_id } = ctx.request.body;
+    const { payment_id } = ctx.request?.body || {};
 
     try {
       return await strapi.plugin("license-server").service("purchase").fulfillPaidOrder({
@@ -420,7 +420,7 @@ module.exports = {
 
   async refund(ctx) {
     const { id } = ctx.params;
-    const { reason } = ctx.request.body;
+    const { reason } = ctx.request?.body || {};
 
     try {
       const order = await strapi.db
